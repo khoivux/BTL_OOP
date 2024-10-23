@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:form="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="stylesheet" th:href="@{/css/search.css}">
+<!--    <link href="../static/css/search.css" rel="stylesheet">-->
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/032d11eac3.js"></script>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css"
+          integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <link crossorigin="anonymous"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+          integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <script crossorigin="anonymous"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <title>Tìm kiếm • HomesTayBac</title>
+</head>
+<body>
+<header>
+
+    <div class="logo">
+        <a href="/"><img alt="" src="../static/img/logo.jpeg"></a> <!--back về home-->
+    </div>
+    <div class="navlinks">
+        <ul id="menulist">
+            <li><a class="link-underline link-underline-opacity-0" href="">Trang chủ</a></li> <!--url đến home-->
+            <li><a class="link-underline link-underline-opacity-0" href="#Dịch Vụ">Dịch vụ</a></li>
+            <!--url xuống dịch vụ-->
+            <li><a class="link-underline link-underline-opacity-0" href="#homestay">Homestay</a></li>
+            <!--url xuống danh sách homestay-->
+            <li><a class="link-underline link-underline-opacity-0" href="#nLiên Hệ">Liên hệ</a></li>
+            <!--url xuống liên hệ-->
+            <li><a class="link-underline link-underline-opacity-0" href="#Feedback">Phản hồi</a></li>
+            <!--url đến trang phản hồi-->
+            <li id="user-action"></li>
+        </ul>
+        <span class="fa fa-bars" id="listbars" onclick="menutoggle()"></span>
+    </div>
+</header>
+<script>
+    let isLoggedIn = false; // thêm phương thức kiểm tra trạng thái đăng nhập
+    const userName = "Nguyễn Văn A";
+
+    function updateUserAction() {
+        const userActionDiv = document.getElementById("user-action");
+        console.log(userActionDiv);
+        if (isLoggedIn) {
+            userActionDiv.innerHTML =
+            `
+            <div show-info onclick="showInfo()" class="navlinks">
+                <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
+                <ul show-ul class="d-none" id="userlist">
+                    <li><a href="#">Thông tin tài khoản</a></li>    <!--url trang profile-->
+                    <li><a href="#">Lịch sử đặt phòng</a></li>      <!--url trang history-->
+                    <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
+                </ul>
+            </div>
+            `;                                                      //url trang profile
+            // url trang history
+            // thoát trạng thái đăng nhập
+        } else {
+            userActionDiv.innerHTML = `<a th:href="@{/login}"><button class="primary-btn">Đăng nhập</button></a>`;
+        }
+    }
+
+    function logout() {
+        isLoggedIn = false;
+        updateUserAction();
+    }
+    updateUserAction();
+</script>
+<script>
+    var Menulist = document.getElementsByClassName("navlinks");
+    // menulist.style.maxHeight = "0px";
+    function menutoggle() {
+        if (menulist.style.maxHeight == "0px") {
+            menulist.style.maxHeight = "60vh";
+        } else {
+            menulist.style.maxHeight = "0px";
+        }
+    }
+
+    let shown = false;
+    const showInfor = document.querySelector('[show-info]');
+    console.log(showInfor);
+    const showUl = showInfor.querySelector(`[show-ul]`);
+    console.log(showUl);
+    function showInfo() {
+
+        if(shown){
+            showUl.classList.remove("d-block");
+            showUl.classList.add("d-none");
+            // const userName = showInfor.querySelector(`.user`);
+            shown = false;
+        }
+        else{
+            showUl.classList.remove('d-none');
+            showUl.classList.add("d-block");
+            const userName = showInfor.querySelector(`.user`);
+            // console.log(userName);
+            // userName.classList.add("d-none");
+            shown = true;
+        }
+
+    }
+</script>
+<div class="container">
+    <!-- Bộ lọc -->
+    <form:form action="/search" id="filterForm" method="GET" modelAttribute="selectedBox">
+        <div class="filters">
+            <div class="search-box">
+                <h2>Tìm</h2>
+                <label for="destination">Tên chỗ nghỉ / điểm đến:</label>
+                <div class="search-input">
+                    <input id="destination" placeholder="Địa điểm" type="text">
+                    <i class="fa fa-search"></i>
+                </div>
+                <label for="checkin-date">Ngày nhận phòng</label>
+                <div class="date-picker">
+                    <input id="checkin-date" type="date">
+                    <i class="fa fa-calendar"></i>
+                </div>
+                <label for="checkout-date">Ngày trả phòng</label>
+                <div class="date-picker">
+                    <input id="checkout-date" type="date">
+                    <i class="fa fa-calendar"></i>
+                </div>
+                <label for="guest-info">Nghỉ 1 đêm</label>
+                <select id="guest-info">
+                    <option>1 người lớn · 0 trẻ em · 1 phòng</option>
+                    <option>2 người lớn · 0 trẻ em · 1 phòng</option>
+                    <!-- Thêm các tuỳ chọn khác nếu cần -->
+                </select>
+                <button class="search-button" type="submit">Tìm</button>
+            </div>
+
+            <h2>Bộ lọc theo:</h2>
+
+            <!-- Đánh giá -->
+            <div class="filter-group">
+                <h3>Đánh giá</h3>
+                <label><input name="ratings" type="checkbox" value="5"> 5 sao</label><br>
+                <label><input name="ratings" type="checkbox" value="4"> 4 sao</label><br>
+                <label><input name="ratings" type="checkbox" value="3"> 3 sao</label><br>
+                <label><input name="ratings" type="checkbox" value="2"> 2 sao</label><br>
+                <label><input name="ratings" type="checkbox" value="1"> 1 sao</label>
+            </div>
+
+            <!-- Giá tiền -->
+            <div class="filter-group">
+                <h3>Giá tiền</h3>
+                <label><input path="prices" type="checkbox" value="200"> 200k/1 đêm</label><br>
+                <label><input name="prices" type="checkbox" value="300"> 300k/1 đêm</label><br>
+                <label><input name="prices" type="checkbox" value="400"> 400k/1 đêm</label><br>
+                <label><input name="prices" type="checkbox" value="500"> 500k/1 đêm</label><br>
+                <label><input name="prices" type="checkbox" value="600"> 600k/1 đêm</label>
+            </div>
+
+            <!-- Hoạt động giải trí -->
+            <div class="filter-group">
+                <h3>Địa điểm</h3>
+                <label><input name="locations" type="checkbox" value="1"> Lào Cai</label><br>
+                <label><input name="locations" type="checkbox" value="2"> Sơn La</label><br>
+                <label><input name="locations" type="checkbox" value="3"> Lai Châu</label><br>
+                <label><input name="locations" type="checkbox" value="4"> Điện Biên Phủ</label><br>
+                <label><input name="locations" type="checkbox" value="5"> Hòa Bình</label>
+            </div>
+
+            <!-- Nút áp dụng bộ lọc -->
+            <button class="filter-button" type="submit">Áp dụng bộ lọc</button>
+        </div>
+    </form:form>
+
+
+    <!-- Kết quả tìm kiếm -->
+    <div class="search-results">
+        <!-- Kết quả tìm kiếm sẽ hiển thị ở đây -->
+        <!-- homestays: một list kết quả tìm kiếm đựơc backend trả về -->
+
+        <div class="search-price">
+            <h3>Sắp xếp:</h3>
+            <select id="price sort" onchange="sortHomestays()">
+                <option th:selected="${current_sort == 'asc'}" value="asc">Giá tăng dần</option>
+                <option th:selected="${current_sort == 'desc'}" value="desc">Giá giảm dần</option>
+            </select>
+        </div>
+
+
+        <script>
+            function sortHomestays() {
+                let sortOption = document.getElementById("price-sort").value;
+                let currentUrl = window.location.href.split('?')[0];
+                window.location.href = currentUrl + "?sort=" + sortOption;
+            }
+        </script>
+
+        <div id="results">
+            <!-- Kết quả tìm kiếm sẽ hiển thị ở đây -->
+            <div class="row" th:if="${homestays != null}">
+                <div class="item" th:each="homestay : ${homestays}">
+                    <div class="img">
+                        <img alt="Homestay 1" src="../static/img/homestay1.jpg">
+                    </div>
+                    <div class="info">
+                        <h2 class="card-title" th:text="${homestay.name}">Tên Homestay</h2>
+                        <div class="star-rating">
+                            <!-- Mã hiển thị đánh giá sao nếu có -->
+                        </div>
+                        <h3 th:text="'Giá: ' + ${homestay.price} + 'k'">Giá</h3>
+                        <p>
+                            Nằm cách Trạm cáp treo Fansipan 4.5 km, Homestay 1 cung cấp chỗ nghỉ có khu vườn, sân hiên
+                            và dịch vụ phòng. Homestay có WiFi và chỗ đậu xe riêng miễn phí.
+                        </p>
+                    </div>
+                    <form method="GET" th:action="@{/product/{id}(id=${homestay.id})}">
+                        <button class="book-button">Đặt phòng</button>
+                    </form>
+                </div>
+            </div>
+            <p class="alert alert-warning" th:if="${homestays == null}">Không tìm thấy kết quả phù hợp</p>
+        </div>
+    </div>
+    <!--<<<<<<< HEAD
+    =======
+        </div>
+    </div>
+    >>>>>>> develop -->
+
+    <script>
+        function performSearch() {
+            // Implement search logic here
+            alert("Search functionality is not yet implemented.");
+        }
+    </script>
+
+
+    <footer>
+        <div class="container grid">
+            <div class="box">
+                <img src="../static/img/homestay1.jpg">
+                <div class="icon">
+                    <a href="#"><i class="fa fa-facebook"></i></a>
+                    <a href="#"><i class="fa fa-instagram"></i></a>
+                    <a href="#"><i class="fa fa-twitter"></i></a>
+                    <a href="#"><i class="fa fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="box">
+                <h2>GIỚI THIỆU</h2>
+                <a href="#">Trang chủ</a><br>
+                <a href="#">Dịch vụ</a><br>
+                <a href="#">Tin tức</a><br>
+                <a href="#">Liên hệ</a><br>
+            </div>
+            <div class="box">
+                <h2>LIÊN KẾT</h2>
+                <a href="#">Điều khoản sử dụng</a><br>
+                <a href="#">Chính sách bảo mật</a><br>
+                <a href="#">Chính sách hoàn tiền</a><br>
+                <a href="#">FAQs</a>
+            </div>
+            <div class="box">
+                <h2>LIÊN HỆ</h2>
+                <div class="flex">
+                    <i class="fa fa-location-dot"></i>
+                    <p>30 Tran Phu, Ha Dong, Ha Noi, Viet Nam</p>
+                </div>
+                <div class="flex">
+                    <i class="fa fa-phone"></i>
+                    <p>0987352163</p>
+                </div>
+                <div class="flex">
+                    <i class="fa fa-envelope"></i>
+                    <p>nhan54v@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

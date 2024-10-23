@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Đăng ký • HomesTayBac</title>
+        <link rel="stylesheet" th:href="@{/css/login.css}">
+    </head>
+    <body>
+    <div class="form">
+        <form th:action="@{/login}" method="GET" autocomplete="off">
+            <button class="back">&#8592;</button>
+        </form> <!-- URL back về login -->
+        <br>
+        <h2>Đăng ký</h2>
+        <form class="register-form" th:action="@{/inf}" method="POST" autocomplete="off">
+            <input type="text" name="username" placeholder="Tên đăng nhập" autocomplete="off"/>
+<!--            <span style="color: red;" th:text="${errors.username}"></span>-->
+
+            <input type="password" name="password" placeholder="Mật khẩu" autocomplete="new-password"/>
+<!--            <span style="color: red;" th:text="${errors.password}"></span>-->
+
+            <input type="email" name="email" placeholder="Địa chỉ email" autocomplete="off"/>
+<!--            <span style="color: red;" th:text="${errors.email}"></span>-->
+
+            <button class="submit" type="submit">Tạo tài khoản</button>
+            <p class="message">Đã có tài khoản? <a th:href="@{/login}">Đăng nhập</a></p>
+        </form>
+    </div>
+    </body>
+    </html>

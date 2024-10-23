@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Trang chủ • HomesTayBac</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css"
+          integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <link crossorigin="anonymous"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+          integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet">
+    <script crossorigin="anonymous"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+</head>
+
+<body>
+<header>
+
+    <div class="logo">
+        <a href="/">
+            <img alt="Logo" src="" th:src="@{/img/logo.jpeg}">
+        </a>
+        <!--back về home-->
+    </div>
+
+    <div class="navlinks">
+        <ul id="menulist">
+            <li><a class="link-underline link-underline-opacity-0" href="">Trang chủ</a></li> <!--url đến home-->
+            <li><a class="link-underline link-underline-opacity-0" href="#Dịch Vụ">Dịch vụ</a></li>
+            <!--url xuống dịch vụ-->
+            <li><a class="link-underline link-underline-opacity-0" href="#homestay">Homestay</a></li>
+            <!--url xuống danh sách homestay-->
+            <li><a class="link-underline link-underline-opacity-0" href="#Liên Hệ">Liên hệ</a></li>
+            <!--url xuống liên hệ-->
+            <li><a class="link-underline link-underline-opacity-0" href="#Feedback">Phản hồi</a></li>
+            <!--url đến trang phản hồi-->
+            <li id="user-action"></li>
+        </ul>
+        <span class="fa fa-bars" id="listbars" onclick="menutoggle()"></span>
+    </div>
+
+</header>
+<script>
+    let isLoggedIn = false; // thêm phương thức kiểm tra trạng thái đăng nhập
+    const userName = "Nguyễn Văn A";
+
+    function updateUserAction() {
+        const userActionDiv = document.getElementById("user-action");
+        console.log(userActionDiv);
+        if (isLoggedIn) {
+            userActionDiv.innerHTML =
+            `
+            <div show-info onclick="showInfo()" class="navlinks">
+                <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
+                <ul show-ul class="d-none" id="userlist">
+                    <li><a href="#">Thông tin tài khoản</a></li>    <!--url trang profile-->
+                    <li><a href="#">Lịch sử đặt phòng</a></li>      <!--url trang history-->
+                    <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
+                </ul>
+            </div>
+            `;                                                      //url trang profile
+            // url trang history
+            // thoát trạng thái đăng nhập
+        } else {
+            userActionDiv.innerHTML = `<a href="/login"><button class="primary-btn">Đăng nhập</button></a>`; // url đến trang đăng nhập
+        }
+    }
+
+    function logout() {
+        isLoggedIn = false;
+        updateUserAction();
+    }
+    updateUserAction();
+</script>
+<script>
+    var Menulist = document.getElementsByClassName("navlinks");
+    // menulist.style.maxHeight = "0px";
+    function menutoggle() {
+        if (menulist.style.maxHeight == "0px") {
+            menulist.style.maxHeight = "60vh";
+        } else {
+            menulist.style.maxHeight = "0px";
+        }
+    }
+
+    let shown = false;
+    const showInfor = document.querySelector('[show-info]');
+    console.log(showInfor);
+    const showUl = showInfor.querySelector(`[show-ul]`);
+    console.log(showUl);
+    function showInfo() {
+
+        if(shown){
+            showUl.classList.remove('d-block');
+            showUl.classList.add("d-none");
+            // const userName = showInfor.querySelector(`.user`);
+            shown = false;
+        }
+        else{
+            showUl.classList.remove('d-none');
+            showUl.classList.add("d-block");
+            const userName = showInfor.querySelector(`.user`);
+            // console.log(userName);
+            // userName.classList.add("d-none");
+            shown = true;
+        }
+
+    }
+</script>
+<section class="home">
+    <div class="content">
+        <div class="owl-carousel owl-theme">
+            <div class="item">
+                <img alt="Background Image" src="" th:src="@{/img/background3.jpg}">
+                <div class="text">
+                    <h1>Tây Bắc Homestay</h1>
+                    <p>Tận hưởng kỳ nghỉ của bạn tại homestay của chúng tôi</p>
+                    <div class="flex">
+                        <button class="primary-btn">Đặt ngay</button>
+                        <button class="secondary-btn">Liên hệ</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img alt="Background Image" th:src="@{/img/background2.jpg}">
+                <div class="text">
+                    <h1>Tây Bắc Homestay</h1>
+                    <p>Tận hưởng kỳ nghỉ của bạn tại homestay của chúng tôi</p>
+                    <div class="flex">
+                        <button class="primary-btn">Đặt ngay</button>
+                        <button class="secondary-btn">Liên hệ</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img alt="Background Image" th:src="@{/img/background1.jpg}">
+                <div class="text">
+                    <h1>Tây Bắc Homestay</h1>
+                    <p>Tận hưởng kỳ nghỉ của bạn tại homestay của chúng tôi</p>
+                    <div class="flex">
+                        <button class="primary-btn">Đặt ngay</button>
+                        <button class="secondary-btn">Liên hệ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script crossorigin="anonymous"
+        integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
+        referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+<script crossorigin="anonymous"
+        integrity="sha512-gY25nC63ddE0LcLPhxUJGFxa2GoIyA5FLym4UJqHDEMHjp8RET6Zn/SHo1sltt3WuVtqfyxECP38/daUc/WVEA=="
+        referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js"></script>
+<script>
+    $('.owl-carousel').owlCarousel({
+        loop: true,
+        margin: 0,
+        nav: true,
+        dots: false,
+        navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"],
+        responsive: {
+            0: {
+                items: 1
+            },
+            768: {
+                items: 1
+            },
+            1000: {
+                items: 1
+            }
+        }
+    })
+</script>
+<div>
+    <form method="GET" th:action="@{/search}">
+        <div class="container-flex text-white bg-warning py-1 px-1 book">
+            <div class="row justify-content-center">
+                <div class="col">
+                    <div class="input-group">
+                        <input aria-label="Bạn muốn đi đâu?" class="form-control" name="locations" placeholder="Bạn muốn đi đâu?"
+                               type="text">
+                        <input aria-label="Check-in Date" class="form-control datepicker" name="checkinDate"
+                               placeholder="dd/mm/yyyy" type="date">
+                        <input aria-label="Check-out Date" class="form-control datepicker" name="checkoutDate"
+                               placeholder="dd/mm/yyyy" type="date">
+                        <input aria-label="Adults" class="form-control" min="1" name="adults"
+                               placeholder="Người lớn" type="number">
+                        <input aria-label="Children" class="form-control" min="0" name="children"
+                               placeholder="Trẻ em" type="number">
+
+                        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<!-- <section class="book">
+    <div class="container flex_space">
+        <div class="form">
+            <form class="grid" action = "{% url 'page'}" method = "POST">
+                <input class="search" type="text" placeholder="Bạn muốn đi đâu?">
+                <input type="date" placeholder="Ngày nhận phòng">
+                <input type="date" placeholder="Ngày trả phòng">
+                <input type="number" placeholder="Người lớn">
+                <input type="number" placeholder="Trẻ em">
+                <button type="submit">Tìm kiếm</button>
+            </form>
+        </div>
+    </div>
+</section> -->
+<section class="about top">
+    <div class="container flex">
+        <div class="left">
+            <div class="heading">
+                <h1>WELCOME</h1>
+                <h2>Tây Bắc HomeStay</h2>
+            </div>
+            <p>Bạn đang tìm kiếm một nơi để rời xa cuộc sống ồn ào, náo nhiệt và đắm mình vào khung cảnh thiên nhiên
+                hùng vĩ, yên bình? Hãy đến với dịch vụ homestay tại Tây Bắc - nơi bạn không chỉ đơn thuần nghỉ ngơi
+                mà còn có cơ hội khám phá và trải nghiệm những nét đẹp văn hóa đặc sắc của các dân tộc thiểu số vùng
+                cao.</p>
+        </div>
+        <div class="right">
+            <img alt="Background Image" th:src="@{/img/background1.jpg}">
+        </div>
+    </div>
+
+</section>
+<section class="counter top">
+    <div class="container grid">
+        <div class="box">
+            <h1>2500</h1>
+            <hr>
+            <span>Khách hàng</span>
+        </div>
+        <div class="box">
+            <h1>2250</h1>
+            <hr>
+            <span>Khách hàng hài lòng</span>
+        </div>
+        <div class="box">
+            <h1>150</h1>
+            <hr>
+            <span>Kỹ thuật viên chuyên gia</span>
+        </div>
+        <div class="box">
+            <h1>2350</h1>
+            <hr>
+            <span>Khách hàng phản hồi</span>
+        </div>
+    </div>
+</section>
+<section class="rooms">
+    <div , class="container top">
+        <div class="heading" id='hometay'>
+            <h2>HOMESTAY CỦA CHÚNG TÔI</h2>
+        </div>
+        <div class="content mtop">
+            <div class="owl-carousel owl-carousel1 owl-theme">
+                <!-- Homestay Row 1 -->
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 1" th:src="@{/img/homestay1.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 1</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>1800 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>800k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 2" th:src="@{/img/homestay2.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 2</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>1200 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>700k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Homestay Row 2 -->
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 3" th:src="@{/img/homestay3.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 3</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>950 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>900k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 4" th:src="@{/img/homestay4.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 4</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>2000 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>1000k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Homestay Row 3 -->
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 5" th:src="@{/img/homestay5.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 5</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>1300 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>850k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="rooms">
+    <div class="container top">
+        <div class="content mtop">
+            <div class="owl-carousel owl-carousel1 owl-theme">
+                <!-- Homestay Row 1 -->
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 1" th:src="@{/img/homestay6.jpg}">
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 6</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>1800 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>800k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 2" th:src="@{/img/homestay7.jpg}">
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 7</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>1200 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>700k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Homestay Row 2 -->
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 3" th:src="@{/img/homestay8.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 8</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>950 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>900k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 4" th:src="@{/img/homestay9.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 9</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>2000 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>1000k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Homestay Row 3 -->
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 5" th:src="@{/img/homestay10.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 10</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>1300 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>850k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="rooms">
+    <div , class="container top">
+        <div class="heading" id='homestay'>
+            <h2>HOMESTAY CỦA CHÚNG TÔI</h2>
+        </div>
+        <div class="content mtop">
+            <div class="owl-carousel owl-carousel1 owl-theme">
+                <!-- Homestay Row 1 -->
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 1" th:src="@{/img/homestay1.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 1</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>1800 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>800k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 2" th:src="@{/img/homestay2.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 2</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>1200 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>700k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Homestay Row 2 -->
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 3" th:src="@{/img/homestay3.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 3</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>950 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>900k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 4" th:src="@{/img/homestay4.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 4</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>2000 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>1000k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Homestay Row 3 -->
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 5" th:src="@{/img/homestay5.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 5</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>1300 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>850k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="rooms">
+    <div class="container top">
+        <div class="content mtop">
+            <div class="owl-carousel owl-carousel1 owl-theme">
+                <!-- Homestay Row 1 -->
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 1" th:src="@{/img/homestay6.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 6</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>1800 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>800k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 2" th:src="@{/img/homestay7.jpg}">
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 7</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>1200 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>700k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Homestay Row 2 -->
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 3" th:src="@{/img/homestay8.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 8</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>950 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>900k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 4" th:src="@{/img/homestay9.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 9</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>2000 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>1000k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Homestay Row 3 -->
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 5" th:src="@{/img/homestay10.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 10</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>1300 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>850k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="rooms">
+    <div class="container top">
+        <div class="content mtop">
+            <div class="owl-carousel owl-carousel1 owl-theme">
+                <!-- Homestay Row 1 -->
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 1" th:src="@{/img/homestay11.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 11</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>1800 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>800k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 2" th:src="@{/img/homestay12.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 12</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>1200 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>700k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Homestay Row 2 -->
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 3" th:src="@{/img/homestay13.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 13</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>950 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>900k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 4" th:src="@{/img/homestay14.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 14</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>2000 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>1000k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Homestay Row 3 -->
+                <div class="items">
+                    <div class="image">
+                        <img alt="Homestay 5" th:src="@{/img/homestay15.jpg}">
+
+                    </div>
+                    <div class="text">
+                        <h2>Suporior Homestay 15</h2>
+                        <div class="star-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p>1300 bài đánh giá</p>
+                        <div class="button flex">
+                            <button class="primary-btn">ĐẶT NGAY</button>
+                            <h3>850k/1 đêm</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--    <script>-->
+<!--        $('.owl-carousel').owlCarousel({-->
+<!--            loop: true,-->
+<!--            margin: 40,-->
+<!--            nav: true,-->
+<!--            dots: false,-->
+<!--            navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"],-->
+<!--            responsive: {-->
+<!--                0: {-->
+<!--                    items: 1-->
+<!--                },-->
+<!--                768: {-->
+<!--                    items: 2,-->
+<!--                    margin: 10.-->
+<!--                },-->
+<!--                1000: {-->
+<!--                    items: 3-->
+<!--                }-->
+<!--            }-->
+<!--        })-->
+<!--    </script>-->
+<section class="Customer top">
+    <div class="container">
+        <div class="owl-carousel owl-carousel2 owl-theme">
+            <div class="item">
+                <i class="fa-solid fa-quote-right"></i>
+                <p>Mình đã có một kỳ nghỉ tuyệt vời tại homestay này! Phòng ốc rất sạch sẽ, trang trí đẹp và ấm
+                    cúng. Vị trí homestay nằm ngay trung tâm, rất tiện lợi cho việc di chuyển và tham quan. Chủ nhà
+                    rất thân thiện và chu đáo, luôn sẵn sàng hỗ trợ khi cần thiết. Giá cả hợp lý và dịch vụ rất đáng
+                    đồng tiền. Mình đặc biệt thích khoảng sân vườn nhỏ xinh, rất yên bình và thoải mái. Chắc chắn sẽ
+                    quay lại khi có dịp!</p>
+                <h3>Long</h3>
+                <label>Pham Ngoc Long</label>
+            </div>
+            <div class="item">
+                <i class="fa-solid fa-quote-right"></i>
+                <p> Homestay có vị trí khá đẹp, gần biển và các địa điểm du lịch. Phòng trang trí xinh xắn và giá cả
+                    hợp lý. Tuy nhiên, phòng hơi nhỏ hơn so với mong đợi và có một chút mùi ẩm. Dịch vụ tạm ổn nhưng
+                    mình cảm thấy chủ nhà cần chú ý hơn trong việc dọn phòng hàng ngày. Tổng thể là một trải nghiệm
+                    tốt, nhưng nếu chủ nhà cải thiện một số điểm nhỏ thì sẽ hoàn hảo hơn.</p>
+                <h3>Khoi</h3>
+                <label>Vu Trong Khoi</label>
+            </div>
+            <div class="item">
+                <i class="fa-solid fa-quote-right"></i>
+                <p>Mình rất thích không gian và cách bài trí của homestay, vừa gần gũi vừa mang đậm phong cách văn
+                    hóa địa phương. Chủ nhà rất mến khách và còn hướng dẫn mình tham gia các hoạt động như nấu ăn,
+                    đi chợ cùng người dân. Phòng rất sạch sẽ và đầy đủ tiện nghi, có cả những chi tiết nhỏ như trà,
+                    cà phê tự pha. Khu vực sân vườn xanh mát là nơi lý tưởng để thư giãn. Đây là một trải nghiệm
+                    không thể nào quên!</p>
+                <h3>Nam</h3>
+                <label>Do Hai Nam</label>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $('.owl-carousel2').owlCarousel({
+        loop: true,
+        margin: 0,
+        nav: false,
+        dots: true,
+        responsive: {
+            0: {
+                items: 1
+            },
+            768: {
+                items: 1,
+            },
+            1000: {
+                items: 1
+            }
+        }
+    })
+</script>
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col box">
+                <img alt="Background Image" th:src="@{/img/background2.jpg}">
+
+                <div class="icon">
+                    <i class="fa fa-facebook-f"></i>
+                    <i class="fa fa-instagram"></i>
+                    <i class="fa fa-twitter"></i>
+                    <i class="fa fa-youtube"></i>
+                </div>
+            </div>
+            <div class="col box">
+                <h2>GIỚI THIỆU</h2>
+                <a href="#">Trang chủ</a><br>
+                <a href="#">Dịch vụ</a><br>
+                <a href="#">Tin tức</a><br>
+                <a href="#">Liên hệ</a><br>
+            </div>
+            <div class="col box">
+                <h2>LIÊN KẾT</h2>
+                <a href="#">Điều khoản sử dụng</a><br>
+                <a href="#">Chính sách bảo mật</a><br>
+                <a href="#">Chính sách hoàn tiền</a><br>
+                <a href="#">FAQs</a>
+            </div>
+            <div class="col-md-2 box">
+                <h2>LIÊN HỆ</h2>
+                <div class="flex">
+                    <i class="fa fa-location-dot"></i>
+                    <p>30 Tran Phu, Ha Dong, Ha Noi, Viet Nam</p>
+                </div>
+                <div class="flex">
+                    <i class="fa fa-phone"></i>
+                    <p>0987352163</p>
+                </div>
+                <div class="flex">
+                    <i class="fa fa-envelope"></i>
+                    <p>nhan54v@gmail.com</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</footer>
+
+
+<script crossorigin="anonymous" src="https://kit.fontawesome.com/032d11eac3.js"></script>
+</body>
+
+</html>

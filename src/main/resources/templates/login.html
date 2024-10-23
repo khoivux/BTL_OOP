@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:form="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Đăng nhập • HomesTayBac</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}" />
+</head>
+<body>
+  <div class="form">
+    <!-- Sử dụng thẻ <a> để tạo liên kết quay lại trang chính -->
+    <a href="/">
+        <button class="back" type="button">&#8592</button>
+    </a>
+    <br>
+    <h2>Đăng nhập</h2>
+    
+    <!-- Thêm form đăng nhập nếu cần -->
+    <form:form action="/login" method="POST" autocomplete="off">
+<!--            {% csrf_token %}  &lt;!&ndash; Thêm token bảo mật CSRF &ndash;&gt;-->
+
+            <input type="text" name="username" placeholder="Tên đăng nhập" autocomplete="off"/>
+            <input type="password" name="password" placeholder="Mật khẩu" autocomplete="new-password"/>
+            <button class = "submit" type = "submit">Đăng nhập</button>
+            <p class="message">Bạn chưa có tài khoản? <a href="/register">Tạo tài khoản</a></p> <!--url đến trang đăng kí-->
+    </form:form>
+  </div>
+</body>
+</html>
