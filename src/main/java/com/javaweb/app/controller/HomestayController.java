@@ -26,11 +26,11 @@ public class HomestayController {
     @Autowired
     public HomestayRepository homestayRepository;
 
-    @GetMapping("/homestay-list")
+    @GetMapping("/homestay")
     public ModelAndView adminPage() {
         ModelAndView model = new ModelAndView("admin");
-        List<HomestayDto> list = homestayService.findAll();
-        model.addObject("homestays", list);
+//        List<HomestayDto> list = homestayService.findAll();
+//        model.addObject("homestays", list);
         return model;
     }
 

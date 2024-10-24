@@ -1,0 +1,41 @@
+li{
+    list-style: none;
+    padding: 0;
+}
+
+.manage a{
+    color: black !important;
+    text-decoration: none !important;
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+header img{
+    max-width: 200px;
+    max-height: 9vh;
+}
+.container-fluid{
+    min-height: 70vh;
+}
+
+.managecol{
+    background-color: rgba(225, 223, 223, 0.638);
+    border-radius: 5px;
+}
+.managecol div{
+    background-color: rgba(156, 156, 156, 0.307); 
+    /* border-radius: 5px; */
+    padding-left: 10px;
+}
+.managecol li:hover{
+    background-color: rgba(225, 223, 223, 0.784);
+}
+.add{
+    display: flex; 
+    justify-content:end;
+}
