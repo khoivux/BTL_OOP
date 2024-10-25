@@ -28,7 +28,7 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
     public static void queryNormal(HomestaySearchRequest homestaySearchRequest, StringBuilder where) {
         try {
             Field[] fields = HomestaySearchRequest.class.getDeclaredFields();
-            // Lấy tất cả các field của class BuildingSearchBuilder cho vào một mảng
+            // Lấy tất cả các field của request cho vào một mảng
             for (Field item : fields) {
                 item.setAccessible(true);
                 String fieldName = item.getName();

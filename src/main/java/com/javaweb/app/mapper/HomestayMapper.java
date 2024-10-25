@@ -24,7 +24,7 @@ public class HomestayMapper {
 
     public HomestaySearchResponse mapToHomestayResponse(HomestayEntity homestayEntity) {
         HomestaySearchResponse homestayResponse = modelMapper.map(homestayEntity, HomestaySearchResponse.class);
-        homestayResponse.setProvince(homestayEntity.getProvince().getName());
+        homestayResponse.setAddress(homestayEntity.getAddress() + ", " + homestayEntity.getProvince().getName());
         return homestayResponse;
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface HomestayService {
-    List<HomestayDto> findAll();
+    List<HomestaySearchResponse> findAll();
 
     HomestayDto createHomestay(HomestayDto homestayDto);
 

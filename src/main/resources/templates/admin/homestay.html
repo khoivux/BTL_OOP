@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Quản Trị</title>
+    <title>Quản trị • HomesTayBac</title>
     <link rel="stylesheet" th:href="@{/admin.css}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
@@ -19,8 +19,8 @@
     </header>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>                                      <!--về trang chủ-->
-            <li class="breadcrumb-item active" aria-current="page">Quản trị</li>
+            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>                                      <!--về trang chủ-->
+            <li class="breadcrumb-item active" aria-current="page"><a href="/admin/homestay">Trang quản trị</a></li>
             <li class="breadcrumb-item active" aria-current="page">Quản lý Homestay</li>
         </ol>
     </nav>
@@ -29,9 +29,8 @@
         <div class="managecol p-0 col-2">
             <div>Quản lý</div>
             <ul class = "manage px-3">
-                <li> <a href="#">Quản lý Homestay</a></li>  <!-- Không cần liên kết -->
-                <li> <a th:href="@{/qlkh.html}">Quản lý khách hàng</a></li>  <!-- Liên kết tĩnh đến tệp qlkh.html -->
-                <!--qua page qlkh-->
+                <li> <a th:href="@{/admin/homestay}">Quản lý Homestay</a></li>  <!-- Không cần liên kết -->
+                <li> <a th:href="@{/admin/user}">Quản lý khách hàng</a></li>
             </ul>
         </div>
         <div class="action col-9.5">
@@ -56,7 +55,7 @@
 
             <div>
                 <div class="d-flex justify-content-end mb-1">
-                    <a href="#" class="btn btn-success btn-sm">Thêm</a>                                 <!--thêm-->
+                    <a href="/admin/add-homestay" class="btn btn-success btn-sm">Thêm</a>
                 </div>
                 <table class="table table-bordered" style="width: 150vh">
                     <thead class="thead-light">
@@ -66,19 +65,28 @@
                             <th style="width: 45%">địa chỉ</th>
                             <th style="width: 13%">Giá</th>
                             <th style="width: 15%">Thao tác</th>
-                            
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class = "p-2">000001</td>
-                            <td class = "p-2">longdan Homestay</td>
-                            <td class = "p-2">Km10, Đường Nguyễn Trãi, Q. Hà Đông, Hà Nội</td>
-                            <td class = "p-2">1k/ngày </td>
+                        <tr th:each="homestay : ${homestays}" th:if="${homestays != null}">
+                            <td class="p-2" th:text="${homestay.id}"></td>
+                            <td class="p-2" th:text="${homestay.name}"></td>
+                            <td class="p-2" th:text="${homestay.address}"></td>
+                            <td class="p-2" th:text="${homestay.price + '/ngày'}"></td>
+
                             <td class = "p-2">
-                                <button class="btn btn-info btn-sm">Xem</button>                                <!--xem-->
-                                <button class="btn btn-warning btn-sm">Sửa</button>                             <!--sửa-->
-                                <button class="btn btn-danger btn-sm">Xóa</button>                              <!--xóa-->
+                                <!-- Xem -->
+                                <form th:action="@{/homestay/edit/{id}(id=${homestay.id})}" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-info btn-sm">Xem</button>
+                                </form>
+                                <!-- Sửa -->
+                                <form th:action="@{/homestay/edit/{id}(id=${homestay.id})}" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-warning btn-sm">Sửa</button>
+                                </form>
+                                <!-- Xóa -->
+                                <form th:action="@{/admin/homestay/delete/{id}(id=${homestay.id})}" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                </form>
                             </td>
                         </tr>
                     </tbody>

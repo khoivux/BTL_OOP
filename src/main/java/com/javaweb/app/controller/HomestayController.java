@@ -26,11 +26,16 @@ public class HomestayController {
     @Autowired
     public HomestayRepository homestayRepository;
 
-    @GetMapping("/homestay")
+    @GetMapping
     public ModelAndView adminPage() {
-        ModelAndView model = new ModelAndView("admin");
-//        List<HomestayDto> list = homestayService.findAll();
-//        model.addObject("homestays", list);
+        return new ModelAndView("admin/homestay");
+    }
+
+    @GetMapping("/homestay")
+    public ModelAndView adminHomestayPage() {
+        List<HomestaySearchResponse> list = homestayService.findAll();
+        ModelAndView model = new ModelAndView("admin/homestay");
+        model.addObject("homestays", list);
         return model;
     }
 
@@ -40,24 +45,10 @@ public class HomestayController {
         HomestayDto savedHomestay = homestayService.createHomestay(homestayDto);
         return new ResponseEntity<>(savedHomestay, HttpStatus.CREATED);
     }
-
-    // READ
-    @GetMapping("/get/{id}")
-    public ResponseEntity<HomestayDto> getHomestayById(@PathVariable Long id) {
-        HomestayDto homestayDto = homestayService.findHomestayById(id);
-        return ResponseEntity.ok(homestayDto);
-    }
-
-    @GetMapping
-    public List<HomestayDto> getAllHomestay() {
-        return homestayService.findAll();
-    }
-
-    @GetMapping("/filter")
-    public List<HomestaySearchResponse> findByFilter(@RequestParam Map<String, Object> params) {
-        int cnt = 0;
-        cnt++;
-        return homestayService.findByFilter(params);
+    @GetMapping("/add-homestay")
+    public ModelAndView addHomestayPage() {
+       // HomestayDto savedHomestay = homestayService.createHomestay(homestayDto);
+        return new ModelAndView("admin/add_homestay");
     }
 
     // UPDATE
@@ -69,14 +60,15 @@ public class HomestayController {
     }
 
     // DELETE
-    @PostMapping("/homestay-list/delete")
+    @PostMapping("/homestay/delete")
     public void deleteHomestayByIdIn(@RequestParam List<Long> ids) {
         homestayService.deleteHomestays(ids);
     }
 
-    @PostMapping("/homestay-list/delete/{id}")
+    @PostMapping("/homestay/delete/{id}")
     public RedirectView deleteHomestayById(@PathVariable Long id) {
         homestayService.deleteHomestay(id);
-        return new RedirectView("/admin/homestay-list");
+        return new RedirectView("/admin/homestay");
     }
+
 }

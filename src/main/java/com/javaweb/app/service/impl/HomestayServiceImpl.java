@@ -45,13 +45,13 @@ public class HomestayServiceImpl implements HomestayService {
 
     // READ
     @Override // Lấy tất cả Homestay có trong DB
-    public List<HomestayDto> findAll() {
+    public List<HomestaySearchResponse> findAll() {
         List<HomestayEntity> homestayEntities = homestayRepository.findAll();
-        List<HomestayDto> homestayDtos = new ArrayList<>();
+        List<HomestaySearchResponse> homestaySearchResponses = new ArrayList<>();
         for (HomestayEntity homestayEntity : homestayEntities) {
-            homestayDtos.add(homestayMapper.mapToHomestayDto(homestayEntity));
+            homestaySearchResponses.add(homestayMapper.mapToHomestayResponse(homestayEntity));
         }
-        return homestayDtos;
+        return homestaySearchResponses;
     }
 
     @Override

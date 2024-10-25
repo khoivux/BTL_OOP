@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Quản Trị</title>
+    <link rel="stylesheet" th:href="@{/admin.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <header>
+        <div class="d-flex justify-content-between align-items-center bg-success p-3">
+            <h1 class="text-white">Trang quản trị</h1>
+            <div>
+                <span class="text-white">Xin chào, admin</span>
+                <div class = "d-flex justify-content-end"><a href = "#" class = "text-light">đăng xuất</a></div>    <!--đăng xuất-->
+            </div>
+        </div>
+    </header>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>                                  <!--về trang chủ-->
+            <li class="breadcrumb-item active" aria-current="page">Quản trị</li>
+            <li class="breadcrumb-item active" aria-current="page">Quản lý khách hàng</li>
+        </ol>
+    </nav>
+
+    <div class="container-fluid row m-0">
+        <div class="managecol p-0 col-2">
+            <div>Quản lý</div>
+            <ul class = "manage px-3">
+                <li> <a href="product.html">Quản lý Homestay</a></li>                                  <!--qua page qlsp-->
+                <li> <a href="#">Quản lý khách hàng</a></li>                                         <!-- này k cần link-->
+            </ul>
+        </div>
+        <div class="action col-9.5">
+            <!-- Tìm kiếm -->
+            <form class="border p-3 mb-3">
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label id="homestayid">ID</label>
+                        <input type="text" class="form-control" placeholder="Nhập id Homestay">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label id="homestayname">Tên Homestay</label>
+                        <input type="text" class="form-control" placeholder="Nhập tên Homestay">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label id="address">Địa chỉ</label>
+                        <input type="text" class="form-control" placeholder="Nhập địa chỉ Homestay">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-danger">Tìm kiếm</button>                                      <!--tìm kiếm-->
+            </form>
+    
+            <!-- Bảng quản lý -->
+            <table class="table table-bordered" style="width: 150vh">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="width: 7%">id</th>
+                        <th style="width: 20%">tên</th>
+                        <th style="width: 45%">...</th>
+                        <th style="width: 13%">...</th>
+                        <th style="width: 15%">...</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class = "p-2"></td>
+                        <td class = "p-2"></td>
+                        <td class = "p-2"></td>
+                        <td class = "p-2"></td>
+                        <td class = "p-2">
+                            <button class="btn btn-info btn-sm">Xem</button>                                <!--xem-->
+                            <button class="btn btn-warning btn-sm">Sửa</button>                             <!--sửa-->
+                            <button class="btn btn-danger btn-sm">Xóa</button>                              <!--xóa-->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+        
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
