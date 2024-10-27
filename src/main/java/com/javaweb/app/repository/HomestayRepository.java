@@ -16,4 +16,6 @@ public interface HomestayRepository extends HomestayRepositoryCustom, JpaReposit
     void deleteByIdIn(List<Long> ids);
 
     List<HomestayEntity> findByIdIn(List<Long> ids);
+
+//    List<HomestayEntity> findByIdAndNameContainingAndAddressContaining(Long id, String name, String address);
 }

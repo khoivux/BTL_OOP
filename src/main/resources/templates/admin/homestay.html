@@ -10,7 +10,7 @@
 <body>
     <header>
         <div class="d-flex justify-content-between align-items-center bg-success p-3">
-            <h1 class="text-white">Trang quản trị</h1>
+            <h2 class="text-white">Trang quản trị</h2>
             <div>
                 <span class="text-white">Xin chào, admin</span>
                 <div class = "d-flex justify-content-end"><a href = "#" class = "text-light">đăng xuất</a></div>    <!--đăng xuất-->
@@ -20,7 +20,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>                                      <!--về trang chủ-->
-            <li class="breadcrumb-item active" aria-current="page"><a href="/admin/homestay">Trang quản trị</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="/admin">Trang quản trị</a></li>
             <li class="breadcrumb-item active" aria-current="page">Quản lý Homestay</li>
         </ol>
     </nav>
@@ -29,7 +29,7 @@
         <div class="managecol p-0 col-2">
             <div>Quản lý</div>
             <ul class = "manage px-3">
-                <li> <a th:href="@{/admin/homestay}">Quản lý Homestay</a></li>  <!-- Không cần liên kết -->
+                <li> <a th:href="@{/admin/homestay-list}">Quản lý Homestay</a></li>  <!-- Không cần liên kết -->
                 <li> <a th:href="@{/admin/user}">Quản lý khách hàng</a></li>
             </ul>
         </div>
@@ -39,15 +39,15 @@
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label id="homestayid">ID</label>
-                        <input type="text" class="form-control" placeholder="Nhập id Homestay">
+                        <input type="text" class="form-control" placeholder="Nhập id Homestay" name="id">
                     </div>
                     <div class="form-group col-md-3">
                         <label id="homestayname">Tên Homestay</label>
-                        <input type="text" class="form-control" placeholder="Nhập tên Homestay">
+                        <input type="text" class="form-control" placeholder="Nhập tên Homestay" name="name">
                     </div>
                     <div class="form-group col-md-6">
                         <label id="address">Địa chỉ</label>
-                        <input type="text" class="form-control" placeholder="Nhập địa chỉ Homestay">
+                        <input type="text" class="form-control" placeholder="Nhập địa chỉ Homestay" name="address">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-danger">Tìm kiếm</button>                          <!--tìm kiếm-->
@@ -55,7 +55,7 @@
 
             <div>
                 <div class="d-flex justify-content-end mb-1">
-                    <a href="/admin/add-homestay" class="btn btn-success btn-sm">Thêm</a>
+                    <a href="/admin/homestay-edit" class="btn btn-success btn-sm">Thêm mới</a>
                 </div>
                 <table class="table table-bordered" style="width: 150vh">
                     <thead class="thead-light">
@@ -75,16 +75,12 @@
                             <td class="p-2" th:text="${homestay.price + '/ngày'}"></td>
 
                             <td class = "p-2">
-                                <!-- Xem -->
-                                <form th:action="@{/homestay/edit/{id}(id=${homestay.id})}" method="POST" style="display:inline;">
-                                    <button type="submit" class="btn btn-info btn-sm">Xem</button>
-                                </form>
                                 <!-- Sửa -->
-                                <form th:action="@{/homestay/edit/{id}(id=${homestay.id})}" method="POST" style="display:inline;">
+                                <form th:action="@{/admin/homestay-edit/{id}(id=${homestay.id})}" method="GET" style="display:inline;">
                                     <button type="submit" class="btn btn-warning btn-sm">Sửa</button>
                                 </form>
                                 <!-- Xóa -->
-                                <form th:action="@{/admin/homestay/delete/{id}(id=${homestay.id})}" method="POST" style="display:inline;">
+                                <form th:action="@{/admin/homestay-delete/{id}(id=${homestay.id})}" method="POST" style="display:inline;">
                                     <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
                                 </form>
                             </td>

@@ -26,49 +26,36 @@ public class HomestayController {
     @Autowired
     public HomestayRepository homestayRepository;
 
-    @GetMapping
-    public ModelAndView adminPage() {
-        return new ModelAndView("admin/homestay");
-    }
-
-    @GetMapping("/homestay")
-    public ModelAndView adminHomestayPage() {
-        List<HomestaySearchResponse> list = homestayService.findAll();
-        ModelAndView model = new ModelAndView("admin/homestay");
-        model.addObject("homestays", list);
-        return model;
-    }
-
     // CREATE
-    @PostMapping("/create")
-    public ResponseEntity<HomestayDto> createHomestay(@RequestBody HomestayDto homestayDto) {
-        HomestayDto savedHomestay = homestayService.createHomestay(homestayDto);
-        return new ResponseEntity<>(savedHomestay, HttpStatus.CREATED);
-    }
-    @GetMapping("/add-homestay")
-    public ModelAndView addHomestayPage() {
-       // HomestayDto savedHomestay = homestayService.createHomestay(homestayDto);
-        return new ModelAndView("admin/add_homestay");
+    @PostMapping("/homestay-add")  // Thêm mới homestay
+    public ResponseEntity<HomestayDto> addHomestay(@RequestBody HomestayDto homestayDto) {
+        HomestayDto addedHomestay = homestayService.createHomestay(homestayDto);
+        return ResponseEntity.ok(homestayDto);
     }
 
     // UPDATE
-    @PutMapping("/update/{id}")
-    public ResponseEntity<HomestayDto> updateHomestay(@PathVariable("id") Long id,
-                                                      @RequestBody HomestayDto updateHomestayDto) {
-        HomestayDto homestayDto = homestayService.updateHomestay(id, updateHomestayDto);
+    @PutMapping("/homestay-update")
+    public ResponseEntity<HomestayDto> updateHomestay(@RequestBody HomestayDto updateHomestayDto) {
+        HomestayDto homestayDto = homestayService.updateHomestay(updateHomestayDto.getId(), updateHomestayDto);
         return ResponseEntity.ok(homestayDto);
     }
 
     // DELETE
-    @PostMapping("/homestay/delete")
+    @PostMapping("/homestay-delete")
     public void deleteHomestayByIdIn(@RequestParam List<Long> ids) {
         homestayService.deleteHomestays(ids);
     }
 
-    @PostMapping("/homestay/delete/{id}")
+    @PostMapping("/homestay-delete/{id}") // Xóa homestay theo id
     public RedirectView deleteHomestayById(@PathVariable Long id) {
         homestayService.deleteHomestay(id);
-        return new RedirectView("/admin/homestay");
+        return new RedirectView("/admin/homestay-list");
     }
 
+    // READ
+    @GetMapping("/homestay/{id}")
+    public ResponseEntity<HomestayDto> getById(@PathVariable Long id){
+        HomestayDto homestayDto = homestayService.findHomestayById(id);
+        return ResponseEntity.ok(homestayDto);
+    }
 }

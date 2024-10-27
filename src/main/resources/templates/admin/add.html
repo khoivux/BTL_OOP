@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Quản Trị</title>
+    <link rel="stylesheet" th:href="@{/admin.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <header>
+        <div class="d-flex justify-content-between align-items-center bg-success p-3">
+            <h2 class="text-white">Trang quản trị</h2>
+            <div>
+                <span class="text-white">Xin chào, admin</span>
+                <div class = "d-flex justify-content-end"><a href = "#" class = "text-light">đăng xuất</a></div>  <!--đăng xuất-->
+            </div>
+        </div>
+    </header>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>                                      <!--về trang chủ-->
+            <li class="breadcrumb-item active" aria-current="page"><a href="/admin">Trang quản trị</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Quản lý Homestay</li>
+        </ol>
+    </nav>
+    <div class="container-fluid row m-0">
+        <div class="managecol p-0 col-2">
+            <div>Quản lý</div>
+            <ul class = "manage px-3">
+                <li> <a th:href="@{/admin/homestay-list}">Quản lý Homestay</a></li>                                      <!--qua page qlsp-->
+                <li> <a th:href="@{/admin/user}">Quản lý khách hàng</a></li>                                    <!--qua page qlkh-->
+            </ul>
+        </div>
+        <div class = "editcol col-10">
+            <h3>Thêm mới Homestay</h3>
+            <form class="border p-2 mb-2" id="listForm" >
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label class="id">Mã</label>
+                        <input type="text" class="form-control" placeholder="Nhập mã Homestay" name="id"/>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label class="name">Tên Homestay</label>
+                        <input type="text" class="form-control" placeholder="Nhập tên Homestay" name="name"/>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label class="price">Giá phòng Homestay</label>
+                        <input type="text" class="form-control" placeholder="Nhập giá phòng Homestay" name="price">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label id="address">Địa chỉ</label>
+                        <input type="text" class="form-control" placeholder="Nhập địa chỉ Homestay" name="address">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label id="rating">Đánh giá</label>
+                        <input type="text" class="form-control" placeholder="Nhập đánh giá Homestay" name="rating">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="provinceid">Tỉnh/Thành phố</label>
+                        <select name="provinceid" id="provinceid" class="form-control">
+                            <option value="">Chọn Tỉnh/Thành phố</option>
+                            <option value="1">Lào Cai</option>
+                            <option value="2">Lai Châu</option>
+                            <option value="3">Sơn La</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="address">Mô tả Homestay</label>
+                        <input type="text" class="form-control" placeholder="Nhập mô tả Homestay" name="description">
+                    </div>
+
+                </div>
+                <div class="d-flex justify-content-end mb-1">
+                    <button type="submit" class="btn btn-success" onclick="submitForm(event)">Thêm</button>         <!-- sau khi bấm quay về trang qlsp-->
+                </div>
+            </form>
+            
+            
+        </div>
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="10000"> <!-- Thay đổi ở đây -->
+            <div class="toast-header">
+                <strong class="me-auto text-success">Thành công</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Homestay đã được thêm thành công!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function submitForm(event) {
+            event.preventDefault();  // Ngăn chặn hành động mặc định của form
+
+            // Lấy dữ liệu từ form
+            const formData = {
+                id: document.querySelector('[name="id"]').value,
+                name: document.querySelector('[name="name"]').value,
+                price: document.querySelector('[name="price"]').value,
+                address: document.querySelector('[name="address"]').value,
+                provinceid: document.querySelector('[name="provinceid"]').value,
+                description: document.querySelector('[name="description"]').value,
+                rating: document.querySelector('[name="rating"]').value
+            };
+
+            // Kiểm tra id, price và rating phải là số
+            if (isNaN(formData.id) || isNaN(formData.price) || isNaN(formData.rating)) {
+                alert("Vui lòng nhập mã, giá tiền và đánh giá ở dạng số!");
+                return; // Ngăn không cho gửi form
+            }
+
+            // Gửi dữ liệu dưới dạng JSON
+            fetch("/admin/homestay-add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok " + response.statusText);
+                }
+                return response.json();  // Chỉ chuyển đổi thành JSON nếu có phản hồi
+            })
+                .then(data => {
+                console.log("Success:", data);
+                // Hiển thị thông báo thành công
+                const toast = new bootstrap.Toast(document.getElementById('successToast'));
+                toast.show();
+
+                // Tự động ẩn Toast sau 5 giây
+                setTimeout(() => {
+                    toast.hide(); // Ẩn Toast sau 5 giây (5000 ms)
+                }, 10000);
+            })
+                .catch(error => console.error("Error:", error));
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

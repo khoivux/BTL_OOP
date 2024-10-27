@@ -14,7 +14,7 @@ import lombok.Setter;
 public class HomestayEntity {
 
     @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name", nullable = false)
@@ -29,16 +29,21 @@ public class HomestayEntity {
     @Column(name = "rating", nullable = false)
     private Long rating;
 
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "provinceid")
     private ProvinceEntity province;
 
-    public HomestayEntity(Long id, String name, Long price, String address) {
-        super();
+
+    public HomestayEntity(Long id, String name, Long price, String address, Long rating, String description, ProvinceEntity province) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.address = address;
+        this.rating = rating;
+        this.description = description;
+        this.province = province;
     }
-
 }

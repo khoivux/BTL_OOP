@@ -92,6 +92,7 @@ public class HomestayServiceImpl implements HomestayService {
         homestayEntity.setPrice(updatedHomestayDto.getPrice());
         homestayEntity.setRating(updatedHomestayDto.getRating());
         homestayEntity.setProvince(provinceRepository.getById(updatedHomestayDto.getProvinceid()));
+        homestayEntity.setDescription(updatedHomestayDto.getDescription());
         homestayRepository.save(homestayEntity);
         return homestayMapper.mapToHomestayDto(homestayEntity);
     }

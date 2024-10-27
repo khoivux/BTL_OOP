@@ -13,15 +13,17 @@ public class HomestaySearchResponse {
     private String address;
     private Long price;
     private Long rating;
+    private String description;
 
     public HomestaySearchResponse() {
     }
 
-    public HomestaySearchResponse(Long id, String name, String address, Long price, Long rating) {
+    public HomestaySearchResponse(Long id, String name, String address, Long price, Long rating, String description) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.price = price;
         this.rating = rating;
+        this.description = description;
     }
 }
