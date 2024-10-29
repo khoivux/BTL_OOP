@@ -16,7 +16,6 @@ public class HomestaySearchRequest {
     private Long priceTo;
     private Long provinceId;
     private Long rating;
-
     public HomestaySearchRequest(Builder builder) {
         this.name = builder.name;
         this.address = builder.address;
@@ -26,6 +25,53 @@ public class HomestaySearchRequest {
         this.rating = builder.rating;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Long getPriceFrom() {
+        return priceFrom;
+    }
+
+    public void setPriceFrom(Long priceFrom) {
+        this.priceFrom = priceFrom;
+    }
+
+    public Long getPriceTo() {
+        return priceTo;
+    }
+
+    public void setPriceTo(Long priceTo) {
+        this.priceTo = priceTo;
+    }
+
+    public Long getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(Long provinceId) {
+        this.provinceId = provinceId;
+    }
+
+    public Long getRating() {
+        return rating;
+    }
+
+    public void setRating(Long rating) {
+        this.rating = rating;
+    }
 
     public static class Builder {
         private String name;
