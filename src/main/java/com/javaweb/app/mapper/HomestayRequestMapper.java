@@ -1,9 +1,9 @@
 package com.javaweb.app.mapper;
 
 import com.javaweb.app.model.HomestaySearchRequest;
+
 import com.javaweb.app.utils.MapUtil;
 import org.springframework.stereotype.Component;
-
 import java.util.Map;
 
 @Component
