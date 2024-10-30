@@ -32,7 +32,7 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
             for (Field item : fields) {
                 item.setAccessible(true);
                 String fieldName = item.getName();
-                if (!fieldName.startsWith("price")) {
+                if (!fieldName.startsWith("price") && !fieldName.endsWith("Date")) {
                     Object value = item.get(homestaySearchRequest);
                     if (value != null && value != "") {
                         if (item.getType().getName().equals("java.lang.Long") || item.getType().getName().equals("java.lang.Integer")) {
@@ -55,6 +55,8 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
             where.append(" AND h.price <= " + priceTo);
         if (priceFrom != null)
             where.append(" AND h.price >= " + priceFrom);
+
+        
     }
 
     public List<HomestayEntity> findByFilter(HomestaySearchRequest homestaySearchRequest) {

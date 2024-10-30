@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 public class HomestaySearchRequest {
     private String name;
     private String address;
@@ -12,6 +14,8 @@ public class HomestaySearchRequest {
     private Long priceTo;
     private Long provinceId;
     private Long rating;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
 
     public HomestaySearchRequest() {
     }
@@ -23,6 +27,8 @@ public class HomestaySearchRequest {
         this.priceTo = builder.priceTo;
         this.provinceId = builder.provinceId;
         this.rating = builder.rating;
+        this.checkInDate = builder.checkInDate;
+        this.checkOutDate = builder.checkOutDate;
     }
 
     public String getName() {
@@ -80,6 +86,8 @@ public class HomestaySearchRequest {
         private Long priceTo;
         private Long provinceId;
         private Long rating;
+        private LocalDate checkInDate;
+        private LocalDate checkOutDate;
 
         public Builder setName(String name) {
             this.name = name;
@@ -111,6 +119,15 @@ public class HomestaySearchRequest {
             return this;
         }
 
+        public Builder setCheckInDate(LocalDate checkInDate) {
+            this.checkInDate = checkInDate;
+            return this;
+        }
+
+        public Builder setCheckOutDate(LocalDate checkOutDate) {
+            this.checkOutDate = checkOutDate;
+            return this;
+        }
         public HomestaySearchRequest build() {
             return new HomestaySearchRequest(this);
         }

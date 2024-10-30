@@ -6,7 +6,6 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 @Entity
 @Table(name = "homestay")
 public class HomestayEntity {
@@ -31,7 +30,7 @@ public class HomestayEntity {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "provinceid")
+    @JoinColumn(name = "province_id")
     private ProvinceEntity province;
 
     @OneToMany(mappedBy = "homestay", fetch = FetchType.LAZY)
@@ -80,5 +79,37 @@ public class HomestayEntity {
 
     public void setBookingList(List<BookingEntity> bookingList) {
         this.bookingList = bookingList;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public Long getRating() {
+        return rating;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public ProvinceEntity getProvince() {
+        return province;
+    }
+
+    public List<BookingEntity> getBookingList() {
+        return bookingList;
     }
 }

@@ -22,7 +22,7 @@ public class BookingEntity {
 
 
     @ManyToOne
-    @JoinColumn(name = "homestayid")
+    @JoinColumn(name = "homestay_id")
     private  HomestayEntity homestay;
 
     public BookingEntity() {
