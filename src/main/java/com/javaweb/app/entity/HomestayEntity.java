@@ -2,14 +2,12 @@ package com.javaweb.app.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
 @Getter
-@Setter
-@NoArgsConstructor
+@Entity
 @Table(name = "homestay")
 public class HomestayEntity {
 
@@ -36,6 +34,11 @@ public class HomestayEntity {
     @JoinColumn(name = "provinceid")
     private ProvinceEntity province;
 
+    @OneToMany(mappedBy = "homestay", fetch = FetchType.LAZY)
+    private List<BookingEntity> bookingList = new ArrayList<>();
+
+    public HomestayEntity() {
+    }
 
     public HomestayEntity(Long id, String name, Long price, String address, Long rating, String description, ProvinceEntity province) {
         this.id = id;
@@ -45,5 +48,37 @@ public class HomestayEntity {
         this.rating = rating;
         this.description = description;
         this.province = province;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setRating(Long rating) {
+        this.rating = rating;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setProvince(ProvinceEntity province) {
+        this.province = province;
+    }
+
+    public void setBookingList(List<BookingEntity> bookingList) {
+        this.bookingList = bookingList;
     }
 }

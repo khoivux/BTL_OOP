@@ -5,10 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 public class HomestaySearchRequest {
     private String name;
     private String address;
@@ -16,6 +12,10 @@ public class HomestaySearchRequest {
     private Long priceTo;
     private Long provinceId;
     private Long rating;
+
+    public HomestaySearchRequest() {
+    }
+
     public HomestaySearchRequest(Builder builder) {
         this.name = builder.name;
         this.address = builder.address;
