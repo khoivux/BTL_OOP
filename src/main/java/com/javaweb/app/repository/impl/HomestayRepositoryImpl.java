@@ -12,6 +12,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,14 +60,14 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
             where.append(" AND h.price >= " + priceFrom);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String checkIn = homestaySearchRequest.getCheckInDate().format(formatter);
-        String checkOut = homestaySearchRequest.getCheckOutDate().format(formatter);
+        LocalDate checkIn = homestaySearchRequest.getCheckInDate();
+        LocalDate checkOut = homestaySearchRequest.getCheckOutDate();
 
-        if(StringUtil.isValid(checkIn) && StringUtil.isValid(checkOut)) {
+        if(checkIn != null && checkOut != null) {
             where.append(" AND h.id NOT IN (" +
                          " SELECT b.homestay_id FROM booking b" +
-                         " WHERE b.checkin_date < '" + checkIn +
-                         "' AND b.checkout_date > '" + checkOut +"')");
+                         " WHERE b.checkin_date < '" + checkIn.format(formatter) +
+                         "' AND b.checkout_date > '" + checkOut.format(formatter) +"')");
         }
     }
 

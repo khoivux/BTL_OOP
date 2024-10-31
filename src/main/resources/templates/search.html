@@ -22,7 +22,7 @@
 <header>
 
     <div class="logo">
-        <a href="/"><img alt="" src="../static/img/logo.jpeg"></a> <!--back về home-->
+        <a href="/"><img alt="" th:src="@{/img/logo.jpeg}"></a> <!--back về home-->
     </div>
     <div class="navlinks">
         <ul id="menulist">
@@ -202,7 +202,7 @@
             <div class="row" th:if="${homestays != null}">
                 <div class="item" th:each="homestay : ${homestays}">
                     <div class="img">
-                        <img alt="Homestay 1" src="../static/img/homestay1.jpg">
+                        <img th:src="@{/img/homestay1.jpg}" alt="Homestay Image">
                     </div>
                     <div class="info">
                         <h2 class="card-title" th:text="${homestay.name}">Tên Homestay</h2>
@@ -210,10 +210,7 @@
                             <!-- Mã hiển thị đánh giá sao nếu có -->
                         </div>
                         <h3 th:text="'Giá: ' + ${homestay.price} + 'k'">Giá</h3>
-                        <p>
-                            Nằm cách Trạm cáp treo Fansipan 4.5 km, Homestay 1 cung cấp chỗ nghỉ có khu vườn, sân hiên
-                            và dịch vụ phòng. Homestay có WiFi và chỗ đậu xe riêng miễn phí.
-                        </p>
+                        <p th:text="${homestay.description}"></p>
                     </div>
                     <form method="GET" th:action="@{/product/{id}(id=${homestay.id})}">
                         <button class="book-button">Đặt phòng</button>

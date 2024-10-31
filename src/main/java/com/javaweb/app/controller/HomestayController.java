@@ -7,10 +7,8 @@ import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.service.HomestayService;
 import com.javaweb.app.service.impl.HomestayServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
