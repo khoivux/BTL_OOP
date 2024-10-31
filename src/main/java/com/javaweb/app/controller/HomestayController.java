@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admin")
 public class HomestayController {
     @Autowired
     public HomestayServiceImpl homestayServiceImpl;
@@ -27,35 +26,41 @@ public class HomestayController {
     public HomestayRepository homestayRepository;
 
     // CREATE
-    @PostMapping("/homestay-add")  // Thêm mới homestay
+    @PostMapping("/admin/homestay-add")  // Thêm mới homestay
     public ResponseEntity<HomestayDto> addHomestay(@RequestBody HomestayDto homestayDto) {
         HomestayDto addedHomestay = homestayService.createHomestay(homestayDto);
         return ResponseEntity.ok(homestayDto);
     }
 
     // UPDATE
-    @PutMapping("/homestay-update")
+    @PutMapping("/admin/homestay-update")
     public ResponseEntity<HomestayDto> updateHomestay(@RequestBody HomestayDto updateHomestayDto) {
         HomestayDto homestayDto = homestayService.updateHomestay(updateHomestayDto.getId(), updateHomestayDto);
         return ResponseEntity.ok(homestayDto);
     }
 
     // DELETE
-    @PostMapping("/homestay-delete")
+    @PostMapping("/admin/homestay-delete")
     public void deleteHomestayByIdIn(@RequestParam List<Long> ids) {
         homestayService.deleteHomestays(ids);
     }
 
-    @PostMapping("/homestay-delete/{id}") // Xóa homestay theo id
+    @PostMapping("/admin/homestay-delete/{id}") // Xóa homestay theo id
     public RedirectView deleteHomestayById(@PathVariable Long id) {
         homestayService.deleteHomestay(id);
         return new RedirectView("/admin/homestay-list");
     }
 
     // READ
-    @GetMapping("/homestay/{id}")
+    @GetMapping("/admin/homestay/{id}")
     public ResponseEntity<HomestayDto> getById(@PathVariable Long id){
         HomestayDto homestayDto = homestayService.findHomestayById(id);
         return ResponseEntity.ok(homestayDto);
+    }
+
+    @GetMapping("/getall")
+    public List<HomestaySearchResponse> getAllFIlter(@RequestParam  Map<String, Object> params) {
+        List<HomestaySearchResponse> list = homestayService.findByFilter(params);
+        return list;
     }
 }

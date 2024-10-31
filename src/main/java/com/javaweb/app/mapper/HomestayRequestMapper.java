@@ -12,8 +12,14 @@ import java.util.Map;
 @Component
 public class HomestayRequestMapper {
     public HomestaySearchRequest mapToHomestaySearchRequest(Map<String, Object> params) {
-        LocalDate checkInDate = LocalDate.parse(MapUtil.getObject(params, "checkInDate", String.class), DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate checkOutDate = LocalDate.parse(MapUtil.getObject(params, "checkOutDate", String.class), DateTimeFormatter.ISO_LOCAL_DATE);
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+
+        // Kiểm tra và phân tích chuỗi thành LocalDate nếu không phải null
+        String checkInDateStr = MapUtil.getObject(params, "checkInDate", String.class);
+        String checkOutDateStr = MapUtil.getObject(params, "checkOutDate", String.class);
+
+        LocalDate checkInDate = checkInDateStr != null ? LocalDate.parse(checkInDateStr, formatter) : null;
+        LocalDate checkOutDate = checkOutDateStr != null ? LocalDate.parse(checkOutDateStr, formatter) : null;
         return new HomestaySearchRequest.Builder()
                 .setName(MapUtil.getObject(params, "name", String.class))
                 .setAddress(MapUtil.getObject(params, "address", String.class))

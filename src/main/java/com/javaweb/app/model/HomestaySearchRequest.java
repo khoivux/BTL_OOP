@@ -79,6 +79,14 @@ public class HomestaySearchRequest {
         this.rating = rating;
     }
 
+    public LocalDate getCheckInDate() {
+        return checkInDate;
+    }
+
+    public LocalDate getCheckOutDate() {
+        return checkOutDate;
+    }
+
     public static class Builder {
         private String name;
         private String address;
