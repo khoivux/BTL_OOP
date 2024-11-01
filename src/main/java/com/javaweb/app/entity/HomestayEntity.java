@@ -1,7 +1,7 @@
 package com.javaweb.app.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class HomestayEntity {
     public HomestayEntity() {
     }
 
-    public HomestayEntity(Long id, String name, Long price, String address, Long rating, String description, ProvinceEntity province) {
+    public HomestayEntity(Long id, String name, Long price, String address, Long rating, String description, ProvinceEntity province, List<BookingEntity> bookingList) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -47,6 +47,7 @@ public class HomestayEntity {
         this.rating = rating;
         this.description = description;
         this.province = province;
+        this.bookingList = bookingList;
     }
 
     public void setId(Long id) {

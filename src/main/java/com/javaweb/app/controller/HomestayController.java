@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class HomestayController {
+public class                                                                                 HomestayController {
     @Autowired
     public HomestayServiceImpl homestayServiceImpl;
     @Autowired
