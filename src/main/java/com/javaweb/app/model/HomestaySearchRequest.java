@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomestaySearchRequest {
     private String name;
@@ -16,6 +18,8 @@ public class HomestaySearchRequest {
     private Long rating;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
+    private List<Long> roomFacilities = new ArrayList<>();
+    private List<Long> homestayFacilities = new ArrayList<>();
 
     public HomestaySearchRequest() {
     }
@@ -29,54 +33,32 @@ public class HomestaySearchRequest {
         this.rating = builder.rating;
         this.checkInDate = builder.checkInDate;
         this.checkOutDate = builder.checkOutDate;
+        this.homestayFacilities = builder.homestayFacilities;
+        this.roomFacilities = builder.roomFacilities;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getAddress() {
         return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public Long getPriceFrom() {
         return priceFrom;
     }
 
-    public void setPriceFrom(Long priceFrom) {
-        this.priceFrom = priceFrom;
-    }
-
     public Long getPriceTo() {
         return priceTo;
-    }
-
-    public void setPriceTo(Long priceTo) {
-        this.priceTo = priceTo;
     }
 
     public Long getProvinceId() {
         return provinceId;
     }
 
-    public void setProvinceId(Long provinceId) {
-        this.provinceId = provinceId;
-    }
-
     public Long getRating() {
         return rating;
-    }
-
-    public void setRating(Long rating) {
-        this.rating = rating;
     }
 
     public LocalDate getCheckInDate() {
@@ -85,6 +67,14 @@ public class HomestaySearchRequest {
 
     public LocalDate getCheckOutDate() {
         return checkOutDate;
+    }
+
+    public List<Long> getRoomFacilities() {
+        return roomFacilities;
+    }
+
+    public List<Long> getHomestayFacilities() {
+        return homestayFacilities;
     }
 
     public static class Builder {
@@ -96,6 +86,8 @@ public class HomestaySearchRequest {
         private Long rating;
         private LocalDate checkInDate;
         private LocalDate checkOutDate;
+        private List<Long> roomFacilities = new ArrayList<>();
+        private List<Long> homestayFacilities = new ArrayList<>();
 
         public Builder setName(String name) {
             this.name = name;
@@ -134,6 +126,14 @@ public class HomestaySearchRequest {
 
         public Builder setCheckOutDate(LocalDate checkOutDate) {
             this.checkOutDate = checkOutDate;
+            return this;
+        }
+        public Builder setRoomFacilities(List<Long> roomFacilities) {
+            this.roomFacilities = roomFacilities;
+            return this;
+        }
+        public Builder setHomestayFacilities(List<Long> homestayFacilities) {
+            this.homestayFacilities = homestayFacilities;
             return this;
         }
         public HomestaySearchRequest build() {
