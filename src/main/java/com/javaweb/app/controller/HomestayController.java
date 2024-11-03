@@ -57,8 +57,10 @@ public class                                                                    
     }
 
     @GetMapping("/getall")
-    public List<HomestaySearchResponse> getAllFIlter(@RequestParam  Map<String, Object> params) {
-        List<HomestaySearchResponse> list = homestayService.findByFilter(params);
+    public List<HomestaySearchResponse> getAllFIlter(@RequestParam  Map<String, Object> params,
+                                                        @RequestParam List<Long> homestayFacilities,
+                                                            @RequestParam List<Long> roomFacilities) {
+        List<HomestaySearchResponse> list = homestayService.findByFilter(params, homestayFacilities, roomFacilities);
         return list;
     }
 }
