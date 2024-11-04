@@ -17,8 +17,8 @@
     <form:form action="/login" method="POST" autocomplete="off">
 <!--            {% csrf_token %}  &lt;!&ndash; Thêm token bảo mật CSRF &ndash;&gt;-->
 
-            <input type="text" name="username" placeholder="Tên đăng nhập" autocomplete="off"/>
-            <input type="password" name="password" placeholder="Mật khẩu" autocomplete="new-password"/>
+            <input type="Email" name="email" placeholder="Email..." autocomplete="off"/>
+            <input type="password" name="password" placeholder="Password..." autocomplete="new-password"/>
             <button class = "submit" type = "submit">Đăng nhập</button>
             <p class="message">Bạn chưa có tài khoản? <a href="/register">Tạo tài khoản</a></p> <!--url đến trang đăng kí-->
     </form:form>
