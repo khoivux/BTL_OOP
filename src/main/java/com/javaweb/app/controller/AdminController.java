@@ -1,8 +1,6 @@
 package com.javaweb.app.controller;
 
 import com.javaweb.app.dto.HomestayDto;
-import com.javaweb.app.entity.User;
-import com.javaweb.app.enums.Province;
 import com.javaweb.app.model.HomestaySearchResponse;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.service.HomestayService;
@@ -52,9 +50,11 @@ public class AdminController {
     }
 
     @GetMapping("/homestay-list") // Trang quản lý Homestay
-    public ModelAndView adminHomestayPage(@RequestParam Map<String, Object> params) {
+    public ModelAndView adminHomestayPage(@RequestParam Map<String, Object> params,
+                                          @RequestParam List<Long> homestayFacilities,
+                                            @RequestParam List<Long> roomFacilities) {
         int cnt = 1;
-        List<HomestaySearchResponse> list = homestayService.findByFilter(params);
+        List<HomestaySearchResponse> list = homestayService.findByFilter(params, homestayFacilities, roomFacilities);
         ModelAndView model = new ModelAndView("admin/homestay");
         model.addObject("homestays", list);
         return model;

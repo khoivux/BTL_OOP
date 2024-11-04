@@ -1,16 +1,11 @@
 package com.javaweb.app.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
 @Table(name = "province")
 public class ProvinceEntity {
     @Id
@@ -28,5 +23,29 @@ public class ProvinceEntity {
     public ProvinceEntity(String name, Long id) {
         this.name = name;
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<HomestayEntity> getHomeStays() {
+        return homeStays;
+    }
+
+    public void setHomeStays(List<HomestayEntity> homeStays) {
+        this.homeStays = homeStays;
     }
 }

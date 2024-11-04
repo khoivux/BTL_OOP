@@ -65,9 +65,9 @@ public class HomestayServiceImpl implements HomestayService {
     }
 
     @Override // Lấy tất cả Homestay được lọc theo Filter
-    public List<HomestaySearchResponse> findByFilter(Map<String, Object> params) {
-        HomestaySearchRequest homestaySearchRequest = homestayRequestMapper.mapToHomestaySearchRequest(params);
-        List<HomestayEntity> homestayEntities = homestayRepository.findByFilter(homestaySearchRequest);
+    public List<HomestaySearchResponse> findByFilter(Map<String, Object> params, List<Long> homestayFacilities, List<Long> roomFacilities) {
+        HomestaySearchRequest homestaySearchRequest = homestayRequestMapper.mapToHomestaySearchRequest(params, homestayFacilities, roomFacilities);
+        List<HomestayEntity> homestayEntities = homestayRepository.findByFilter(homestaySearchRequest, homestayFacilities, roomFacilities);
         List<HomestaySearchResponse> result = new ArrayList<>();
         for (HomestayEntity homestayEntity : homestayEntities) {
             result.add(homestayMapper.mapToHomestayResponse(homestayEntity));
