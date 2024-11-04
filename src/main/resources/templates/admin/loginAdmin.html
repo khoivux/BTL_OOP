@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:form="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Đăng nhập Admin</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}" />
+</head>
+<body>
+<div class="form">
+    <h2>Đăng nhập Admin</h2>
+    <form th:action="@{/admin/login}" method="POST">
+        <input type="email" name="email" placeholder="Email..." required/>
+        <input type="password" name="password" placeholder="Password..." required/>
+        <button class = "submit" type="submit">Đăng nhập</button>
+    </form>
+    <div th:if="${error}" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
+</div>
+</body>
+</html>
