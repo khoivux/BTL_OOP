@@ -5,7 +5,7 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <link rel="stylesheet" th:href="@{/css/search.css}">
-<!--    <link href="../static/css/search.css" rel="stylesheet">-->
+    <!--    <link href="../static/css/search.css" rel="stylesheet">-->
     <script crossorigin="anonymous" src="https://kit.fontawesome.com/032d11eac3.js"></script>
     <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css"
           integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A=="
@@ -140,39 +140,71 @@
             <h2>Bộ lọc theo:</h2>
 
             <!-- Đánh giá -->
-            <div class="filter-group">
-                <h3>Đánh giá</h3>
-                <label><input name="ratings" type="checkbox" value="5"> 5 sao</label><br>
-                <label><input name="ratings" type="checkbox" value="4"> 4 sao</label><br>
-                <label><input name="ratings" type="checkbox" value="3"> 3 sao</label><br>
-                <label><input name="ratings" type="checkbox" value="2"> 2 sao</label><br>
-                <label><input name="ratings" type="checkbox" value="1"> 1 sao</label>
-            </div>
+            <form id="filtersForm">
 
-            <!-- Giá tiền -->
-            <div class="filter-group">
-                <h3>Giá tiền</h3>
-                <label><input path="prices" type="checkbox" value="200"> 200k/1 đêm</label><br>
-                <label><input name="prices" type="checkbox" value="300"> 300k/1 đêm</label><br>
-                <label><input name="prices" type="checkbox" value="400"> 400k/1 đêm</label><br>
-                <label><input name="prices" type="checkbox" value="500"> 500k/1 đêm</label><br>
-                <label><input name="prices" type="checkbox" value="600"> 600k/1 đêm</label>
-            </div>
+                <div class="price-range-container">
+                    <h3>Khoảng Giá</h3>
+                    <input type="text" class="price-input" name="priceFrom" placeholder="k TỪ">
+                    <span> - </span>
+                    <input type="text" class="price-input" name="priceTo" placeholder="k ĐẾN">
+                </div>
 
-            <!-- Hoạt động giải trí -->
-            <div class="filter-group">
-                <h3>Địa điểm</h3>
-                <label><input name="locations" type="checkbox" value="1"> Lào Cai</label><br>
-                <label><input name="locations" type="checkbox" value="2"> Sơn La</label><br>
-                <label><input name="locations" type="checkbox" value="3"> Lai Châu</label><br>
-                <label><input name="locations" type="checkbox" value="4"> Điện Biên Phủ</label><br>
-                <label><input name="locations" type="checkbox" value="5"> Hòa Bình</label>
-            </div>
+                <div class="filter-group">
+                    <h3>Đánh giá:</h3>
+                    <label><input type="checkbox" name="ratings" value="5stars"> 5 sao</label><br>
+                    <label><input type="checkbox" name="ratings" value="4stars"> 4 sao</label><br>
+                    <label><input type="checkbox" name="ratings" value="3stars"> 3 sao</label><br>
+                    <label><input type="checkbox" name="ratings" value="2stars"> 2 sao</label><br>
+                    <label><input type="checkbox" name="ratings" value="1stars"> 1 sao</label>
+                </div>
 
-            <!-- Nút áp dụng bộ lọc -->
-            <button class="filter-button" type="submit">Áp dụng bộ lọc</button>
+
+
+                <!-- Hoạt động giải trí-->
+
+                <div class="filter-group">
+                    <h3>Địa điểm</h3>
+                    <label><input name="locations" type="checkbox" value="1"> Lào Cai</label><br>
+                    <label><input name="locations" type="checkbox" value="2"> Sơn La</label><br>
+                    <label><input name="locations" type="checkbox" value="3"> Lai Châu</label><br>
+                    <label><input name="locations" type="checkbox" value="4"> Điện Biên Phủ</label><br>
+                    <label><input name="locations" type="checkbox" value="5"> Hòa Bình</label>
+                </div>
+
+
+                <!-- Nút áp dụng bộ lọc -->
+                <button class="filter-button" type="button" onclick="submitForm()">Áp dụng bộ lọc</button>
+            </form>
         </div>
     </form:form>
+    <script>
+        function submitForm() {
+            const form = document.getElementById('filterForm');
+
+            // Tạo đối tượng URLSearchParams để lưu query parameters
+            const params = new URLSearchParams();
+
+            // Lấy các giá trị của các checkbox "ratings"
+            const selectedRatings = Array.from(form.querySelectorAll('input[name="ratings"]:checked'))
+                .map(cb => cb.value);
+            selectedRatings.forEach(rating => params.append('ratings', rating));
+
+            // Lấy các giá trị của các checkbox "locations"
+            const selectedLocations = Array.from(form.querySelectorAll('input[name="locations"]:checked'))
+                .map(cb => cb.value);
+            selectedLocations.forEach(location => params.append('locations', location));
+
+            // Lấy khoảng giá
+            const priceFrom = form.querySelector('input[name="priceFrom"]').value;
+            const priceTo = form.querySelector('input[name="priceTo"]').value;
+            if (priceFrom) params.append('priceFrom', priceFrom);
+            if (priceTo) params.append('priceTo', priceTo);
+
+            // Chuyển hướng tới URL với các query parameters
+            const baseURL = '/search';
+            window.location.href = `${baseURL}?${params.toString()}`;
+        }
+    </script>
 
 
     <!-- Kết quả tìm kiếm -->
@@ -211,71 +243,71 @@
                         </div>
                         <h3 th:text="'Giá: ' + ${homestay.price} + 'k'">Giá</h3>
                         <p th:text="${homestay.description}"></p>
+                        <form method="GET" th:action="@{/product/{id}(id=${homestay.id})}">
+                            <button class="book-button">Đặt phòng</button>
+                        </form>
                     </div>
-                    <form method="GET" th:action="@{/product/{id}(id=${homestay.id})}">
-                        <button class="book-button">Đặt phòng</button>
-                    </form>
                 </div>
             </div>
             <p class="alert alert-warning" th:if="${homestays == null}">Không tìm thấy kết quả phù hợp</p>
         </div>
     </div>
 </div>
-    <!--<<<<<<< HEAD
-    =======
+<!--<<<<<<< HEAD
+=======
+    </div>
+</div>
+>>>>>>> develop -->
+
+<script>
+    function performSearch() {
+        // Implement search logic here
+        alert("Search functionality is not yet implemented.");
+    }
+</script>
+
+
+<footer>
+    <div class="container grid">
+        <div class="box">
+            <!--                <img th:src="@{/img/homestay1.jpg}">-->
+            <div class="icon">
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-instagram"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+                <a href="#"><i class="fa fa-youtube"></i></a>
+            </div>
+        </div>
+        <div class="box">
+            <h2>GIỚI THIỆU</h2>
+            <a href="#">Trang chủ</a><br>
+            <a href="#">Dịch vụ</a><br>
+            <a href="#">Tin tức</a><br>
+            <a href="#">Liên hệ</a><br>
+        </div>
+        <div class="box">
+            <h2>LIÊN KẾT</h2>
+            <a href="#">Điều khoản sử dụng</a><br>
+            <a href="#">Chính sách bảo mật</a><br>
+            <a href="#">Chính sách hoàn tiền</a><br>
+            <a href="#">FAQs</a>
+        </div>
+        <div class="box">
+            <h2>LIÊN HỆ</h2>
+            <div class="flex">
+                <i class="fa fa-location-dot"></i>
+                <p>30 Tran Phu, Ha Dong, Ha Noi, Viet Nam</p>
+            </div>
+            <div class="flex">
+                <i class="fa fa-phone"></i>
+                <p>0987352163</p>
+            </div>
+            <div class="flex">
+                <i class="fa fa-envelope"></i>
+                <p>nhan54v@gmail.com</p>
+            </div>
         </div>
     </div>
-    >>>>>>> develop -->
-
-    <script>
-        function performSearch() {
-            // Implement search logic here
-            alert("Search functionality is not yet implemented.");
-        }
-    </script>
-
-
-    <footer>
-        <div class="container grid">
-            <div class="box">
-<!--                <img th:src="@{/img/homestay1.jpg}">-->
-                <div class="icon">
-                    <a href="#"><i class="fa fa-facebook"></i></a>
-                    <a href="#"><i class="fa fa-instagram"></i></a>
-                    <a href="#"><i class="fa fa-twitter"></i></a>
-                    <a href="#"><i class="fa fa-youtube"></i></a>
-                </div>
-            </div>
-            <div class="box">
-                <h2>GIỚI THIỆU</h2>
-                <a href="#">Trang chủ</a><br>
-                <a href="#">Dịch vụ</a><br>
-                <a href="#">Tin tức</a><br>
-                <a href="#">Liên hệ</a><br>
-            </div>
-            <div class="box">
-                <h2>LIÊN KẾT</h2>
-                <a href="#">Điều khoản sử dụng</a><br>
-                <a href="#">Chính sách bảo mật</a><br>
-                <a href="#">Chính sách hoàn tiền</a><br>
-                <a href="#">FAQs</a>
-            </div>
-            <div class="box">
-                <h2>LIÊN HỆ</h2>
-                <div class="flex">
-                    <i class="fa fa-location-dot"></i>
-                    <p>30 Tran Phu, Ha Dong, Ha Noi, Viet Nam</p>
-                </div>
-                <div class="flex">
-                    <i class="fa fa-phone"></i>
-                    <p>0987352163</p>
-                </div>
-                <div class="flex">
-                    <i class="fa fa-envelope"></i>
-                    <p>nhan54v@gmail.com</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+</footer>
 </body>
 </html>

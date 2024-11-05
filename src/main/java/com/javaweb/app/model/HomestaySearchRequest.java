@@ -18,7 +18,7 @@ public class HomestaySearchRequest {
     private Long rating;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
-    private List<Long> roomFacilities = new ArrayList<>();
+    private String rentType;
     private List<Long> homestayFacilities = new ArrayList<>();
 
     public HomestaySearchRequest() {
@@ -34,7 +34,7 @@ public class HomestaySearchRequest {
         this.checkInDate = builder.checkInDate;
         this.checkOutDate = builder.checkOutDate;
         this.homestayFacilities = builder.homestayFacilities;
-        this.roomFacilities = builder.roomFacilities;
+        this.rentType = builder.rentType;
     }
 
     public String getName() {
@@ -69,12 +69,12 @@ public class HomestaySearchRequest {
         return checkOutDate;
     }
 
-    public List<Long> getRoomFacilities() {
-        return roomFacilities;
-    }
-
     public List<Long> getHomestayFacilities() {
         return homestayFacilities;
+    }
+
+    public String getRentType() {
+        return rentType;
     }
 
     public static class Builder {
@@ -86,8 +86,8 @@ public class HomestaySearchRequest {
         private Long rating;
         private LocalDate checkInDate;
         private LocalDate checkOutDate;
-        private List<Long> roomFacilities = new ArrayList<>();
         private List<Long> homestayFacilities = new ArrayList<>();
+        private String rentType;
 
         public Builder setName(String name) {
             this.name = name;
@@ -128,12 +128,12 @@ public class HomestaySearchRequest {
             this.checkOutDate = checkOutDate;
             return this;
         }
-        public Builder setRoomFacilities(List<Long> roomFacilities) {
-            this.roomFacilities = roomFacilities;
-            return this;
-        }
         public Builder setHomestayFacilities(List<Long> homestayFacilities) {
             this.homestayFacilities = homestayFacilities;
+            return this;
+        }
+        public Builder setRentType(String rentType) {
+            this.rentType = rentType;
             return this;
         }
         public HomestaySearchRequest build() {

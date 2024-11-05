@@ -14,8 +14,7 @@ import java.util.Map;
 public class HomestayRequestMapper {
     // Chuyển từ Param sang HomestaySearchRequest
     public HomestaySearchRequest mapToHomestaySearchRequest(Map<String, Object> params,
-                                                                List<Long> homestayFacilities,
-                                                                    List<Long> roomFaccilities) {
+                                                                List<Long> homestayFacilitiess) {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
         // Cho các LocalDate là null nếu Date nhận từ params là null hoặc rỗng

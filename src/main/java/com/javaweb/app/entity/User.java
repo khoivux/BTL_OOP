@@ -1,11 +1,10 @@
 package com.javaweb.app.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table (name = "users")
@@ -21,6 +20,9 @@ public class User {
 
     @Column (name = "role")
     private String role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<BookingEntity> bookings;
 
     public User() {
         this.email = "";
