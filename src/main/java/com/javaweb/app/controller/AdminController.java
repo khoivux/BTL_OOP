@@ -26,7 +26,7 @@ public class AdminController {
     @Autowired
     public UserService userService;
 
-    @GetMapping()
+    @GetMapping
     public ModelAndView adminLogin() {
         return new ModelAndView("admin/loginAdmin");
     }

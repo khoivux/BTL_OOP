@@ -109,100 +109,177 @@
 </script>
 <div class="container">
     <!-- Bộ lọc -->
-    <form:form action="/search" id="filterForm" method="GET" modelAttribute="selectedBox">
+<!--    <form:form action="/search" id="filterForm" method="GET" modelAttribute="selectedBox">-->
+<!--        <div class="filters">-->
+<!--            <div class="search-box">-->
+<!--                <h2>Tìm</h2>-->
+<!--                <label for="destination">Tên chỗ nghỉ / điểm đến:</label>-->
+<!--                <div class="search-input">-->
+<!--                    <input type="text" id="destination" name="destination" placeholder="Lào Cai">-->
+<!--                    <i class="fa fa-search"></i>-->
+<!--                </div>-->
+<!--                <label for="checkin-date">Ngày nhận phòng</label>-->
+<!--                <div class="date-picker">-->
+<!--                    <input type="date" id="checkin-date" name="checkinDate">-->
+<!--                    <i class="fa fa-calendar"></i>-->
+<!--                </div>-->
+<!--                <label for="checkout-date">Ngày trả phòng</label>-->
+<!--                <div class="date-picker">-->
+<!--                    <input type="date" id="checkout-date" name="checkoutDate">-->
+<!--                    <i class="fa fa-calendar"></i>-->
+<!--                </div>-->
+<!--                <label for="guest-info">Nghỉ 1 đêm</label>-->
+<!--                <select id="guest-info" name="guestInfo">-->
+<!--                    <option>1 người lớn · 0 trẻ em · 1 phòng</option>-->
+<!--                    <option>2 người lớn · 0 trẻ em · 1 phòng</option>-->
+<!--                </select>-->
+<!--                <button class="search-button" type="button" onclick="submitForm()">Tìm</button>-->
+<!--            </div>-->
+
+<!--            <h2>Bộ lọc theo:</h2>-->
+
+<!--            &lt;!&ndash; Đánh giá &ndash;&gt;-->
+<!--            <form id="filtersForm">-->
+
+<!--                <div class="price-range-container">-->
+<!--                    <h3>Khoảng Giá</h3>-->
+<!--                    <input type="text" class="price-input" name="priceFrom" placeholder="k TỪ">-->
+<!--                    <span> - </span>-->
+<!--                    <input type="text" class="price-input" name="priceTo" placeholder="k ĐẾN">-->
+<!--                </div>-->
+
+<!--                <div class="filter-group">-->
+<!--                    <h3>Đánh giá:</h3>-->
+<!--                    <label><input type="checkbox" name="ratings" value="5"> 5 sao</label><br>-->
+<!--                    <label><input type="checkbox" name="ratings" value="4"> 4 sao</label><br>-->
+<!--                    <label><input type="checkbox" name="ratings" value="3"> 3 sao</label><br>-->
+<!--                    <label><input type="checkbox" name="ratings" value="2"> 2 sao</label><br>-->
+<!--                    <label><input type="checkbox" name="ratings" value="1"> 1 sao</label>-->
+<!--                </div>-->
+
+
+
+<!--                &lt;!&ndash; Hoạt động giải trí&ndash;&gt;-->
+
+<!--                <label>-->
+<!--                    <input name="homestayFacilities" type="checkbox" value="1"-->
+<!--                           th:checked="${selectedFacilities.contains(1L)}">-->
+<!--                    Cho phép vật nuôi-->
+<!--                </label><br>-->
+<!--                <label>-->
+<!--                    <input name="homestayFacilities" type="checkbox" value="2"-->
+<!--                           th:checked="${selectedFacilities.contains(2L)}">-->
+<!--                    Cho thuê xe máy/ xe đạp-->
+<!--                </label><br>-->
+<!--                <label>-->
+<!--                    <input name="homestayFacilities" type="checkbox" value="3"-->
+<!--                           th:checked="${selectedFacilities.contains(3L)}">-->
+<!--                    Phòng xông hơi-->
+<!--                </label><br>-->
+<!--                <label>-->
+<!--                    <input name="homestayFacilities" type="checkbox" value="4"-->
+<!--                           th:checked="${selectedFacilities.contains(4L)}">-->
+<!--                    Wifi miễn phí-->
+<!--                </label><br>-->
+<!--                <label>-->
+<!--                    <input name="homestayFacilities" type="checkbox" value="5"-->
+<!--                           th:checked="${selectedFacilities.contains(5L)}">-->
+<!--                    Wifi miễn phí-->
+<!--                </label>-->
+
+
+<!--                &lt;!&ndash; Nút áp dụng bộ lọc &ndash;&gt;-->
+<!--                <button class="filter-button" type="button" onclick="submitForm()">Áp dụng bộ lọc</button>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </form:form>-->
+
+    <form id="filterForm" action="/search" method="GET">
         <div class="filters">
+            <!-- Tìm kiếm cơ bản -->
             <div class="search-box">
                 <h2>Tìm</h2>
                 <label for="destination">Tên chỗ nghỉ / điểm đến:</label>
                 <div class="search-input">
-                    <input id="destination" placeholder="Địa điểm" type="text">
+                    <input type="text" id="destination" name="destination" placeholder="Lào Cai">
                     <i class="fa fa-search"></i>
                 </div>
                 <label for="checkin-date">Ngày nhận phòng</label>
                 <div class="date-picker">
-                    <input id="checkin-date" type="date">
+                    <input type="date" id="checkin-date" name="checkinDate">
                     <i class="fa fa-calendar"></i>
                 </div>
                 <label for="checkout-date">Ngày trả phòng</label>
                 <div class="date-picker">
-                    <input id="checkout-date" type="date">
+                    <input type="date" id="checkout-date" name="checkoutDate">
                     <i class="fa fa-calendar"></i>
                 </div>
-                <label for="guest-info">Nghỉ 1 đêm</label>
-                <select id="guest-info">
-                    <option>1 người lớn · 0 trẻ em · 1 phòng</option>
-                    <option>2 người lớn · 0 trẻ em · 1 phòng</option>
-                    <!-- Thêm các tuỳ chọn khác nếu cần -->
-                </select>
-                <button class="search-button" type="submit">Tìm</button>
+<!--                <label for="guest-info">Nghỉ 1 đêm</label>-->
+<!--                <select id="guest-info" name="guestInfo">-->
+<!--                    <option>1 người lớn · 0 trẻ em · 1 phòng</option>-->
+<!--                    <option>2 người lớn · 0 trẻ em · 1 phòng</option>-->
+<!--                </select>-->
+                <button class="search-button" type="button" onclick="submitForm()">Tìm</button>
             </div>
 
             <h2>Bộ lọc theo:</h2>
 
+            <div class="price-range-container">
+                <h3>Khoảng Giá</h3>
+                <input type="text" class="price-input" name="priceFrom" placeholder="₫ TỪ">
+                <span> - </span>
+                <input type="text" class="price-input" name="priceTo" placeholder="₫ ĐẾN">
+            </div>
+
             <!-- Đánh giá -->
-            <form id="filtersForm">
+            <div class="filter-group">
+                <h3>Đánh giá</h3>
+                <label><input type="checkbox" name="ratings" value="5"> 5 sao</label><br>
+                <label><input type="checkbox" name="ratings" value="4"> 4 sao</label><br>
+                <label><input type="checkbox" name="ratings" value="3"> 3 sao</label><br>
+                <label><input type="checkbox" name="ratings" value="2"> 2 sao</label><br>
+                <label><input type="checkbox" name="ratings" value="1"> 1 sao</label>
+            </div>
 
-                <div class="price-range-container">
-                    <h3>Khoảng Giá</h3>
-                    <input type="text" class="price-input" name="priceFrom" placeholder="k TỪ">
-                    <span> - </span>
-                    <input type="text" class="price-input" name="priceTo" placeholder="k ĐẾN">
-                </div>
+            <!-- Địa điểm -->
+            <div class="filter-group">
+                <h3>Địa điểm</h3>
+                <label>
+                    <input name="homestayFacilities" type="checkbox" value="1"
+                           th:checked="${selectedFacilities.contains(1L)}">
+                    Cho phép vật nuôi
+                </label><br>
+                <label>
+                    <input name="homestayFacilities" type="checkbox" value="2"
+                           th:checked="${selectedFacilities.contains(2L)}">
+                    Cho thuê xe máy/ xe đạp
+                </label><br>
+                <label>
+                    <input name="homestayFacilities" type="checkbox" value="3"
+                           th:checked="${selectedFacilities.contains(3L)}">
+                    Phòng xông hơi
+                </label><br>
+                <label>
+                    <input name="homestayFacilities" type="checkbox" value="4"
+                           th:checked="${selectedFacilities.contains(4L)}">
+                    Wifi miễn phí
+                </label><br>
+                <label>
+                    <input name="homestayFacilities" type="checkbox" value="5"
+                           th:checked="${selectedFacilities.contains(5L)}">
+                    Wifi miễn phí
+                </label>
+            </div>
 
-                <div class="filter-group">
-                    <h3>Đánh giá:</h3>
-                    <label><input type="checkbox" name="ratings" value="5stars"> 5 sao</label><br>
-                    <label><input type="checkbox" name="ratings" value="4stars"> 4 sao</label><br>
-                    <label><input type="checkbox" name="ratings" value="3stars"> 3 sao</label><br>
-                    <label><input type="checkbox" name="ratings" value="2stars"> 2 sao</label><br>
-                    <label><input type="checkbox" name="ratings" value="1stars"> 1 sao</label>
-                </div>
-
-
-
-                <!-- Hoạt động giải trí-->
-
-                <div class="filter-group">
-                    <h3>Địa điểm</h3>
-                    <label><input name="locations" type="checkbox" value="1"> Lào Cai</label><br>
-                    <label><input name="locations" type="checkbox" value="2"> Sơn La</label><br>
-                    <label><input name="locations" type="checkbox" value="3"> Lai Châu</label><br>
-                    <label><input name="locations" type="checkbox" value="4"> Điện Biên Phủ</label><br>
-                    <label><input name="locations" type="checkbox" value="5"> Hòa Bình</label>
-                </div>
-
-
-                <!-- Nút áp dụng bộ lọc -->
-                <button class="filter-button" type="button" onclick="submitForm()">Áp dụng bộ lọc</button>
-            </form>
+            <button class="filter-button" type="button" onclick="submitForm()">Áp dụng bộ lọc</button>
         </div>
-    </form:form>
+    </form>
+
     <script>
         function submitForm() {
             const form = document.getElementById('filterForm');
-
-            // Tạo đối tượng URLSearchParams để lưu query parameters
-            const params = new URLSearchParams();
-
-            // Lấy các giá trị của các checkbox "ratings"
-            const selectedRatings = Array.from(form.querySelectorAll('input[name="ratings"]:checked'))
-                .map(cb => cb.value);
-            selectedRatings.forEach(rating => params.append('ratings', rating));
-
-            // Lấy các giá trị của các checkbox "locations"
-            const selectedLocations = Array.from(form.querySelectorAll('input[name="locations"]:checked'))
-                .map(cb => cb.value);
-            selectedLocations.forEach(location => params.append('locations', location));
-
-            // Lấy khoảng giá
-            const priceFrom = form.querySelector('input[name="priceFrom"]').value;
-            const priceTo = form.querySelector('input[name="priceTo"]').value;
-            if (priceFrom) params.append('priceFrom', priceFrom);
-            if (priceTo) params.append('priceTo', priceTo);
-
-            // Chuyển hướng tới URL với các query parameters
-            const baseURL = '/search';
-            window.location.href = `${baseURL}?${params.toString()}`;
+            const params = new URLSearchParams(new FormData(form)).toString();
+            window.location.href = `/search?${params}`;
         }
     </script>
 

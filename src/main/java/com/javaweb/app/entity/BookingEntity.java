@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,7 +30,7 @@ public class BookingEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private  User user;
+    private User user;
 
     @ManyToMany
     @JoinTable(

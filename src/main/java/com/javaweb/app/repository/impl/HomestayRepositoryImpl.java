@@ -32,10 +32,14 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
                                  StringBuilder sql) {
 
         // Join vào bảng booking
-        sql.append("LEFT JOIN booking ON h.id = booking.homestay_id \n");
+        LocalDate checkIn = homestaySearchRequest.getCheckInDate();
+        LocalDate checkOut = homestaySearchRequest.getCheckOutDate();
+        if(checkIn != null && checkOut != null) {
+            sql.append("LEFT JOIN booking ON h.id = booking.homestay_id \n");
+        }
 
         // Join vào bảng tiện nghi homestay
-        if(!homestayFacilities.isEmpty()) {
+        if(homestayFacilities != null && !homestayFacilities.isEmpty()) {
             sql.append("JOIN homestay_facilities hfac ON h.id = hfac.homestay_id \n" +
                        "JOIN homestayfacilities fac ON hfac.facilities_id = fac.id \n");
         }
@@ -85,11 +89,12 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
         LocalDate checkOut = homestaySearchRequest.getCheckOutDate();
         if(checkIn != null && checkOut != null) {
             where.append("AND ('" + checkIn.format(formatter) + "' > booking.checkout_date \n" +
-                         "OR '" + checkOut.format(formatter) + "' < booking.checkin_date) \n");
+                         "OR '" + checkOut.format(formatter) + "' < booking.checkin_date \n" +
+                         "OR booking.homestay_id IS NULL) \n");
         }
 
         // Tìm theo tiện nghi Homestay
-        if(!homestayFacilities.isEmpty()) {
+        if(homestayFacilities != null && !homestayFacilities.isEmpty()) {
             where.append("AND fac.id IN ");
             String listId = homestayFacilities.stream()
                     .map(String::valueOf)
@@ -97,7 +102,6 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
             where.append(listId + "\n");
         }
 
-        where.append("OR booking.homestay_id IS NULL ");
     }
 
     public List<HomestayEntity> findByFilter(HomestaySearchRequest homestaySearchRequest,
