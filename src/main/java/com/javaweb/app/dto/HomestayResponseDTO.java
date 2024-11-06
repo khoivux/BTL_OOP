@@ -1,28 +1,30 @@
-package com.javaweb.app.model;
+package com.javaweb.app.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.List;
 
-public class HomestaySearchResponse {
+public class HomestayResponseDTO {
     private Long id;
     private String name;
     private String address;
     private Long price;
     private Long rating;
     private String description;
-
-    public HomestaySearchResponse() {
+    private List<RoomDTO> rooms;
+    private List<HomestayFacilitiesDTO> facilities;
+    private List<ServiceDTO> services;
+    public HomestayResponseDTO() {
     }
 
-    public HomestaySearchResponse(Long id, String name, String address, Long price, Long rating, String description) {
+    public HomestayResponseDTO(Long id, String name, String address, Long price, Long rating, String description, List<RoomDTO> rooms, List<HomestayFacilitiesDTO> facilities, List<ServiceDTO> services) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.price = price;
         this.rating = rating;
         this.description = description;
+        this.rooms = rooms;
+        this.facilities = facilities;
+        this.services = services;
     }
 
     public Long getId() {
@@ -71,5 +73,29 @@ public class HomestaySearchResponse {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<RoomDTO> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<RoomDTO> rooms) {
+        this.rooms = rooms;
+    }
+
+    public List<HomestayFacilitiesDTO> getFacilities() {
+        return facilities;
+    }
+
+    public void setFacilities(List<HomestayFacilitiesDTO> facilities) {
+        this.facilities = facilities;
+    }
+
+    public List<ServiceDTO> getServices() {
+        return services;
+    }
+
+    public void setServices(List<ServiceDTO> services) {
+        this.services = services;
     }
 }

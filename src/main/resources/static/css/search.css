@@ -246,10 +246,27 @@ select {
     border-radius: 4px;
     transition: background-color 0.3s;
 }
-
-
 button:hover {
     background-color: #45a049;
+}
+
+.price-range-container {
+    width: 250px;
+    padding: 20px;
+    /*border: 1px solid #ddd;*/
+}
+
+.price-range-container h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.price-input {
+    width: 40%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
 }
 
 

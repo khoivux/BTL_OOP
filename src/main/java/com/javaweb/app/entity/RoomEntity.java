@@ -11,38 +11,62 @@ public class RoomEntity {
     @Id
     private Long id;
 
-    @Column(name = "name")
-    private String name;
-
     @Column(name = "type")
     private String type;
 
-    @Column(name = "price")
-    private Long price;
+
+    @Column(name = "numbers")
+    private Long numbers;
 
     @ManyToOne
     @JoinColumn(name = "homestay_id", nullable = false)
     private HomestayEntity homestay;
 
-    @OneToMany(mappedBy = "room",  cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<BookingEntity> bookingList = new ArrayList<>();
-
-    @ManyToMany
-    @JoinTable(
-            name = "room_facilities", // Tên bảng trung gian
-            joinColumns = @JoinColumn(name = "room_id"), // Khóa ngoại trỏ tới HomestayEntity
-            inverseJoinColumns = @JoinColumn(name = "facilities_id") // Khóa ngoại trỏ tới ServiceEntity
-    )
-    private List<RoomFacilitiesEntity> facilities;
-
     public RoomEntity() {
     }
 
-    public RoomEntity(Long id, String name, String type, Long price, HomestayEntity homestay) {
+    public RoomEntity(Long id, String type, Long numbers, HomestayEntity homestay) {
         this.id = id;
-        this.name = name;
         this.type = type;
-        this.price = price;
+        this.numbers = numbers;
+        this.homestay = homestay;
+    }
+
+    public RoomEntity(Long id, String type, Long numbers) {
+        this.id = id;
+        this.type = type;
+        this.numbers = numbers;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Long getNumbers() {
+        return numbers;
+    }
+
+    public void setNumbers(Long numbers) {
+        this.numbers = numbers;
+    }
+
+    public HomestayEntity getHomestay() {
+        return homestay;
+    }
+
+    public void setHomestay(HomestayEntity homestay) {
         this.homestay = homestay;
     }
 }

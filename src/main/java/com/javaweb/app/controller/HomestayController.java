@@ -1,7 +1,7 @@
 package com.javaweb.app.controller;
 
 
-import com.javaweb.app.model.HomestaySearchResponse;
+import com.javaweb.app.dto.HomestayResponseDTO;
 import com.javaweb.app.dto.HomestayDto;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.service.HomestayService;
@@ -57,10 +57,9 @@ public class                                                                    
     }
 
     @GetMapping("/getall")
-    public List<HomestaySearchResponse> getAllFIlter(@RequestParam  Map<String, Object> params,
-                                                        @RequestParam List<Long> homestayFacilities,
-                                                            @RequestParam List<Long> roomFacilities) {
-        List<HomestaySearchResponse> list = homestayService.findByFilter(params, homestayFacilities, roomFacilities);
+    public List<HomestayResponseDTO> getAllFIlter(@RequestParam  Map<String, Object> params,
+                                                  @RequestParam List<Long> homestayFacilities) {
+        List<HomestayResponseDTO> list = homestayService.findByFilter(params, homestayFacilities);
         return list;
     }
 }

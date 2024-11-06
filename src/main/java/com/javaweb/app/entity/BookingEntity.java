@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,8 +29,8 @@ public class BookingEntity {
     private  HomestayEntity homestay;
 
     @ManyToOne
-    @JoinColumn(name = "room_id")
-    private  RoomEntity room;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToMany
     @JoinTable(
@@ -46,14 +45,13 @@ public class BookingEntity {
     public BookingEntity() {
     }
 
-    public BookingEntity(Long id, LocalDate checkInDate, LocalDate checkOutDate, LocalDateTime bookingTime, String status, HomestayEntity homestay, RoomEntity room, List<ServiceEntity> services) {
+    public BookingEntity(Long id, LocalDate checkInDate, LocalDate checkOutDate, LocalDateTime bookingTime, String status, HomestayEntity homestay, List<ServiceEntity> services) {
         this.id = id;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.bookingTime = bookingTime;
         this.status = status;
         this.homestay = homestay;
-        this.room = room;
         this.services = services;
     }
 }

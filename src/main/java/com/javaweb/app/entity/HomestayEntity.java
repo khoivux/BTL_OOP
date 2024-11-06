@@ -17,9 +17,6 @@ public class HomestayEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "price", nullable = false)
-    private Long price;
-
     @Column(name = "address", nullable = false)
     private String address;
 
@@ -28,6 +25,12 @@ public class HomestayEntity {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "price", nullable = false)
+    private Long price;
+
+    @Column(name = "numberOfRooms")
+    private Long numberOfRooms;
 
     @ManyToOne
     @JoinColumn(name = "province_id")
@@ -74,14 +77,6 @@ public class HomestayEntity {
         this.name = name;
     }
 
-    public Long getPrice() {
-        return price;
-    }
-
-    public void setPrice(Long price) {
-        this.price = price;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -104,6 +99,22 @@ public class HomestayEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public Long getNumberOfRooms() {
+        return numberOfRooms;
+    }
+
+    public void setNumberOfRooms(Long numberOfRooms) {
+        this.numberOfRooms = numberOfRooms;
     }
 
     public ProvinceEntity getProvince() {

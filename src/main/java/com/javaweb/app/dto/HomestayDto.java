@@ -1,5 +1,7 @@
 package com.javaweb.app.dto;
 
+import java.util.List;
+
 public class HomestayDto {
     private Long id;
     private String name;
@@ -8,18 +10,23 @@ public class HomestayDto {
     private Long provinceid;
     private Long rating;
     private String description;
-
+    private Long numberOfRooms;
+    private List<RoomDTO> rooms;
+    private List<HomestayFacilitiesDTO> facilities;
     public HomestayDto() {
     }
 
-    public HomestayDto(Long id, String name, Long price, Long rating, String description, String address, Long provinceid) {
+    public HomestayDto(Long id, String name, Long price, String address, Long provinceid, Long rating, String description, Long numberOfRooms, List<RoomDTO> rooms, List<HomestayFacilitiesDTO> facilities) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.rating = rating;
-        this.description = description;
         this.address = address;
         this.provinceid = provinceid;
+        this.rating = rating;
+        this.description = description;
+        this.numberOfRooms = numberOfRooms;
+        this.rooms = rooms;
+        this.facilities = facilities;
     }
 
     public Long getId() {
@@ -76,5 +83,29 @@ public class HomestayDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getNumberOfRooms() {
+        return numberOfRooms;
+    }
+
+    public void setNumberOfRooms(Long numberOfRooms) {
+        this.numberOfRooms = numberOfRooms;
+    }
+
+    public List<RoomDTO> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<RoomDTO> rooms) {
+        this.rooms = rooms;
+    }
+
+    public List<HomestayFacilitiesDTO> getFacilities() {
+        return facilities;
+    }
+
+    public void setFacilities(List<HomestayFacilitiesDTO> facilities) {
+        this.facilities = facilities;
     }
 }

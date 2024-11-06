@@ -199,7 +199,29 @@
             </div>
         </form>
     </div>
+    <script>
+        function validateForm() {
+            const address = document.querySelector('input[name="address"]').value;
+            const checkinDate = document.querySelector('input[name="checkinDate"]').value;
+            const checkoutDate = document.querySelector('input[name="checkoutDate"]').value;
 
+            const params = new URLSearchParams();
+
+            if (address) params.append('address', address);
+            if (checkinDate) params.append('checkinDate', checkinDate);
+            if (checkoutDate) params.append('checkoutDate', checkoutDate);
+
+            const action = document.querySelector('form').getAttribute('action');
+            fetch(`${action}?${params.toString()}`, {
+                method: 'GET',
+            }).then(response => {
+                // Xử lý phản hồi ở đây
+            });
+
+            // Ngăn form gửi theo cách thông thường
+            return false;
+        }
+    </script>
     <!-- <section class="book">
         <div class="container flex_space">
             <div class="form">

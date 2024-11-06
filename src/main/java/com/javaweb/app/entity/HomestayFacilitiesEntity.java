@@ -17,4 +17,31 @@ public class HomestayFacilitiesEntity {
 
     @ManyToMany(mappedBy = "facilities")
     private List<HomestayEntity> homestays;
+
+    public HomestayFacilitiesEntity() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<HomestayEntity> getHomestays() {
+        return homestays;
+    }
+
+    public void setHomestays(List<HomestayEntity> homestays) {
+        this.homestays = homestays;
+    }
 }
