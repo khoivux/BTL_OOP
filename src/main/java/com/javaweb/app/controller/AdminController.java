@@ -5,7 +5,9 @@ import com.javaweb.app.dto.HomestayDto;
 import com.javaweb.app.dto.HomestayResponseDTO;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.service.HomestayService;
+import com.javaweb.app.service.UserService;
 import com.javaweb.app.service.impl.HomestayServiceImpl;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,15 +24,26 @@ public class AdminController {
     public HomestayService homestayService;
     @Autowired
     public HomestayRepository homestayRepository;
+    @Autowired
+    public UserService userService;
 
-    @GetMapping // Trang quản trị
-    public ModelAndView adminPage(@RequestParam Map<String, Object> params,
-                                     @RequestParam List<Long> homestayFacilities,
-                                        @RequestParam List<Long> roomFacilities) {
-        List<HomestayResponseDTO> list = homestayService.findByFilter(params, homestayFacilities);
-        ModelAndView model = new ModelAndView("admin/homestay");
-        model.addObject("homestays", list);
-        return model;
+    @GetMapping()
+    public ModelAndView adminLogin() {
+        return new ModelAndView("admin/loginAdmin");
+    }
+
+    @PostMapping("/login")
+    public ModelAndView handleLogin(@RequestParam("email") String email,
+                                    @RequestParam("password") String password,
+                                    HttpSession session){
+        if(userService.authAdmin(email, password) != null) {
+            session.setAttribute("admin", true); // Đánh dấu là đã đăng nhập
+            return new ModelAndView("admin/homestay");
+        } else {
+            ModelAndView modelAndView = new ModelAndView("admin/loginAdmin");
+            modelAndView.addObject("error", "Invalid username or password");
+            return modelAndView;
+        }
     }
 
     @GetMapping("/homestay-list") // Trang quản lý Homestay
