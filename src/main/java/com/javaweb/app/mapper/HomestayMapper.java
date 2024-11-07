@@ -18,13 +18,14 @@ public class HomestayMapper {
     private ModelMapper modelMapper;
     @Autowired
     public RoomMapper roomMapper;
+
     public List<HomestayFacilitiesDTO> mapToHomestayFacilities(List<HomestayFacilitiesEntity> list) {
         List<HomestayFacilitiesDTO> result = new ArrayList<>();
-        for(HomestayFacilitiesEntity homestayFacilitiesEntity : list) {
-            HomestayFacilitiesDTO homestayFacilitiesDTO = new HomestayFacilitiesDTO();
-            homestayFacilitiesDTO.setId(homestayFacilitiesEntity.getId());
-            homestayFacilitiesDTO.setName(homestayFacilitiesEntity.getName());
-            result.add(homestayFacilitiesDTO);
+        for(HomestayFacilitiesEntity entity : list) {
+            HomestayFacilitiesDTO dto = new HomestayFacilitiesDTO();
+            dto.setId(entity.getId());
+            dto.setName(entity.getName());
+            result.add(dto);
         }
         return result;
     }

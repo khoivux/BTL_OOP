@@ -242,34 +242,47 @@
             </div>
 
             <!-- Địa điểm -->
+<!--            <div class="filter-group">-->
+<!--                <h3>Địa điểm</h3>-->
+<!--                <label>-->
+<!--                    <input name="homestayFacilities" type="checkbox" value="1"-->
+<!--                           th:checked="${selectedFacilities.contains(1L)}">-->
+<!--                    Cho phép vật nuôi-->
+<!--                </label><br>-->
+<!--                <label>-->
+<!--                    <input name="homestayFacilities" type="checkbox" value="2"-->
+<!--                           th:checked="${selectedFacilities.contains(2L)}">-->
+<!--                    Cho thuê xe máy/ xe đạp-->
+<!--                </label><br>-->
+<!--                <label>-->
+<!--                    <input name="homestayFacilities" type="checkbox" value="3"-->
+<!--                           th:checked="${selectedFacilities.contains(3L)}">-->
+<!--                    Phòng xông hơi-->
+<!--                </label><br>-->
+<!--                <label>-->
+<!--                    <input name="homestayFacilities" type="checkbox" value="4"-->
+<!--                           th:checked="${selectedFacilities.contains(4L)}">-->
+<!--                    Wifi miễn phí-->
+<!--                </label><br>-->
+<!--                <label>-->
+<!--                    <input name="homestayFacilities" type="checkbox" value="5"-->
+<!--                           th:checked="${selectedFacilities.contains(5L)}">-->
+<!--                    Wifi miễn phí-->
+<!--                </label>-->
+<!--            </div>-->
+
             <div class="filter-group">
                 <h3>Địa điểm</h3>
-                <label>
-                    <input name="homestayFacilities" type="checkbox" value="1"
-                           th:checked="${selectedFacilities.contains(1L)}">
-                    Cho phép vật nuôi
-                </label><br>
-                <label>
-                    <input name="homestayFacilities" type="checkbox" value="2"
-                           th:checked="${selectedFacilities.contains(2L)}">
-                    Cho thuê xe máy/ xe đạp
-                </label><br>
-                <label>
-                    <input name="homestayFacilities" type="checkbox" value="3"
-                           th:checked="${selectedFacilities.contains(3L)}">
-                    Phòng xông hơi
-                </label><br>
-                <label>
-                    <input name="homestayFacilities" type="checkbox" value="4"
-                           th:checked="${selectedFacilities.contains(4L)}">
-                    Wifi miễn phí
-                </label><br>
-                <label>
-                    <input name="homestayFacilities" type="checkbox" value="5"
-                           th:checked="${selectedFacilities.contains(5L)}">
-                    Wifi miễn phí
-                </label>
+                <div th:each="facility : ${facilities}">
+                    <label>
+                        <input name="homestayFacilities" type="checkbox"
+                               th:value="${facility.id}"
+                               th:checked="${selectedFacilities.contains(facility.id)}">
+                        <span th:text="${facility.name}">Facility Name</span>
+                    </label><br>
+                </div>
             </div>
+
 
             <button class="filter-button" type="button" onclick="submitForm()">Áp dụng bộ lọc</button>
         </div>

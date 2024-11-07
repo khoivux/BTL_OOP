@@ -1,6 +1,8 @@
 package com.javaweb.app.controller;
 
+import com.javaweb.app.dto.HomestayFacilitiesDTO;
 import com.javaweb.app.dto.HomestayResponseDTO;
+import com.javaweb.app.service.FacilitiesService;
 import com.javaweb.app.service.HomestayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +18,8 @@ import java.util.Map;
 public class HomeController {
     @Autowired
     public HomestayService homestayService;
-
+//    @Autowired
+//    public FacilitiesService facilitiesService;
     @GetMapping(value = "/")
     public ModelAndView homePage() {
         return new ModelAndView("home");
@@ -31,6 +34,9 @@ public class HomeController {
 
         List<Long> selectedFacilities = (homestayFacilities != null) ? homestayFacilities : new ArrayList<>();
         model.addObject("selectedFacilities", selectedFacilities);
+
+//        List<HomestayFacilitiesDTO> facilities = facilitiesService.findAll();
+//        model.addObject("facilities", facilities);
 
         model.addObject("homestays", list);
         return model;
