@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,11 +48,8 @@ public class AdminController {
     }
 
     @GetMapping("/homestay-list") // Trang quản lý Homestay
-    public ModelAndView adminHomestayPage(@RequestParam Map<String, Object> params,
-                                          @RequestParam List<Long> homestayFacilities,
-                                            @RequestParam List<Long> roomFacilities) {
-        int cnt = 1;
-        List<HomestayResponseDTO> list = homestayService.findByFilter(params, homestayFacilities);
+    public ModelAndView adminHomestayPage(@RequestParam Map<String, Object> params) {
+        List<HomestayResponseDTO> list = homestayService.findByFilter(params, new ArrayList<>());
         ModelAndView model = new ModelAndView("admin/homestay");
         model.addObject("homestays", list);
         return model;
