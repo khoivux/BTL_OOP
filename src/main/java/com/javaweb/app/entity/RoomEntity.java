@@ -22,16 +22,6 @@ public class RoomEntity {
     @JoinColumn(name = "homestay_id", nullable = false)
     private HomestayEntity homestay;
 
-    public RoomEntity() {
-    }
-
-    public RoomEntity(Long id, String type, Long numbers, HomestayEntity homestay) {
-        this.id = id;
-        this.type = type;
-        this.numbers = numbers;
-        this.homestay = homestay;
-    }
-
     public RoomEntity(Long id, String type, Long numbers) {
         this.id = id;
         this.type = type;

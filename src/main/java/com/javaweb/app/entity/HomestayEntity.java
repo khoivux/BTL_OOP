@@ -56,7 +56,7 @@ public class HomestayEntity {
             joinColumns = @JoinColumn(name = "homestay_id"), // Khóa ngoại trỏ tới HomestayEntity
             inverseJoinColumns = @JoinColumn(name = "facilities_id") // Khóa ngoại trỏ tới ServiceEntity
     )
-    private List<HomestayFacilitiesEntity> facilities;
+    private List<FacilitiesEntity> facilities;
 
     public HomestayEntity() {
     }
@@ -109,9 +109,6 @@ public class HomestayEntity {
         this.price = price;
     }
 
-    public Long getNumberOfRooms() {
-        return numberOfRooms;
-    }
 
     public void setNumberOfRooms(Long numberOfRooms) {
         this.numberOfRooms = numberOfRooms;
@@ -129,31 +126,8 @@ public class HomestayEntity {
         return rooms;
     }
 
-    public void setRooms(List<RoomEntity> rooms) {
-        this.rooms = rooms;
-    }
 
-    public List<BookingEntity> getBookingList() {
-        return bookingList;
-    }
-
-    public void setBookingList(List<BookingEntity> bookingList) {
-        this.bookingList = bookingList;
-    }
-
-    public List<ServiceEntity> getServices() {
-        return services;
-    }
-
-    public void setServices(List<ServiceEntity> services) {
-        this.services = services;
-    }
-
-    public List<HomestayFacilitiesEntity> getFacilities() {
+    public List<FacilitiesEntity> getFacilities() {
         return facilities;
-    }
-
-    public void setFacilities(List<HomestayFacilitiesEntity> facilities) {
-        this.facilities = facilities;
     }
 }

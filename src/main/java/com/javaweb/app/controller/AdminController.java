@@ -26,7 +26,7 @@ public class AdminController {
     @GetMapping // Trang quản trị
     public ModelAndView adminPage(@RequestParam Map<String, Object> params,
                                      @RequestParam(required = false) List<Long> homestayFacilities) {
-       // List<HomestayResponseDTO> list = homestayService.findyFilter(params, homestayFacilities);
+       // List<HomestayResponseDTO> list = homestayService.finFilter(params, homestayFacilities);
         List<HomestayResponseDTO> list = homestayService.findAll();
         ModelAndView model = new ModelAndView("admin/homestay");
         model.addObject("homestays", list);
@@ -35,10 +35,10 @@ public class AdminController {
 
     @GetMapping("/homestay-list") // Trang quản lý Homestay
     public ModelAndView adminHomestayPage(@RequestParam Map<String, Object> params,
-                                          @RequestParam List<Long> homestayFacilities) {
-        List<HomestayResponseDTO> list = homestayService.findByFilter(params, homestayFacilities);
-        ModelAndView model = new ModelAndView("admin/homestay");
-        model.addObject("homestays", list);
+                                          @RequestParam(required = false) List<Long> homestayFacilities) {
+        List<HomestayResponseDTO> list = homestayService.findByFilter(params, homestayFacilities); // Lấy từ homestay database
+        ModelAndView model = new ModelAndView("admin/homestay"); // Thêm HTML
+        model.addObject("homestays", list); // Thêm model
         return model;
     }
 

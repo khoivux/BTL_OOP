@@ -28,9 +28,9 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
 
 
     public static void joinTable(HomestaySearchRequest homestaySearchRequest,
-                                 List<Long> homestayFacilities,
                                  StringBuilder sql) {
 
+        List<Long> homestayFacilities = homestaySearchRequest.getHomestayFacilities();
         // Join vào bảng booking
         LocalDate checkIn = homestaySearchRequest.getCheckInDate();
         LocalDate checkOut = homestaySearchRequest.getCheckOutDate();
@@ -72,8 +72,8 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
     }
 
     public static void querySpecial(HomestaySearchRequest homestaySearchRequest,
-                                    List<Long> homestayFacilities,
                                     StringBuilder where) {
+        List<Long> homestayFacilities = homestaySearchRequest.getHomestayFacilities();
         // Tìm theo giá phòng
         Long priceTo = homestaySearchRequest.getPriceTo();
         Long priceFrom = homestaySearchRequest.getPriceFrom();
@@ -104,18 +104,17 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
 
     }
 
-    public List<HomestayEntity> findByFilter(HomestaySearchRequest homestaySearchRequest,
-                                             List<Long> homestayFacilities) {
+    public List<HomestayEntity> findByFilter(HomestaySearchRequest homestaySearchRequest) {
         StringBuilder sql = new StringBuilder("SELECT h.* FROM homestay h \n");
         List<HomestayEntity> result = new ArrayList<>();
         StringBuilder where = new StringBuilder("WHERE 1 = 1 \n");
 
         // Xử lý Join Table
-        joinTable(homestaySearchRequest, homestayFacilities, sql);
+        joinTable(homestaySearchRequest,  sql);
         // Xử lý câu lệnh không cần Join Table, chỉ cần like/=
         queryNormal(homestaySearchRequest, where);
         // Xử lý câu lệnh đặc biệt như cần Join Tablle, cần <, >, IN, NOT IN,...
-        querySpecial(homestaySearchRequest, homestayFacilities, where);
+        querySpecial(homestaySearchRequest, where);
         sql.append(where).append("GROUP BY h.id");
 
         Query query = entityManager.createNativeQuery(sql.toString(), HomestayEntity.class);

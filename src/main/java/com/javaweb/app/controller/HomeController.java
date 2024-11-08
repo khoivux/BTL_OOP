@@ -1,9 +1,11 @@
 package com.javaweb.app.controller;
 
-import com.javaweb.app.dto.HomestayFacilitiesDTO;
+import com.javaweb.app.dto.FacilitiesDTO;
 import com.javaweb.app.dto.HomestayResponseDTO;
+import com.javaweb.app.dto.ServiceDTO;
 import com.javaweb.app.service.FacilitiesService;
 import com.javaweb.app.service.HomestayService;
+import com.javaweb.app.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +20,11 @@ import java.util.Map;
 public class HomeController {
     @Autowired
     public HomestayService homestayService;
-//    @Autowired
-//    public FacilitiesService facilitiesService;
+    @Autowired
+    public FacilitiesService facilitiesService;
+    @Autowired
+    public ServiceService serviceService;
+
     @GetMapping(value = "/")
     public ModelAndView homePage() {
         return new ModelAndView("home");
@@ -27,16 +32,21 @@ public class HomeController {
 
     @GetMapping(value = "/search")
     public ModelAndView searchPage(@RequestParam Map<String, Object> params,
-                                   @RequestParam(required = false) List<Long> homestayFacilities) {
+                                   @RequestParam(required = false) List<Long> homestayFacilities,
+                                   @RequestParam(required = false) List<Long> homestayServices) {
 
         List<HomestayResponseDTO> list = homestayService.findByFilter(params, homestayFacilities);
         ModelAndView model = new ModelAndView("search");
-
+        // Lưu lựa chọn vừa chọn
         List<Long> selectedFacilities = (homestayFacilities != null) ? homestayFacilities : new ArrayList<>();
         model.addObject("selectedFacilities", selectedFacilities);
-
-//        List<HomestayFacilitiesDTO> facilities = facilitiesService.findAll();
-//        model.addObject("facilities", facilities);
+        List<Long> selectedServices = (homestayServices != null) ? homestayServices : new ArrayList<>();
+        model.addObject("selectedServices", selectedServices);
+        // Trả về tất cả tiện nghi và dịch vụ đẻ tạo các checkbox
+        List<ServiceDTO> services = serviceService.findAll();
+        model.addObject("services", services);
+        List<FacilitiesDTO> facilities = facilitiesService.findAll();
+        model.addObject("facilities", facilities);
 
         model.addObject("homestays", list);
         return model;

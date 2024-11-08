@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -67,7 +68,7 @@ public class HomestayServiceImpl implements HomestayService {
     @Override // Lấy tất cả Homestay được lọc theo Filter
     public List<HomestayResponseDTO> findByFilter(Map<String, Object> params, List<Long> homestayFacilities) {
         HomestaySearchRequest homestaySearchRequest = homestayRequestMapper.mapToHomestaySearchRequest(params, homestayFacilities);
-        List<HomestayEntity> homestayEntities = homestayRepository.findByFilter(homestaySearchRequest, homestayFacilities);
+        List<HomestayEntity> homestayEntities = homestayRepository.findByFilter(homestaySearchRequest);
         List<HomestayResponseDTO> result = new ArrayList<>();
         for (HomestayEntity homestayEntity : homestayEntities) {
             result.add(homestayMapper.mapToHomestayResponse(homestayEntity));
@@ -77,8 +78,7 @@ public class HomestayServiceImpl implements HomestayService {
 
     @Override // Lấy 1 Homestay theo id
     public HomestayDto findHomestayById(Long id) {
-        HomestayEntity homestayEntity = homestayRepository.findById(id) //Optional
-                .orElseThrow(() -> new ResourceNotFoundException("Không tồn tại Homestay có id là " + id));
+        HomestayEntity homestayEntity = homestayRepository.getById(id);
         return homestayMapper.mapToHomestayDto(homestayEntity);
     }
 

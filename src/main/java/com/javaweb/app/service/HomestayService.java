@@ -21,6 +21,7 @@ public interface HomestayService {
 
     HomestayDto updateHomestay(Long id, HomestayDto updatedHomestayDto);
 
+
     List<HomestayDto> findHomestayByIdIn(List<Long> ids);
 
     List<HomestayResponseDTO> findByFilter(Map<String, Object> params, List<Long> homestayFacilities);

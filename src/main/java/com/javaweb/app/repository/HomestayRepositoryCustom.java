@@ -6,5 +6,5 @@ import com.javaweb.app.model.HomestaySearchRequest;
 import java.util.List;
 
 public interface HomestayRepositoryCustom {
-    List<HomestayEntity> findByFilter(HomestaySearchRequest homestaySearchRequest, List<Long> homestayFacilities);
+    List<HomestayEntity> findByFilter(HomestaySearchRequest homestaySearchRequest);
 }

@@ -1,10 +1,12 @@
 package com.javaweb.app.mapper;
 
-import com.javaweb.app.dto.HomestayFacilitiesDTO;
+import com.javaweb.app.dto.FacilitiesDTO;
+import com.javaweb.app.dto.ServiceDTO;
 import com.javaweb.app.entity.HomestayEntity;
 import com.javaweb.app.dto.HomestayResponseDTO;
 import com.javaweb.app.dto.HomestayDto;
-import com.javaweb.app.entity.HomestayFacilitiesEntity;
+import com.javaweb.app.entity.FacilitiesEntity;
+import com.javaweb.app.entity.ServiceEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,10 +21,18 @@ public class HomestayMapper {
     @Autowired
     public RoomMapper roomMapper;
 
-    public List<HomestayFacilitiesDTO> mapToHomestayFacilities(List<HomestayFacilitiesEntity> list) {
-        List<HomestayFacilitiesDTO> result = new ArrayList<>();
-        for(HomestayFacilitiesEntity entity : list) {
-            HomestayFacilitiesDTO dto = new HomestayFacilitiesDTO();
+    public List<ServiceDTO> mapToServiceDTOs(List<ServiceEntity> entities) {
+        List<ServiceDTO> dtos = new ArrayList<>();
+        for(ServiceEntity serviceEntity : entities) {
+            dtos.add(new ServiceDTO(serviceEntity.getId(), serviceEntity.getName(), serviceEntity.getPrice()));
+        }
+        return dtos;
+    }
+
+    public List<FacilitiesDTO> mapToHomestayFacilities(List<FacilitiesEntity> list) {
+        List<FacilitiesDTO> result = new ArrayList<>();
+        for(FacilitiesEntity entity : list) {
+            FacilitiesDTO dto = new FacilitiesDTO();
             dto.setId(entity.getId());
             dto.setName(entity.getName());
             result.add(dto);
@@ -45,7 +55,6 @@ public class HomestayMapper {
         //homestayEntity.setRooms(roomMapper);
         return homestayEntity;
     }
-
     public HomestayResponseDTO mapToHomestayResponse(HomestayEntity homestayEntity) {
         HomestayResponseDTO homestayResponse = modelMapper.map(homestayEntity, HomestayResponseDTO.class);
         homestayResponse.setAddress(homestayEntity.getAddress() + ", " + homestayEntity.getProvince().getName());

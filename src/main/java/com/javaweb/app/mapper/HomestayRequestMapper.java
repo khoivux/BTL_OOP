@@ -16,7 +16,6 @@ public class HomestayRequestMapper {
     public HomestaySearchRequest mapToHomestaySearchRequest(Map<String, Object> params,
                                                                 List<Long> homestayFacilitiess) {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
-
         // Cho các LocalDate là null nếu Date nhận từ params là null hoặc rỗng
         String checkInDateStr = MapUtil.getObject(params, "checkInDate", String.class);
         String checkOutDateStr = MapUtil.getObject(params, "checkOutDate", String.class);
@@ -38,6 +37,7 @@ public class HomestayRequestMapper {
                 .setProvinceId(MapUtil.getObject(params, "provinceId", Long.class))
                 .setCheckInDate(checkInDate)
                 .setCheckOutDate(checkOutDate)
+                .setHomestayFacilities(homestayFacilitiess)
                 .build();
 
     }

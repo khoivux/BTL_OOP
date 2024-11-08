@@ -1,15 +1,15 @@
 package com.javaweb.app.dto;
 
 
-public class HomestayFacilitiesDTO {
+public class FacilitiesDTO {
     private Long id;
 
     private String name;
 
-    public HomestayFacilitiesDTO() {
+    public FacilitiesDTO() {
     }
 
-    public HomestayFacilitiesDTO(Long id, String name) {
+    public FacilitiesDTO(Long id, String name) {
         this.id = id;
         this.name = name;
     }

@@ -5,6 +5,8 @@ import com.javaweb.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     @Autowired
@@ -13,6 +15,7 @@ public class UserService {
     // admin login
     public User authAdmin(String email, String password) {
         User admin = userRepository.findByEmail(email);
+        //List<User> list = userRepository.findAll();
         if(admin != null) {
             if(admin.getUserPassword().equals(password) && admin.getUserRole().equals("admin")) {
                 return admin;
