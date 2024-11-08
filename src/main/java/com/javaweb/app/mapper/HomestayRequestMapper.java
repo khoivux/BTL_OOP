@@ -29,6 +29,7 @@ public class HomestayRequestMapper {
                 : null;
 
         return new HomestaySearchRequest.Builder()
+                .setId(MapUtil.getObject(params, "id", Long.class))
                 .setName(MapUtil.getObject(params, "name", String.class))
                 .setAddress(MapUtil.getObject(params, "address", String.class))
                 .setPriceFrom(MapUtil.getObject(params, "priceFrom", Long.class))

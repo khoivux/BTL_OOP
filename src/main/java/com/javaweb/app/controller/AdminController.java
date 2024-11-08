@@ -27,27 +27,30 @@ public class AdminController {
     @Autowired
     public UserService userService;
 
-    @GetMapping // Trang quản trị
-    public ModelAndView adminPage(@RequestParam Map<String, Object> params,
-                                     @RequestParam(required = false) List<Long> homestayFacilities) {
-       // List<HomestayResponseDTO> list = homestayService.finFilter(params, homestayFacilities);
-        List<HomestayResponseDTO> list = homestayService.findAll();
-        ModelAndView model = new ModelAndView("admin/homestay");
-        model.addObject("homestays", list);
-        return model;
-    }
+//    @GetMapping // Trang quản trị
+//    public ModelAndView adminPage(@RequestParam Map<String, Object> params,
+//                                     @RequestParam(required = false) List<Long> homestayFacilities) {
+//       // List<HomestayResponseDTO> list = homestayService.finFilter(params, homestayFacilities);
+//        List<HomestayResponseDTO> list = homestayService.findAll();
+//        ModelAndView model = new ModelAndView("admin/homestay");
+//        model.addObject("homestays", list);
+//        return model;
+//    }
     @GetMapping()
     public ModelAndView adminLogin() {
         return new ModelAndView("admin/loginAdmin");
     }
 
-    @PostMapping("/login")
+    @PostMapping("/manage")
     public ModelAndView handleLogin(@RequestParam("email") String email,
                                     @RequestParam("password") String password,
                                     HttpSession session){
         if(userService.authAdmin(email, password) != null) {
             session.setAttribute("admin", true); // Đánh dấu là đã đăng nhập
-            return new ModelAndView("admin/homestay");
+            ModelAndView modelAndView = new ModelAndView("admin/homestay");
+            List<HomestayResponseDTO> list = homestayService.findAll();
+            modelAndView.addObject("homestays", list);
+            return modelAndView;
         } else {
             ModelAndView modelAndView = new ModelAndView("admin/loginAdmin");
             modelAndView.addObject("error", "Invalid username or password");

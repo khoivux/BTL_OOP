@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomestaySearchRequest {
+    private Long id;
     private String name;
     private String address;
     private Long priceFrom;
@@ -35,6 +36,7 @@ public class HomestaySearchRequest {
         this.checkOutDate = builder.checkOutDate;
         this.homestayFacilities = builder.homestayFacilities;
         this.rentType = builder.rentType;
+        this.id = builder.id;
     }
 
     public String getName() {
@@ -72,12 +74,15 @@ public class HomestaySearchRequest {
     public List<Long> getHomestayFacilities() {
         return homestayFacilities;
     }
-
+    public Long getId() {
+        return id;
+    }
     public String getRentType() {
         return rentType;
     }
 
     public static class Builder {
+        private Long id;
         private String name;
         private String address;
         private Long priceFrom;
@@ -134,6 +139,10 @@ public class HomestaySearchRequest {
         }
         public Builder setRentType(String rentType) {
             this.rentType = rentType;
+            return this;
+        }
+        public Builder setId(Long id) {
+            this.id = id;
             return this;
         }
         public HomestaySearchRequest build() {
