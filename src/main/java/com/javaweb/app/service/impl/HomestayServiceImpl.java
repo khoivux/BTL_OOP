@@ -11,15 +11,14 @@ import com.javaweb.app.dto.HomestayDto;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.repository.ProvinceRepository;
 import com.javaweb.app.service.HomestayService;
+import com.javaweb.app.utils.MapUtil;
+import com.javaweb.app.utils.StringUtil;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -73,13 +72,19 @@ public class HomestayServiceImpl implements HomestayService {
         for (HomestayEntity homestayEntity : homestayEntities) {
             result.add(homestayMapper.mapToHomestayResponse(homestayEntity));
         }
+        String sort = MapUtil.getObject(params, "sort", String.class);
+        if(StringUtil.isValid(sort)) {
+            Comparator<HomestayResponseDTO> comparator = sort.equals("desc") ? HomestayResponseDTO.priceDesc : HomestayResponseDTO.priceAsc;
+            // Sắp xếp danh sách homestay theo giá
+            result.sort(comparator);
+        }
         return result;
     }
 
     @Override // Lấy 1 Homestay theo id
-    public HomestayDto findHomestayById(Long id) {
+    public HomestayResponseDTO findHomestayById(Long id) {
         HomestayEntity homestayEntity = homestayRepository.getById(id);
-        return homestayMapper.mapToHomestayDto(homestayEntity);
+        return homestayMapper.mapToHomestayResponse(homestayEntity);
     }
 
     // UPDATE

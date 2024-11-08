@@ -17,7 +17,7 @@ public interface HomestayService {
 
     void deleteHomestay(Long id);
 
-    HomestayDto findHomestayById(Long id);
+    HomestayResponseDTO findHomestayById(Long id);
 
     HomestayDto updateHomestay(Long id, HomestayDto updatedHomestayDto);
 

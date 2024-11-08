@@ -44,6 +44,8 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
                        "JOIN homestayfacilities fac ON hfac.facilities_id = fac.id \n");
         }
 
+        String address = homestaySearchRequest.getAddress();
+
     }
 
     public static void queryNormal(HomestaySearchRequest homestaySearchRequest,

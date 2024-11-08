@@ -14,7 +14,10 @@ import java.util.Map;
 public class HomestayRequestMapper {
     // Chuyển từ Param sang HomestaySearchRequest
     public HomestaySearchRequest mapToHomestaySearchRequest(Map<String, Object> params,
-                                                                List<Long> homestayFacilitiess) {
+                                                            List<Long> facilitiess,
+                                                            List<Long> rooms,
+                                                            List<Long> services) {
+
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
         // Cho các LocalDate là null nếu Date nhận từ params là null hoặc rỗng
         String checkInDateStr = MapUtil.getObject(params, "checkInDate", String.class);
@@ -38,7 +41,9 @@ public class HomestayRequestMapper {
                 .setProvinceId(MapUtil.getObject(params, "provinceId", Long.class))
                 .setCheckInDate(checkInDate)
                 .setCheckOutDate(checkOutDate)
-                .setHomestayFacilities(homestayFacilitiess)
+                .setFacilities(facilitiess)
+                .setRooms(rooms)
+                .setServices(services)
                 .build();
 
     }

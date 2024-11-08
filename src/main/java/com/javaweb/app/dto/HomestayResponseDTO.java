@@ -1,5 +1,6 @@
 package com.javaweb.app.dto;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class HomestayResponseDTO {
@@ -12,20 +13,7 @@ public class HomestayResponseDTO {
     private List<RoomDTO> rooms;
     private List<FacilitiesDTO> facilities;
     private List<ServiceDTO> services;
-    public HomestayResponseDTO() {
-    }
 
-    public HomestayResponseDTO(Long id, String name, String address, Long price, Long rating, String description, List<RoomDTO> rooms, List<FacilitiesDTO> facilities, List<ServiceDTO> services) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.price = price;
-        this.rating = rating;
-        this.description = description;
-        this.rooms = rooms;
-        this.facilities = facilities;
-        this.services = services;
-    }
 
     public Long getId() {
         return id;
@@ -98,4 +86,18 @@ public class HomestayResponseDTO {
     public void setServices(List<ServiceDTO> services) {
         this.services = services;
     }
+
+    public static Comparator<HomestayResponseDTO> priceAsc = new Comparator<HomestayResponseDTO>() {
+        @Override
+        public int compare(HomestayResponseDTO h1, HomestayResponseDTO h2) {
+            return Double.compare(h1.price, h2.price); // Tăng dần
+        }
+    };
+
+    public static Comparator<HomestayResponseDTO> priceDesc = new Comparator<HomestayResponseDTO>() {
+        @Override
+        public int compare(HomestayResponseDTO h1, HomestayResponseDTO h2) {
+            return Double.compare(h2.price, h1.price); // Giảm dần
+        }
+    };
 }

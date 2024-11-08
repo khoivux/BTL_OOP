@@ -6,6 +6,7 @@ import com.javaweb.app.dto.HomestayDto;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.service.HomestayService;
 import com.javaweb.app.service.impl.HomestayServiceImpl;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,9 +52,14 @@ public class HomestayController {
 
     // READ
     @GetMapping("/admin/homestay/{id}")
-    public ResponseEntity<HomestayDto> getById(@PathVariable Long id){
-        HomestayDto homestayDto = homestayService.findHomestayById(id);
-        return ResponseEntity.ok(homestayDto);
+    public HomestayResponseDTO getById(@PathVariable Long id){
+        return homestayService.findHomestayById(id);
+    }
+
+    @GetMapping("/homestay/{id}")
+    public HomestayResponseDTO getProductById(@PathVariable Long id) {
+        int cntt =1;
+        return homestayService.findHomestayById(id);
     }
 
     @GetMapping("/getall")

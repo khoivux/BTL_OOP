@@ -74,7 +74,7 @@ public class AdminController {
     @GetMapping("/homestay-edit/{id}") // Trang cập nhật homestay
     public ModelAndView updateHomestayPage(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("admin/update");
-        HomestayDto homestayDto = homestayService.findHomestayById(id);
+        HomestayResponseDTO homestayDto = homestayService.findHomestayById(id);
         modelAndView.addObject("homestay", homestayDto);
         return modelAndView;
     }

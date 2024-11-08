@@ -32,6 +32,9 @@ public class HomestayEntity {
     @Column(name = "numberOfRooms")
     private Long numberOfRooms;
 
+    @Column(name = "capacity")
+    private Long capacity;
+
     @ManyToOne
     @JoinColumn(name = "province_id")
     private ProvinceEntity province;
@@ -109,7 +112,6 @@ public class HomestayEntity {
         this.price = price;
     }
 
-
     public void setNumberOfRooms(Long numberOfRooms) {
         this.numberOfRooms = numberOfRooms;
     }
@@ -126,8 +128,19 @@ public class HomestayEntity {
         return rooms;
     }
 
-
     public List<FacilitiesEntity> getFacilities() {
         return facilities;
+    }
+
+    public Long getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Long capacity) {
+        this.capacity = capacity;
+    }
+
+    public Long getNumberOfRooms() {
+        return numberOfRooms;
     }
 }
