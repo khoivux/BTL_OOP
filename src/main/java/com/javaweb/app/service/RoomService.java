@@ -1,4 +1,4 @@
-package com.javaweb.app.service.impl;
+package com.javaweb.app.service;
 
 import com.javaweb.app.dto.RoomDTO;
 

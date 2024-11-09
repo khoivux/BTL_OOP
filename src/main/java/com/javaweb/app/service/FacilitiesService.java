@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface FacilitiesService {
     List<FacilitiesDTO> findAll();
+    List<FacilitiesDTO> findListByIds(List<Long> ids);
 }

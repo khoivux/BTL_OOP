@@ -1,15 +1,10 @@
-package com.javaweb.app.model;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+package com.javaweb.app.dto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomestaySearchRequest {
+public class HomestayRequestDTO {
     private Long id;
     private String name;
     private String address;
@@ -22,10 +17,10 @@ public class HomestaySearchRequest {
     private List<Long> facilities = new ArrayList<>();
     private List<Long> rooms = new ArrayList<>();
     private List<Long> services = new ArrayList<>();
-    public HomestaySearchRequest() {
+    public HomestayRequestDTO() {
     }
 
-    public HomestaySearchRequest(Builder builder) {
+    public HomestayRequestDTO(Builder builder) {
         this.name = builder.name;
         this.address = builder.address;
         this.priceFrom = builder.priceFrom;
@@ -160,8 +155,8 @@ public class HomestaySearchRequest {
             this.id = id;
             return this;
         }
-        public HomestaySearchRequest build() {
-            return new HomestaySearchRequest(this);
+        public HomestayRequestDTO build() {
+            return new HomestayRequestDTO(this);
         }
     }
 }

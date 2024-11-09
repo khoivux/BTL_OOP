@@ -1,10 +1,10 @@
 package com.javaweb.app.repository;
 
 import com.javaweb.app.entity.HomestayEntity;
-import com.javaweb.app.model.HomestaySearchRequest;
+import com.javaweb.app.dto.HomestayRequestDTO;
 
 import java.util.List;
 
 public interface HomestayRepositoryCustom {
-    List<HomestayEntity> findByFilter(HomestaySearchRequest homestaySearchRequest);
+    List<HomestayEntity> findByFilter(HomestayRequestDTO homestayRequestDTO);
 }

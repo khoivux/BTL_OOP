@@ -26,9 +26,12 @@ public class HomestayController {
 
     // CREATE
     @PostMapping("/admin/homestay-add")  // Thêm mới homestay
-    public ResponseEntity<HomestayDto> addHomestay(@RequestBody HomestayDto homestayDto) {
-        HomestayDto addedHomestay = homestayService.createHomestay(homestayDto);
-        return ResponseEntity.ok(homestayDto);
+    public ResponseEntity<HomestayResponseDTO> addHomestay(@RequestParam Map<String, Object> params,
+                                                   @RequestParam(required = false) List<Long> facilities,
+                                                   @RequestParam(required = false) List<Long> services) {
+//        HomestayDto addedHomestay = homestayService.createHomestay(homestayDto);
+//        return ResponseEntity.ok(homestayDto);
+        return null;
     }
 
     // UPDATE

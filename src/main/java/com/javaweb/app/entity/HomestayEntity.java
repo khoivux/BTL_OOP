@@ -117,8 +117,20 @@ public class HomestayEntity {
         this.price = price;
     }
 
+    public Long getNumberOfRooms() {
+        return numberOfRooms;
+    }
+
     public void setNumberOfRooms(Long numberOfRooms) {
         this.numberOfRooms = numberOfRooms;
+    }
+
+    public Long getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Long capacity) {
+        this.capacity = capacity;
     }
 
     public ProvinceEntity getProvince() {
@@ -129,12 +141,35 @@ public class HomestayEntity {
         this.province = province;
     }
 
+    public List<BookingEntity> getBookingList() {
+        return bookingList;
+    }
+
+    public void setBookingList(List<BookingEntity> bookingList) {
+        this.bookingList = bookingList;
+    }
+
+    public List<ServiceEntity> getServices() {
+        return services;
+    }
+
+    public void setServices(List<ServiceEntity> services) {
+        this.services = services;
+    }
 
     public List<FacilitiesEntity> getFacilities() {
         return facilities;
     }
 
+    public void setFacilities(List<FacilitiesEntity> facilities) {
+        this.facilities = facilities;
+    }
+
     public List<RoomEntity> getRooms() {
         return rooms;
+    }
+
+    public void setRooms(List<RoomEntity> rooms) {
+        this.rooms = rooms;
     }
 }

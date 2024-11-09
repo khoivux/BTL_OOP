@@ -10,6 +10,7 @@ import java.util.List;
 @Table(name = "booking")
 public class BookingEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "checkin_date")
@@ -40,4 +41,35 @@ public class BookingEntity {
     )
     private List<ServiceEntity> services;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setCheckInDate(LocalDate checkInDate) {
+        this.checkInDate = checkInDate;
+    }
+
+    public void setCheckOutDate(LocalDate checkOutDate) {
+        this.checkOutDate = checkOutDate;
+    }
+
+    public void setBookingTime(LocalDateTime bookingTime) {
+        this.bookingTime = bookingTime;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setHomestay(HomestayEntity homestay) {
+        this.homestay = homestay;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setServices(List<ServiceEntity> services) {
+        this.services = services;
+    }
 }

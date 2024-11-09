@@ -3,8 +3,11 @@ package com.javaweb.app.controller;
 import com.javaweb.app.dto.HomestayDto;
 
 import com.javaweb.app.dto.HomestayResponseDTO;
+import com.javaweb.app.dto.ProvinceDto;
 import com.javaweb.app.repository.HomestayRepository;
+import com.javaweb.app.service.FacilitiesService;
 import com.javaweb.app.service.HomestayService;
+import com.javaweb.app.service.ProvinceService;
 import com.javaweb.app.service.UserService;
 import com.javaweb.app.service.impl.HomestayServiceImpl;
 import jakarta.servlet.http.HttpSession;
@@ -24,6 +27,10 @@ public class AdminController {
     public HomestayService homestayService;
     @Autowired
     public HomestayRepository homestayRepository;
+    @Autowired
+    public FacilitiesService facilitiesService;
+    @Autowired
+    public ProvinceService provinceService;
     @Autowired
     public UserService userService;
 
@@ -68,7 +75,12 @@ public class AdminController {
 
     @GetMapping("/homestay-edit") // Trang thêm mới homestay
     public ModelAndView addHomestayPage() {
-        return new ModelAndView("admin/add");
+        ModelAndView modelAndView = new ModelAndView("admin/add");
+        modelAndView.addObject("facilities", facilitiesService.findAll());
+        modelAndView.addObject("provinces", provinceService.findAll());
+
+       // modelAndView.addObject("rooms",)
+        return modelAndView;
     }
 
     @GetMapping("/homestay-edit/{id}") // Trang cập nhật homestay

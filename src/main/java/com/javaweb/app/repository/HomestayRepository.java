@@ -12,7 +12,7 @@ public interface HomestayRepository extends HomestayRepositoryCustom, JpaReposit
     @NonNull
     List<HomestayEntity> findAll();
 
-    HomestayEntity getById(Long id);
+    Optional<HomestayEntity> findById(Long id);
     void deleteByIdIn(List<Long> ids);
 
     List<HomestayEntity> findByIdIn(List<Long> ids);
