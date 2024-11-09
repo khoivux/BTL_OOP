@@ -53,7 +53,7 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
 
         String address = homestaySearchRequest.getAddress();
         if(StringUtil.isValid(address)) {
-            sql.append(("JOIN province pro ON h.id = pro.homestay_id \n"));
+            sql.append(("JOIN province pro ON h.province_id = pro.id \n"));
         }
 
     }
@@ -66,7 +66,7 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
             for (Field item : fields) {
                 item.setAccessible(true);
                 String fieldName = item.getName();
-                if (!fieldName.startsWith("price") && !fieldName.endsWith("Date")) {
+                if (!fieldName.startsWith("price") && !fieldName.endsWith("Date") &&!fieldName.startsWith("addre")) {
                     Object value = item.get(homestaySearchRequest);
                     if (value != null && value != "") {
                         if (item.getType().getName().equals("java.lang.Long") || item.getType().getName().equals("java.lang.Integer")) {
@@ -125,7 +125,8 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
 
         String address = homestaySearchRequest.getAddress();
         if(StringUtil.isValid(address)) {
-            where.append(("AND pro.name like '%" + address + "%'\n"));
+            where.append(("AND ( pro.name like '%" + address + "%' \n" +
+                           "OR h.address like '%" + address + "%') \n"));
         }
     }
 
