@@ -30,7 +30,7 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
     public static void joinTable(HomestaySearchRequest homestaySearchRequest,
                                  StringBuilder sql) {
 
-        List<Long> homestayFacilities = homestaySearchRequest.getHomestayFacilities();
+
         // Join vào bảng booking
         LocalDate checkIn = homestaySearchRequest.getCheckInDate();
         LocalDate checkOut = homestaySearchRequest.getCheckOutDate();
@@ -39,12 +39,22 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
         }
 
         // Join vào bảng tiện nghi homestay
+        List<Long> homestayFacilities = homestaySearchRequest.getHomestayFacilities();
         if(homestayFacilities != null && !homestayFacilities.isEmpty()) {
             sql.append("JOIN homestay_facilities hfac ON h.id = hfac.homestay_id \n" +
                        "JOIN homestayfacilities fac ON hfac.facilities_id = fac.id \n");
         }
 
+        List<Long> rooms = homestaySearchRequest.getRooms();
+        if(rooms != null && !rooms.isEmpty()) {
+            sql.append("JOIN homestay_room hr ON h.id = hr_id \n" +
+                    "JOIN room ON hr.room_id = room.id \n");
+        }
+
         String address = homestaySearchRequest.getAddress();
+        if(StringUtil.isValid(address)) {
+            sql.append(("JOIN province pro ON h.id = pro.homestay_id \n"));
+        }
 
     }
 
@@ -75,7 +85,7 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
 
     public static void querySpecial(HomestaySearchRequest homestaySearchRequest,
                                     StringBuilder where) {
-        List<Long> homestayFacilities = homestaySearchRequest.getHomestayFacilities();
+
         // Tìm theo giá phòng
         Long priceTo = homestaySearchRequest.getPriceTo();
         Long priceFrom = homestaySearchRequest.getPriceFrom();
@@ -96,6 +106,7 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
         }
 
         // Tìm theo tiện nghi Homestay
+        List<Long> homestayFacilities = homestaySearchRequest.getHomestayFacilities();
         if(homestayFacilities != null && !homestayFacilities.isEmpty()) {
             where.append("AND fac.id IN ");
             String listId = homestayFacilities.stream()
@@ -103,7 +114,19 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
                     .collect(Collectors.joining(", ", "(", ")")); // Chuyển list về dạng (a, b, c)
             where.append(listId + "\n");
         }
+        List<Long> rooms = homestaySearchRequest.getRooms();
+        if(rooms != null && !rooms.isEmpty()) {
+            where.append("AND room.id IN ");
+            String listId = rooms.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(", ", "(", ")")); // Chuyển list về dạng (a, b, c)
+            where.append(listId + "\n");
+        }
 
+        String address = homestaySearchRequest.getAddress();
+        if(StringUtil.isValid(address)) {
+            where.append(("AND pro.name like '%" + address + "%'\n"));
+        }
     }
 
     public List<HomestayEntity> findByFilter(HomestaySearchRequest homestaySearchRequest) {

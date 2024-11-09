@@ -1,11 +1,11 @@
-{% load static %}
+
 <html lang="en" dir="ltr" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomeStay • HomesTayBac</title>
-    <link rel="stylesheet" th:href="@//css/product.css}">
+    <link rel="stylesheet" th:href="@{/css/product.css}">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css"
@@ -40,16 +40,18 @@
         </div>
     </header>
     <script>
-        let isLoggedIn = true; // thêm phương thức kiểm tra trạng thái đăng nhập
-        const userName = "Nguyễn Văn A";
 
-        function updateUserAction() {
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        console.log(isLoggedIn);
+        const updateUserAction = () => {
+            const userName = localStorage.getItem('name');
+
             const userActionDiv = document.getElementById("user-action");
             console.log(userActionDiv);
-            if (isLoggedIn) {
+            if (localStorage.getItem('isLoggedIn') === 'true') {
                 userActionDiv.innerHTML =
                 `
-                <div show-info onclick="showInfo()" class="navlinks">
+                <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
                     <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
                     <ul show-ul class="d-none" id="userlist">
                         <li><a href="#">Thông tin tài khoản</a></li>    <!--url trang profile-->
@@ -57,17 +59,15 @@
                         <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
                     </ul>
                 </div>
-                `;                                                      //url trang profile
-                                                                        // url trang history
-                                                                        // thoát trạng thái đăng nhập
+                `;
             } else {
-                userActionDiv.innerHTML = `<a href="#"><button class="primary-btn">Đăng nhập</button></a>`; // url đến trang đăng nhập
+                userActionDiv.innerHTML = `<a href="/user"><button class="primary-btn">Đăng nhập</button></a>`;
             }
         }
 
         function logout() {
-            isLoggedIn = false;
-            updateUserAction(); 
+            localStorage.setItem('isLoggedIn', false);
+            updateUserAction();
         }
         updateUserAction();
     </script>
@@ -114,12 +114,12 @@
         <div class="col-lg-7">
             <!--Hình ảnh sản phẩm-->
             <div class="image-gallery mb-4">
-                <img th:src="@/img/homestay4.jpg}" class="img-fluid" alt="Phòng lớn homestay" style="width: 100%; max-height: 500px; object-fit: cover;" onclick="openModal(this.src)">
+                <img th:src="@{/img/homestay4.jpg}" class="img-fluid" alt="Phòng lớn homestay" style="width: 100%; max-height: 500px; object-fit: cover;" onclick="openModal(this.src)">
             </div>
             <div class="image-thumbnails d-flex gap-2">
-                <img th:src="/img/homestay1.jpg}" class="img-thumbnail" alt="Hình ảnh homestay 1" style="width: 100px; height: 100px;" onclick="openModal(this.src)">
-                <img th:src="/img/homestay2.jpg}" class="img-thumbnail" alt="Hình ảnh homestay 2" style="width: 100px; height: 100px;" onclick="openModal(this.src)">
-                <img th:src="/img/homestay3.jpg}" class="img-thumbnail" alt="Hình ảnh homestay 3" style="width: 100px; height: 100px;" onclick="openModal(this.src)">
+                <img th:src="@{/img/homestay1.jpg}" class="img-thumbnail" alt="Hình ảnh homestay 1" style="width: 100px; height: 100px;" onclick="openModal(this.src)">
+                <img th:src="@{/img/homestay2.jpg}" class="img-thumbnail" alt="Hình ảnh homestay 2" style="width: 100px; height: 100px;" onclick="openModal(this.src)">
+                <img th:src="@{/img/homestay3.jpg}" class="img-thumbnail" alt="Hình ảnh homestay 3" style="width: 100px; height: 100px;" onclick="openModal(this.src)">
             </div>
 
 
@@ -146,24 +146,23 @@
                 }
             </script>
         </div>
-        {% comment %} {% if homestays %} {% endcomment %}
-            <div class="col-lg-5">
-                <h2 class="card-title">Tên: {{ homestay.name }}</h2>
-                <p class="text-muted">Địa chỉ: {{ homestay.address }}</p>
-                <p class="text-muted">Homestay Tây Bắc mang đậm bản sắc văn hóa dân tộc vùng cao...</p>
-                <h4 class="mt-4">Tiện nghi</h4>
-                <ul class="list-unstyled">
-                    <li>Phòng nghỉ dân dã, ấm cúng</li>
-                    <li>Khu vực đốt lửa trại</li>
-                    <li>Tour tham quan bản làng và ruộng bậc thang</li>
-                    <li>Bữa ăn địa phương truyền thống</li>
-                </ul>
-                <h4 class="mt-4">Giá</h4>
-                <p>{{ homestay.price }}.000 VND / đêm</p>
-                <a href="book" class="btn btn-primary">Đặt ngay</a>
-            </div>
-        {% comment %} {% endif %}             {% endcomment %}
+        <div class="col-lg-5">
+            <h2 class="card-title">Tên: <span th:text="${homestay.name}">Tên homestay</span></h2>
+            <p class="text-muted">Địa chỉ: <span th:text="${homestay.address}">Địa chỉ homestay</span></p>
+            <p class="text-muted">Homestay Tây Bắc mang đậm bản sắc văn hóa dân tộc vùng cao...</p>
+            <h4 class="mt-4">Tiện nghi</h4>
+            <ul class="list-unstyled">
+                <li>Phòng nghỉ dân dã, ấm cúng</li>
+                <li>Khu vực đốt lửa trại</li>
+                <li>Tour tham quan bản làng và ruộng bậc thang</li>
+                <li>Bữa ăn địa phương truyền thống</li>
+            </ul>
+            <h4 class="mt-4">Giá</h4>
+            <p><span th:text="${homestay.price}">0</span>.000 VND / đêm</p>
+            <a th:href="@{/book}" class="btn btn-primary">Đặt ngay</a>
+        </div>
     </div>
+
 
     <hr>
     <section class="services">

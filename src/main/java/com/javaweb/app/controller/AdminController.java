@@ -60,7 +60,7 @@ public class AdminController {
     @GetMapping("/homestay-list") // Trang quản lý Homestay
     public ModelAndView adminHomestayPage(@RequestParam Map<String, Object> params,
                                           @RequestParam(required = false) List<Long> homestayFacilities) {
-        List<HomestayResponseDTO> list = homestayService.findByFilter(params, homestayFacilities); // Lấy từ homestay database
+        List<HomestayResponseDTO> list = homestayService.findAll();// Lấy từ homestay database
         ModelAndView model = new ModelAndView("admin/homestay"); // Thêm HTML
         model.addObject("homestays", list); // Thêm model
         return model;

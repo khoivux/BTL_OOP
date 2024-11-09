@@ -39,9 +39,6 @@ public class HomestayEntity {
     @JoinColumn(name = "province_id")
     private ProvinceEntity province;
 
-    @OneToMany(mappedBy = "homestay", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<RoomEntity> rooms;
-
     @OneToMany(mappedBy = "homestay",  cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<BookingEntity> bookingList = new ArrayList<>();
 
@@ -60,6 +57,14 @@ public class HomestayEntity {
             inverseJoinColumns = @JoinColumn(name = "facilities_id") // Khóa ngoại trỏ tới ServiceEntity
     )
     private List<FacilitiesEntity> facilities;
+
+    @ManyToMany
+    @JoinTable(
+            name = "homestay_room", // Tên bảng trung gian
+            joinColumns = @JoinColumn(name = "homestay_id"), // Khóa ngoại trỏ tới HomestayEntity
+            inverseJoinColumns = @JoinColumn(name = "room_id") // Khóa ngoại trỏ tới ServiceEntity
+    )
+    private List<RoomEntity> rooms;
 
     public HomestayEntity() {
     }
@@ -124,23 +129,12 @@ public class HomestayEntity {
         this.province = province;
     }
 
-    public List<RoomEntity> getRooms() {
-        return rooms;
-    }
 
     public List<FacilitiesEntity> getFacilities() {
         return facilities;
     }
 
-    public Long getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(Long capacity) {
-        this.capacity = capacity;
-    }
-
-    public Long getNumberOfRooms() {
-        return numberOfRooms;
+    public List<RoomEntity> getRooms() {
+        return rooms;
     }
 }

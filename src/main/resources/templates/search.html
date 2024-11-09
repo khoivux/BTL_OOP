@@ -145,7 +145,7 @@
                 <h3>Tiện nghi</h3>
                 <div th:each="facility : ${facilities}">
                     <label>
-                        <input name="homestayFacilities" type="checkbox"
+                        <input name="facilities" type="checkbox"
                                th:value="${facility.id}"
                                th:checked="${selectedFacilities.contains(facility.id)}">
                         <span th:text="${facility.name}">Facility Name</span>
@@ -157,7 +157,7 @@
                 <h3>Dịch vụ</h3>
                 <div th:each="service : ${services}">
                     <label>
-                        <input name="homestayServices" type="checkbox"
+                        <input name="services" type="checkbox"
                                th:value="${service.id}"
                                th:checked="${selectedServices.contains(service.id)}">
                         <span th:text="${service.name}">Facility Name</span>
@@ -226,7 +226,11 @@
                         <p th:text="${homestay.address}"></p>
                         <h3 th:text="'Giá: ' + ${homestay.price} + 'k'">Giá</h3>
                         <p th:text="${homestay.description}"></p>
-                        <form method="GET" th:action="@{/product/{id}(id=${homestay.id})}">
+                        <form method="POST" th:action="@{/homestay/{id}(id=${homestay.id})}">
+                            <div>
+                                <input type="date" style="display:none;" name="checkinDate" th:value="${checkInDate != null ? checkInDate : ''}">
+                                <input type="date" style="display:none;" name="checkoutDate" th:value="${checkOutDate != null ? checkOutDate : ''}">
+                            </div>
                             <button class="book-button">Đặt phòng</button>
                         </form>
                     </div>

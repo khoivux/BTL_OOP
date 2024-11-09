@@ -55,17 +55,4 @@ public class HomestayController {
     public HomestayResponseDTO getById(@PathVariable Long id){
         return homestayService.findHomestayById(id);
     }
-
-    @GetMapping("/homestay/{id}")
-    public HomestayResponseDTO getProductById(@PathVariable Long id) {
-        int cntt =1;
-        return homestayService.findHomestayById(id);
-    }
-
-    @GetMapping("/getall")
-    public List<HomestayResponseDTO> getAllFIlter(@RequestParam  Map<String, Object> params,
-                                                  @RequestParam List<Long> homestayFacilities) {
-        List<HomestayResponseDTO> list = homestayService.findByFilter(params, homestayFacilities);
-        return list;
-    }
 }

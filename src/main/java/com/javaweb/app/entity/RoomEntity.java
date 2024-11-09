@@ -18,9 +18,8 @@ public class RoomEntity {
     @Column(name = "numbers")
     private Long numbers;
 
-    @ManyToOne
-    @JoinColumn(name = "homestay_id", nullable = false)
-    private HomestayEntity homestay;
+    @ManyToMany(mappedBy = "rooms")
+    private List<HomestayEntity> homestays;
 
     public RoomEntity(Long id, String type, Long numbers) {
         this.id = id;
@@ -52,11 +51,4 @@ public class RoomEntity {
         this.numbers = numbers;
     }
 
-    public HomestayEntity getHomestay() {
-        return homestay;
-    }
-
-    public void setHomestay(HomestayEntity homestay) {
-        this.homestay = homestay;
-    }
 }

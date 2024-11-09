@@ -45,6 +45,5 @@ public class HomestayRequestMapper {
                 .setRooms(rooms)
                 .setServices(services)
                 .build();
-
     }
 }
