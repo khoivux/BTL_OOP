@@ -1,33 +1,19 @@
 package com.javaweb.app.dto;
 
+import java.util.Comparator;
 import java.util.List;
 
-public class HomestayDto {
+public class HomestayResponseDTO {
     private Long id;
     private String name;
-    private Long price;
     private String address;
-    private Long provinceid;
+    private Long price;
     private Long rating;
     private String description;
-    private Long numberOfRooms;
     private List<RoomDTO> rooms;
     private List<FacilitiesDTO> facilities;
-    public HomestayDto() {
-    }
+    private List<ServiceDTO> services;
 
-    public HomestayDto(Long id, String name, Long price, String address, Long provinceid, Long rating, String description, Long numberOfRooms, List<RoomDTO> rooms, List<FacilitiesDTO> facilities) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.address = address;
-        this.provinceid = provinceid;
-        this.rating = rating;
-        this.description = description;
-        this.numberOfRooms = numberOfRooms;
-        this.rooms = rooms;
-        this.facilities = facilities;
-    }
 
     public Long getId() {
         return id;
@@ -45,14 +31,6 @@ public class HomestayDto {
         this.name = name;
     }
 
-    public Long getPrice() {
-        return price;
-    }
-
-    public void setPrice(Long price) {
-        this.price = price;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -61,12 +39,12 @@ public class HomestayDto {
         this.address = address;
     }
 
-    public Long getProvinceid() {
-        return provinceid;
+    public Long getPrice() {
+        return price;
     }
 
-    public void setProvinceid(Long provinceid) {
-        this.provinceid = provinceid;
+    public void setPrice(Long price) {
+        this.price = price;
     }
 
     public Long getRating() {
@@ -85,14 +63,6 @@ public class HomestayDto {
         this.description = description;
     }
 
-    public Long getNumberOfRooms() {
-        return numberOfRooms;
-    }
-
-    public void setNumberOfRooms(Long numberOfRooms) {
-        this.numberOfRooms = numberOfRooms;
-    }
-
     public List<RoomDTO> getRooms() {
         return rooms;
     }
@@ -108,4 +78,26 @@ public class HomestayDto {
     public void setFacilities(List<FacilitiesDTO> facilities) {
         this.facilities = facilities;
     }
+
+    public List<ServiceDTO> getServices() {
+        return services;
+    }
+
+    public void setServices(List<ServiceDTO> services) {
+        this.services = services;
+    }
+
+    public static Comparator<HomestayResponseDTO> priceAsc = new Comparator<HomestayResponseDTO>() {
+        @Override
+        public int compare(HomestayResponseDTO h1, HomestayResponseDTO h2) {
+            return Double.compare(h1.price, h2.price); // Tăng dần
+        }
+    };
+
+    public static Comparator<HomestayResponseDTO> priceDesc = new Comparator<HomestayResponseDTO>() {
+        @Override
+        public int compare(HomestayResponseDTO h1, HomestayResponseDTO h2) {
+            return Double.compare(h2.price, h1.price); // Giảm dần
+        }
+    };
 }

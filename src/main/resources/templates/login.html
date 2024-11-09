@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" xmlns:form="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" dir="ltr" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>Đăng nhập • HomesTayBac</title>
     <link rel="stylesheet" th:href="@{/css/login.css}" />
@@ -12,16 +12,47 @@
     </a>
     <br>
     <h2>Đăng nhập</h2>
-    
-    <!-- Thêm form đăng nhập nếu cần -->
-    <form:form action="/login" method="POST" autocomplete="off">
-<!--            {% csrf_token %}  &lt;!&ndash; Thêm token bảo mật CSRF &ndash;&gt;-->
-
-            <input type="text" name="username" placeholder="Tên đăng nhập" autocomplete="off"/>
-            <input type="password" name="password" placeholder="Mật khẩu" autocomplete="new-password"/>
+    <form id="loginForm">
+            <input type="email" name="email" placeholder="Email..." required/>
+            <input type="password" name="password" placeholder="Password..." required/>
             <button class = "submit" type = "submit">Đăng nhập</button>
-            <p class="message">Bạn chưa có tài khoản? <a href="/register">Tạo tài khoản</a></p> <!--url đến trang đăng kí-->
-    </form:form>
+            <p class="message">Bạn chưa có tài khoản? <a href="/register">Tạo tài khoản</a></p>
+    </form>
+      <div th:if="${error}" style="color: red;">
+          <p th:text="${error}"></p>
+      </div>
   </div>
+    <script>
+        document.getElementById('loginForm').onsubmit = async function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = new URLSearchParams();
+            formData.forEach((value, key) => {
+                data.append(key, value);
+            });
+
+            try {
+                const response = await fetch('/user/login', {
+                    method: 'POST',
+                    body: data
+                });
+
+                if (response.ok) {
+                    const responseData = await response.json();
+                    alert('Đăng nhập thành công!');
+                    localStorage.setItem('isLoggedIn', true);
+                    localStorage.setItem('name', responseData.name);
+                    window.location.href = '/';
+                } else {
+                    const errorMessage = await response.text();
+                    alert('Lỗi: ' + errorMessage);
+                }
+            } catch (error) {
+                alert('Đã xảy ra lỗi trong quá trình gửi yêu cầu.');
+                console.error('Error:', error);
+            }
+        };
+    </script>
 </body>
 </html>

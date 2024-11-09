@@ -5,17 +5,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomestaySearchRequest {
+    private Long id;
     private String name;
     private String address;
     private Long priceFrom;
     private Long priceTo;
     private Long provinceId;
     private Long rating;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
+    private List<Long> facilities = new ArrayList<>();
+    private List<Long> rooms = new ArrayList<>();
+    private List<Long> services = new ArrayList<>();
+    public HomestaySearchRequest() {
+    }
+
     public HomestaySearchRequest(Builder builder) {
         this.name = builder.name;
         this.address = builder.address;
@@ -23,63 +32,78 @@ public class HomestaySearchRequest {
         this.priceTo = builder.priceTo;
         this.provinceId = builder.provinceId;
         this.rating = builder.rating;
+        this.checkInDate = builder.checkInDate;
+        this.checkOutDate = builder.checkOutDate;
+        this.facilities = builder.facilities;
+        this.id = builder.id;
+        this.rooms = builder.rooms;
+        this.services = builder.services;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getAddress() {
         return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public Long getPriceFrom() {
         return priceFrom;
     }
 
-    public void setPriceFrom(Long priceFrom) {
-        this.priceFrom = priceFrom;
-    }
-
     public Long getPriceTo() {
         return priceTo;
-    }
-
-    public void setPriceTo(Long priceTo) {
-        this.priceTo = priceTo;
     }
 
     public Long getProvinceId() {
         return provinceId;
     }
 
-    public void setProvinceId(Long provinceId) {
-        this.provinceId = provinceId;
-    }
-
     public Long getRating() {
         return rating;
     }
 
-    public void setRating(Long rating) {
-        this.rating = rating;
+    public LocalDate getCheckInDate() {
+        return checkInDate;
+    }
+
+    public LocalDate getCheckOutDate() {
+        return checkOutDate;
+    }
+
+    public List<Long> getHomestayFacilities() {
+        return facilities;
+    }
+    public Long getId() {
+        return id;
+    }
+
+    public List<Long> getFacilities() {
+        return facilities;
+    }
+
+    public List<Long> getRooms() {
+        return rooms;
+    }
+
+    public List<Long> getServices() {
+        return services;
     }
 
     public static class Builder {
+        private Long id;
         private String name;
         private String address;
         private Long priceFrom;
         private Long priceTo;
         private Long provinceId;
         private Long rating;
+        private LocalDate checkInDate;
+        private LocalDate checkOutDate;
+        private List<Long> facilities = new ArrayList<>();
+        private List<Long> rooms = new ArrayList<>();
+        private List<Long> services = new ArrayList<>();
 
         public Builder setName(String name) {
             this.name = name;
@@ -111,6 +135,31 @@ public class HomestaySearchRequest {
             return this;
         }
 
+        public Builder setCheckInDate(LocalDate checkInDate) {
+            this.checkInDate = checkInDate;
+            return this;
+        }
+
+        public Builder setCheckOutDate(LocalDate checkOutDate) {
+            this.checkOutDate = checkOutDate;
+            return this;
+        }
+        public Builder setFacilities(List<Long> facilities) {
+            this.facilities = facilities;
+            return this;
+        }
+        public Builder setRooms(List<Long> rooms) {
+            this.rooms = rooms;
+            return this;
+        }
+        public Builder setServices(List<Long> services) {
+            this.services = services;
+            return this;
+        }
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
         public HomestaySearchRequest build() {
             return new HomestaySearchRequest(this);
         }

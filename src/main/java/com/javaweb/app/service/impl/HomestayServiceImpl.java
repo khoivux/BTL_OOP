@@ -6,19 +6,19 @@ import com.javaweb.app.exception.ResourceNotFoundException;
 import com.javaweb.app.mapper.HomestayMapper;
 import com.javaweb.app.mapper.HomestayRequestMapper;
 import com.javaweb.app.model.HomestaySearchRequest;
-import com.javaweb.app.model.HomestaySearchResponse;
+import com.javaweb.app.dto.HomestayResponseDTO;
 import com.javaweb.app.dto.HomestayDto;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.repository.ProvinceRepository;
 import com.javaweb.app.service.HomestayService;
+import com.javaweb.app.utils.MapUtil;
+import com.javaweb.app.utils.StringUtil;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -45,13 +45,13 @@ public class HomestayServiceImpl implements HomestayService {
 
     // READ
     @Override // Lấy tất cả Homestay có trong DB
-    public List<HomestaySearchResponse> findAll() {
+    public List<HomestayResponseDTO> findAll() {
         List<HomestayEntity> homestayEntities = homestayRepository.findAll();
-        List<HomestaySearchResponse> homestaySearchResponses = new ArrayList<>();
+        List<HomestayResponseDTO> homestayResponsDTOS = new ArrayList<>();
         for (HomestayEntity homestayEntity : homestayEntities) {
-            homestaySearchResponses.add(homestayMapper.mapToHomestayResponse(homestayEntity));
+            homestayResponsDTOS.add(homestayMapper.mapToHomestayResponse(homestayEntity));
         }
-        return homestaySearchResponses;
+        return homestayResponsDTOS;
     }
 
     @Override
@@ -65,21 +65,29 @@ public class HomestayServiceImpl implements HomestayService {
     }
 
     @Override // Lấy tất cả Homestay được lọc theo Filter
-    public List<HomestaySearchResponse> findByFilter(Map<String, Object> params) {
-        HomestaySearchRequest homestaySearchRequest = homestayRequestMapper.mapToHomestaySearchRequest(params);
+    public List<HomestayResponseDTO> findByFilter(Map<String, Object> params,
+                                                  List<Long> homestayFacilities,
+                                                  List<Long> rooms,
+                                                  List<Long> services) {
+        HomestaySearchRequest homestaySearchRequest = homestayRequestMapper.mapToHomestaySearchRequest(params, homestayFacilities, rooms, services);
         List<HomestayEntity> homestayEntities = homestayRepository.findByFilter(homestaySearchRequest);
-        List<HomestaySearchResponse> result = new ArrayList<>();
+        List<HomestayResponseDTO> result = new ArrayList<>();
         for (HomestayEntity homestayEntity : homestayEntities) {
             result.add(homestayMapper.mapToHomestayResponse(homestayEntity));
+        }
+        String sort = MapUtil.getObject(params, "sort", String.class);
+        if(StringUtil.isValid(sort)) {
+            Comparator<HomestayResponseDTO> comparator = sort.equals("desc") ? HomestayResponseDTO.priceDesc : HomestayResponseDTO.priceAsc;
+            // Sắp xếp danh sách homestay theo giá
+            result.sort(comparator);
         }
         return result;
     }
 
     @Override // Lấy 1 Homestay theo id
-    public HomestayDto findHomestayById(Long id) {
-        HomestayEntity homestayEntity = homestayRepository.findById(id) //Optional
-                .orElseThrow(() -> new ResourceNotFoundException("Không tồn tại Homestay có id là " + id));
-        return homestayMapper.mapToHomestayDto(homestayEntity);
+    public HomestayResponseDTO findHomestayById(Long id) {
+        HomestayEntity homestayEntity = homestayRepository.getById(id);
+        return homestayMapper.mapToHomestayResponse(homestayEntity);
     }
 
     // UPDATE
@@ -89,7 +97,6 @@ public class HomestayServiceImpl implements HomestayService {
                 .orElseThrow(() -> new ResourceNotFoundException("Không tồn tại Homestay có id là " + id));
         homestayEntity.setName(updatedHomestayDto.getName());
         homestayEntity.setAddress(updatedHomestayDto.getAddress());
-        homestayEntity.setPrice(updatedHomestayDto.getPrice());
         homestayEntity.setRating(updatedHomestayDto.getRating());
         homestayEntity.setProvince(provinceRepository.getById(updatedHomestayDto.getProvinceid()));
         homestayEntity.setDescription(updatedHomestayDto.getDescription());

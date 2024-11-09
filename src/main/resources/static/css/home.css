@@ -5,6 +5,17 @@
     margin: 0;
     box-sizing: border-box;
 }
+.custom-btn {
+    width: 100px;
+    text-align: center;
+    background-color: #7fc142ed; /* Màu nền */
+    color: white; /* Màu chữ */
+    border: none; /* Xóa viền */
+    border-radius: 5px;
+}
+.custom-btn:hover {
+background-color: #67a32f; /* Màu khi hover */
+}
 
 body{
     font-family: 'Open Sans', sans-serif;
@@ -64,7 +75,7 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative;
+     position: relative; 
     /* height: 10vh; */
     /* line-height: 10vh; */
     padding: 10px 20px;
@@ -108,10 +119,10 @@ header .navlinks #listbars{
     display: none;
 }
 .d-block {
-a{
-    color: white;
-}
-display: block;
+    a{
+        color: white;
+    }
+    display: block;
     position: absolute;
     top: 110%;
     right: 20px;
@@ -123,9 +134,9 @@ display: block;
     transition: max-height 0.5s;
     text-align: center;
     z-index: 9;
-li{
-    margin:10px;
-}
+    li{
+        margin:10px;
+    }
 }
 @media only screen and (max-width: 850px){
     .d-none{
@@ -225,7 +236,7 @@ input{
     display:flex;
     align-items: center;
     max-width: 1030px;
-    width: calc(100% - 10px);
+    width: calc(100% - 10px);  
     left: 50%;
     top:75vh;
     transform: translate(-50%, -50px);

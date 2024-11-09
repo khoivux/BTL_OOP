@@ -9,22 +9,45 @@
     <div class="form">
         <form th:action="@{/login}" method="GET" autocomplete="off">
             <button class="back">&#8592;</button>
-        </form> <!-- URL back về login -->
+        </form>
         <br>
         <h2>Đăng ký</h2>
-        <form class="register-form" th:action="@{/inf}" method="POST" autocomplete="off">
-            <input type="text" name="username" placeholder="Tên đăng nhập" autocomplete="off"/>
-<!--            <span style="color: red;" th:text="${errors.username}"></span>-->
-
-            <input type="password" name="password" placeholder="Mật khẩu" autocomplete="new-password"/>
-<!--            <span style="color: red;" th:text="${errors.password}"></span>-->
-
-            <input type="email" name="email" placeholder="Địa chỉ email" autocomplete="off"/>
-<!--            <span style="color: red;" th:text="${errors.email}"></span>-->
-
+        <form class="register-form" id="registerForm">
+            <input type="text" name="username" placeholder="Username..." required/>
+            <input type="email" name="email" placeholder="Email..." required/>
+            <input type="password" name="password" placeholder="Password..." required/>
             <button class="submit" type="submit">Tạo tài khoản</button>
             <p class="message">Đã có tài khoản? <a th:href="@{/login}">Đăng nhập</a></p>
         </form>
     </div>
+    <script>
+        document.getElementById('registerForm').onsubmit = async function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = new URLSearchParams();
+            formData.forEach((value, key) => {
+                data.append(key, value);
+            });
+
+            try {
+                const response = await fetch('/user/register', {
+                    method: 'POST',
+                    body: data
+                });
+
+                if (response.ok) {
+                    alert('Đăng ký thành công!');
+                    window.location.href = '/user'; // Thay đường dẫn nếu cần
+                } else {
+                    const errorMessage = await response.text();
+                    alert('Lỗi: ' + errorMessage);
+                }
+            } catch (error) {
+                alert('Đã xảy ra lỗi trong quá trình gửi yêu cầu.');
+                console.error('Error:', error);
+            }
+        };
+    </script>
     </body>
-    </html>
+</html>
