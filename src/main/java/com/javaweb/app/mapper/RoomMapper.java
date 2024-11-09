@@ -14,14 +14,16 @@ public class RoomMapper {
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<RoomDTO> mapToRoomDTOS (List<RoomEntity> roomEntities) {
+    public List<RoomDTO> mapToRoomDTOS (List<RoomEntity> entities) {
+        if(entities == null) return null;
         List<RoomDTO> roomDTOS = new ArrayList<>();
-        for(RoomEntity roomEntity : roomEntities) {
+        for(RoomEntity roomEntity : entities) {
             roomDTOS.add(new RoomDTO(roomEntity.getId(), roomEntity.getType(), roomEntity.getNumbers()));
         }
         return roomDTOS;
     }
     public List<RoomEntity> mapToRoomEntities(List<RoomDTO> roomDTOS) {
+        if(roomDTOS == null) return null;
         List<RoomEntity> roomEntities = new ArrayList<>();
         for (RoomDTO roomDTO : roomDTOS) {
             roomEntities.add(new RoomEntity(roomDTO.getId(), roomDTO.getType(), roomDTO.getNumbers()));

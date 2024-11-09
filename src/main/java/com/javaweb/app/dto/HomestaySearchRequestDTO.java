@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomestayRequestDTO {
+public class HomestaySearchRequestDTO {
     private Long id;
     private String name;
     private String address;
@@ -17,10 +17,10 @@ public class HomestayRequestDTO {
     private List<Long> facilities = new ArrayList<>();
     private List<Long> rooms = new ArrayList<>();
     private List<Long> services = new ArrayList<>();
-    public HomestayRequestDTO() {
+    public HomestaySearchRequestDTO() {
     }
 
-    public HomestayRequestDTO(Builder builder) {
+    public HomestaySearchRequestDTO(Builder builder) {
         this.name = builder.name;
         this.address = builder.address;
         this.priceFrom = builder.priceFrom;
@@ -155,8 +155,8 @@ public class HomestayRequestDTO {
             this.id = id;
             return this;
         }
-        public HomestayRequestDTO build() {
-            return new HomestayRequestDTO(this);
+        public HomestaySearchRequestDTO build() {
+            return new HomestaySearchRequestDTO(this);
         }
     }
 }

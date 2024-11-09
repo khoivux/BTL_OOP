@@ -1,6 +1,7 @@
 package com.javaweb.app.controller;
 
 
+import com.javaweb.app.dto.HomestayCreateDTO;
 import com.javaweb.app.dto.HomestayResponseDTO;
 import com.javaweb.app.dto.HomestayDto;
 import com.javaweb.app.repository.HomestayRepository;
@@ -18,22 +19,16 @@ import java.util.Map;
 @RestController
 public class HomestayController {
     @Autowired
-    public HomestayServiceImpl homestayServiceImpl;
-    @Autowired
     public HomestayService homestayService;
     @Autowired
     public HomestayRepository homestayRepository;
 
     // CREATE
     @PostMapping("/admin/homestay-add")  // Thêm mới homestay
-    public ResponseEntity<HomestayResponseDTO> addHomestay(@RequestParam Map<String, Object> params,
-                                                   @RequestParam(required = false) List<Long> facilities,
-                                                   @RequestParam(required = false) List<Long> services) {
-//        HomestayDto addedHomestay = homestayService.createHomestay(homestayDto);
-//        return ResponseEntity.ok(homestayDto);
-        return null;
+    public ResponseEntity<HomestayResponseDTO> add1Homestay(@RequestBody HomestayCreateDTO homestayCreateDTO) {
+        HomestayResponseDTO homestayResponseDTO = homestayService.createHomestay(homestayCreateDTO);
+        return ResponseEntity.ok(homestayResponseDTO);
     }
-
     // UPDATE
     @PutMapping("/admin/homestay-update")
     public ResponseEntity<HomestayDto> updateHomestay(@RequestBody HomestayDto updateHomestayDto) {

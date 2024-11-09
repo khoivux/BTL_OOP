@@ -34,23 +34,23 @@
     </div>
     <div class = "editcol col-10">
         <h3>Thêm mới Homestay</h3>
-        <form class="border p-2 mb-2" id="listForm" >
+        <form class="border p-2 mb-2" id="listForm">
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label class="name">Tên Homestay</label>
-                    <input type="text" class="form-control" placeholder="Nhập tên Homestay" name="name"/>
+                    <input type="text" class="form-control" required placeholder="Nhập tên Homestay" name="name"/>
                 </div>
                 <div class="form-group col-md-3">
                     <label class="price">Giá phòng Homestay</label>
-                    <input type="text" class="form-control" placeholder="Nhập giá phòng Homestay" name="price">
+                    <input type="text" class="form-control" required placeholder="Nhập giá phòng Homestay" name="price">
                 </div>
                 <div class="form-group col-md-6">
                     <label id="address">Địa chỉ</label>
-                    <input type="text" class="form-control" placeholder="Nhập địa chỉ Homestay" name="address">
+                    <input type="text" class="form-control" required placeholder="Nhập địa chỉ Homestay" name="address">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="provinceid">Tỉnh/Thành phố</label>
-                    <select name="provinceid" id="provinceid" class="form-control">
+                    <select name="provinceid" id="provinceid" required class="form-control">
                         <option value="">Chọn Tỉnh/Thành phố</option>
                         <div th:each="province : ${provinces}">
                             <option th:value="${province.id}" th:text="${province.name}"></option>
@@ -59,14 +59,15 @@
                 </div>
                 <div class="form-group col-md-12">
                     <label for="address">Mô tả Homestay</label>
-                    <input type="text" class="form-control" placeholder="Nhập mô tả Homestay" name="description">
+                    <input type="text" class="form-control" required placeholder="Nhập mô tả Homestay" name="description">
                 </div>
                 <div class="form-group col-md-12">
                     <label>Tiện nghi Homestay</label>
                     <div th:each="facility : ${facilities}">
                         <label>
-                            <input type="checkbox" name="homestayFacilities" th:value="${facility.id}"/>
-                            <span th:text="${facility.name}"></span>
+                            <input name="facilities" type="checkbox"
+                                   th:value="${facility.id}">
+                            <span th:text="${facility.name}">Facility Name</span>
                         </label><br>
                     </div>
                 </div>
@@ -94,7 +95,7 @@
             </div>
 
             <div class="d-flex justify-content-end mb-1">
-                <button type="submit" class="btn btn-success" onclick="submitForm(event)">Thêm</button>         <!-- sau khi bấm quay về trang qlsp-->
+                <button type="submit" class="btn btn-success" onclick="submitFormData(event)">Thêm</button>         <!-- sau khi bấm quay về trang qlsp-->
             </div>
         </form>
 
@@ -115,25 +116,27 @@
 </div>
 
 <script>
-    function submitForm(event) {
-        event.preventDefault();  // Ngăn chặn hành động mặc định của form
+    function submitFormData(event) {
+        // Ngừng gửi form mặc định khi click nút
+        event.preventDefault();
 
-        // Lấy dữ liệu từ form
-        const formData = {
-            id: document.querySelector('[name="id"]').value,
-            name: document.querySelector('[name="name"]').value,
-            price: document.querySelector('[name="price"]').value,
-            address: document.querySelector('[name="address"]').value,
-            provinceid: document.querySelector('[name="provinceid"]').value,
-            description: document.querySelector('[name="description"]').value,
-            rating: document.querySelector('[name="rating"]').value
-        };
+        // Thu thập dữ liệu từ form
+        var formData = new FormData(document.getElementById("listForm"));
+        var formObject = {};
 
-        // Kiểm tra id, price và rating phải là số
-        if (isNaN(formData.id) || isNaN(formData.price) || isNaN(formData.rating)) {
-            alert("Vui lòng nhập mã, giá tiền và đánh giá ở dạng số!");
-            return; // Ngăn không cho gửi form
-        }
+        // Lặp qua dữ liệu FormData và tạo đối tượng
+        formData.forEach(function(value, key) {
+            if (key === "facilities") {
+                // Nếu là "facilities", tạo mảng
+                if (!formObject[key]) {
+                    formObject[key] = [];
+                }
+                formObject[key].push(value);
+            } else {
+                // Các trường khác
+                formObject[key] = value;
+            }
+        });
 
         // Gửi dữ liệu dưới dạng JSON
         fetch("/admin/homestay-add", {
@@ -141,27 +144,17 @@
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(formObject)  // Chuyển formObject thành JSON
         })
-            .then(response => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok " + response.statusText);
-            }
-            return response.json();  // Chỉ chuyển đổi thành JSON nếu có phản hồi
-        })
+            .then(response => response.json())
             .then(data => {
             console.log("Success:", data);
-            // Hiển thị thông báo thành công
-            const toast = new bootstrap.Toast(document.getElementById('successToast'));
-            toast.show();
-
-            // Tự động ẩn Toast sau 5 giây
-            setTimeout(() => {
-                toast.hide(); // Ẩn Toast sau 5 giây (5000 ms)
-            }, 10000);
         })
-            .catch(error => console.error("Error:", error));
+            .catch(error => {
+            console.error("Error:", error);
+        });
     }
+
 </script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>

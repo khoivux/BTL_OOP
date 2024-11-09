@@ -1,6 +1,6 @@
 package com.javaweb.app.mapper;
 
-import com.javaweb.app.dto.HomestayRequestDTO;
+import com.javaweb.app.dto.HomestaySearchRequestDTO;
 
 import com.javaweb.app.utils.MapUtil;
 import org.springframework.stereotype.Component;
@@ -13,10 +13,10 @@ import java.util.Map;
 @Component
 public class HomestayRequestMapper {
     // Chuyển từ Param sang HomestaySearchRequest
-    public HomestayRequestDTO mapToHomestayRequest(Map<String, Object> params,
-                                                   List<Long> facilitiess,
-                                                   List<Long> rooms,
-                                                   List<Long> services) {
+    public HomestaySearchRequestDTO mapToHomestayRequest(Map<String, Object> params,
+                                                         List<Long> facilitiess,
+                                                         List<Long> rooms,
+                                                         List<Long> services) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
         // Cho các LocalDate là null nếu Date nhận từ params là null hoặc rỗng
@@ -31,7 +31,7 @@ public class HomestayRequestMapper {
                 ? LocalDate.parse(checkOutDateStr, formatter)
                 : null;
 
-        return new HomestayRequestDTO.Builder()
+        return new HomestaySearchRequestDTO.Builder()
                 .setId(MapUtil.getObject(params, "id", Long.class))
                 .setName(MapUtil.getObject(params, "name", String.class))
                 .setAddress(MapUtil.getObject(params, "address", String.class))
