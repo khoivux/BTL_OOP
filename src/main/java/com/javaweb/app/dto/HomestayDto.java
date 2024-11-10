@@ -10,13 +10,12 @@ public class HomestayDto {
     private Long provinceid;
     private Long rating;
     private String description;
-    private Long numberOfRooms;
     private List<RoomDTO> rooms;
     private List<FacilitiesDTO> facilities;
     public HomestayDto() {
     }
 
-    public HomestayDto(Long id, String name, Long price, String address, Long provinceid, Long rating, String description, Long numberOfRooms, List<RoomDTO> rooms, List<FacilitiesDTO> facilities) {
+    public HomestayDto(Long id, String name, Long price, String address, Long provinceid, Long rating, String description, List<RoomDTO> rooms, List<FacilitiesDTO> facilities) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -24,7 +23,6 @@ public class HomestayDto {
         this.provinceid = provinceid;
         this.rating = rating;
         this.description = description;
-        this.numberOfRooms = numberOfRooms;
         this.rooms = rooms;
         this.facilities = facilities;
     }
@@ -83,14 +81,6 @@ public class HomestayDto {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Long getNumberOfRooms() {
-        return numberOfRooms;
-    }
-
-    public void setNumberOfRooms(Long numberOfRooms) {
-        this.numberOfRooms = numberOfRooms;
     }
 
     public List<RoomDTO> getRooms() {

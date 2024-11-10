@@ -72,9 +72,6 @@ public class HomestayResponseDTO {
         this.rooms = rooms;
     }
 
-    public List<FacilitiesDTO> getFacilities() {
-        return facilities;
-    }
 
     public void setFacilities(List<FacilitiesDTO> facilities) {
         this.facilities = facilities;

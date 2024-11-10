@@ -24,7 +24,7 @@ public class HomestayController {
     public HomestayRepository homestayRepository;
 
     // CREATE
-    @PostMapping("/admin/homestay-add")  // Thêm mới homestay
+    @PostMapping("/admin/homestay-add")
     public ResponseEntity<HomestayResponseDTO> addHomestay(@ModelAttribute HomestayCreateDTO homestayCreateDTO) {
         HomestayResponseDTO homestayResponseDTO = homestayService.createHomestay(homestayCreateDTO);
         return ResponseEntity.ok(homestayResponseDTO);

@@ -49,20 +49,14 @@ public class HomestayMapper {
     }
 
     public HomestayEntity mapToHomestayEntity(HomestayDto homestayDto) {
-        HomestayEntity homestayEntity = new HomestayEntity();
-        homestayEntity.setPrice(homestayEntity.getId());
-        homestayEntity.setDescription(homestayDto.getDescription());
-        homestayEntity.setRating(homestayDto.getRating());
-        homestayEntity.setName(homestayDto.getName());
-        homestayEntity.setNumberOfRooms(homestayDto.getNumberOfRooms());
-        //homestayEntity.setRooms(roomMapper);
+        HomestayEntity homestayEntity = modelMapper.map(homestayDto, HomestayEntity.class);
         return homestayEntity;
     }
     public HomestayResponseDTO mapToHomestayResponse(HomestayEntity homestayEntity) {
         HomestayResponseDTO homestayResponse = modelMapper.map(homestayEntity, HomestayResponseDTO.class);
         homestayResponse.setAddress(homestayEntity.getAddress() + ", " + homestayEntity.getProvince().getName());
         homestayResponse.setFacilities(mapToHomestayFacilities(homestayEntity.getFacilities()));
-        homestayResponse.setRooms(roomMapper.mapToRoomDTOS(homestayEntity.getRooms()));
+        //homestayResponse.setRooms(roomMapper.mapToRoomDTOS(homestayEntity.getRooms()));
         String imageBase64 = homestayEntity.getImage() != null ? Base64.getEncoder().encodeToString(homestayEntity.getImage()) : null;
         homestayResponse.setImage("data:image/jpeg;base64," + imageBase64);
         return homestayResponse;
@@ -72,7 +66,6 @@ public class HomestayMapper {
         HomestayEntity homestayEntity = new HomestayEntity();
         homestayEntity.setId(15L);
         homestayEntity.setName(homestayCreateDTO.getName());
-        homestayEntity.setNumberOfRooms(10L);
         homestayEntity.setPrice(homestayCreateDTO.getPrice());
         homestayEntity.setRating(6L);
         homestayEntity.setDescription(homestayCreateDTO.getDescription());

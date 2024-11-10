@@ -12,9 +12,8 @@ public class HomestayCreateDTO {
     private Long provinceid;
     private Long rating;
     private String description;
-    private Long numberOfRooms;
     private Long capacity;
-    private List<Long> rooms;
+    private List<RoomDTO> rooms;
     private List<Long> facilities;
     private List<Long> services;
     private MultipartFile image;
@@ -74,15 +73,6 @@ public class HomestayCreateDTO {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public Long getNumberOfRooms() {
-        return numberOfRooms;
-    }
-
-    public void setNumberOfRooms(Long numberOfRooms) {
-        this.numberOfRooms = numberOfRooms;
-    }
-
     public Long getCapacity() {
         return capacity;
     }
@@ -91,13 +81,6 @@ public class HomestayCreateDTO {
         this.capacity = capacity;
     }
 
-    public List<Long> getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(List<Long> rooms) {
-        this.rooms = rooms;
-    }
 
     public List<Long> getFacilities() {
         return facilities;
@@ -105,6 +88,14 @@ public class HomestayCreateDTO {
 
     public void setFacilities(List<Long> facilities) {
         this.facilities = facilities;
+    }
+
+    public List<RoomDTO> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<RoomDTO> rooms) {
+        this.rooms = rooms;
     }
 
     public List<Long> getServices() {

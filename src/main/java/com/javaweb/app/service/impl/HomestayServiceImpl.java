@@ -11,6 +11,7 @@ import com.javaweb.app.mapper.HomestayRequestMapper;
 import com.javaweb.app.dto.HomestaySearchRequestDTO;
 import com.javaweb.app.dto.HomestayResponseDTO;
 import com.javaweb.app.dto.HomestayDto;
+import com.javaweb.app.mapper.RoomMapper;
 import com.javaweb.app.repository.FacilityRepository;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.repository.ProvinceRepository;
@@ -33,6 +34,8 @@ public class HomestayServiceImpl implements HomestayService {
     @Autowired
     private HomestayMapper homestayMapper;
     @Autowired
+    private RoomMapper roomMapper;
+    @Autowired
     private HomestayRequestMapper homestayRequestMapper;
     @Autowired
     private ProvinceRepository provinceRepository;
@@ -48,6 +51,7 @@ public class HomestayServiceImpl implements HomestayService {
         ProvinceEntity provinceEntity = provinceRepository.getById(homestayCreateDTO.getProvinceid());
 
         HomestayEntity homestayEntity = homestayMapper.mapToSavedHomestayEntity(homestayCreateDTO);
+        homestayEntity.setRooms(roomMapper.mapToRoomEntities(homestayCreateDTO.getRooms()));
         homestayEntity.setServices(serviceEntities);
         homestayEntity.setFacilities(facilitiesEntities);
         homestayEntity.setProvince(provinceEntity);

@@ -120,67 +120,88 @@
 </div>
 
 <script>
+
 //    function submitFormData(event) {
-//        // Ngừng gửi form mặc định khi click nút
 //        event.preventDefault();
-//
-//        // Thu thập dữ liệu từ form
 //        var formData = new FormData(document.getElementById("listForm"));
-//        var formObject = {};
 //
-//        // Lặp qua dữ liệu FormData và tạo đối tượng
-//        formData.forEach(function(value, key) {
-//            if (key === "facilities") {
-//                // Nếu là "facilities", tạo mảng
-//                if (!formObject[key]) {
-//                    formObject[key] = [];
-//                }
-//                formObject[key].push(value);
-//            } else {
-//                // Các trường khác
-//                formObject[key] = value;
-//            }
-//        });
-//
-//        // Gửi dữ liệu dưới dạng JSON
 //        fetch("/admin/homestay-add", {
 //            method: "POST",
-//            headers: {
-//                "Content-Type": "application/json"
-//            },
-//            body: JSON.stringify(formObject)  // Chuyển formObject thành JSON
+//            body: formData  // Gửi FormData mà không chuyển thành JSON
 //        })
 //            .then(response => response.json())
 //            .then(data => {
 //            console.log("Success:", data);
+//            var successToast = new bootstrap.Toast(document.getElementById("successToast"));
+//            successToast.show();
 //        })
 //            .catch(error => {
 //            console.error("Error:", error);
 //        });
 //    }
-    function submitFormData(event) {
-        event.preventDefault();
-        var formData = new FormData(document.getElementById("listForm"));
+function submitFormData(event) {
+    event.preventDefault();
+//    const formData = new FormData(document.getElementById("listForm"));
+//
+//    const roomRows = document.querySelectorAll("#roomTable tr");
+//    roomRows.forEach((row, index) => {
+//        const imageInput = row.querySelector('input[name^="rooms[' + index + '].image"]');
+//        const typeInput = row.querySelector('input[name^="rooms[' + index + '].type"]');
+//        const quantityInput = row.querySelector('input[name^="rooms[' + index + '].numbers"]');
+//        const descriptionInput = row.querySelector('input[name^="rooms[' + index + '].description"]');
+//
+//
+//        formData.append("rooms[" + index + "].image", imageInput.files[0]);
+//        formData.append("rooms[" + index + "].type", typeInput.value);
+//        formData.append("rooms[" + index + "].numbers", quantityInput.value);
+//        formData.append("rooms[" + index + "].description", descriptionInput.value);
+//
+//    });
+    const formData = new FormData(document.getElementById("listForm"));
 
-        fetch("/admin/homestay-add", {
-            method: "POST",
-            body: formData  // Gửi FormData mà không chuyển thành JSON
-        })
-            .then(response => response.json())
-            .then(data => {
-            console.log("Success:", data);
-            var successToast = new bootstrap.Toast(document.getElementById("successToast"));
-            successToast.show();
-        })
-            .catch(error => {
-            console.error("Error:", error);
-        });
+    // Giả sử bạn có một mảng rooms[] trong JavaScript
+    const roomRows = document.querySelectorAll("#roomTable tr");
+    roomRows.forEach((row, index) => {
+        // Lấy các input từ dòng tương ứng
+        const imageInput = row.querySelector('input[name^="rooms[' + index + '].image"]');
+        const typeInput = row.querySelector('input[name^="rooms[' + index + '].type"]');
+        const quantityInput = row.querySelector('input[name^="rooms[' + index + '].numbers"]');
+        const descriptionInput = row.querySelector('input[name^="rooms[' + index + '].description"]');
+        console.log('ID' + index);
+        // Thêm các giá trị vào FormData
+    });
+//    roomRows.forEach((room, index) => {
+//        formData.append(`rooms[${index}].type`, room.type);  // Kiểu phòng
+//        formData.append(`rooms[${index}].description`, room.description);  // Mô tả phòng
+//        formData.append(`rooms[${index}].numbers`, room.numbers);  // Số lượng phòng (sửa lại nếu có vấn đề)
+//    });
+    for (let [key, value] of formData.entries()) {
+        if (value instanceof File) {
+            console.log(key + ': ' + value.name);  // In tên tệp
+        } else {
+            console.log(key + ': ' + value);
+        }
     }
+    // Gửi dữ liệu tới server
+    fetch("/admin/homestay-add", {
+        method: "POST",
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+        console.log("Success:", data);
+    })
+        .catch(error => {
+        console.error("Error:", error);
+    });
+}
 </script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
+    let roomIndex = 0; // Khởi tạo biến chỉ số cho các dòng phòng
+
     function addInputRow() {
         const tableBody = document.getElementById("roomTable");
         const row = document.createElement("tr");
@@ -190,20 +211,18 @@
         const imageInput = document.createElement("input");
         imageInput.type = "file";
         imageInput.className = "form-control-file";
+        imageInput.name = "rooms[" + roomIndex + "].image";  // Thêm index vào tên trường
         imageCell.appendChild(imageInput);
         row.appendChild(imageCell);
 
         // Cột Loại Phòng (Dropdown)
         const typeCell = document.createElement("td");
-        const typeSelect = document.createElement("select");
-        typeSelect.className = "form-control";
-        ["Standard", "Deluxe", "Suite"].forEach((type) => {
-            const option = document.createElement("option");
-            option.value = type.toLowerCase();
-            option.textContent = type;
-            typeSelect.appendChild(option);
-        });
-        typeCell.appendChild(typeSelect);
+        const typeInput = document.createElement("input");
+        typeInput.type = "text";
+        typeInput.className = "form-control";
+        typeInput.placeholder = "Nhập kiểu";
+        typeInput.name = "rooms[" + roomIndex + "].type";  // Thêm index vào tên trường
+        typeCell.appendChild(typeInput);
         row.appendChild(typeCell);
 
         // Cột Số Lượng
@@ -212,6 +231,7 @@
         quantityInput.type = "number";
         quantityInput.className = "form-control";
         quantityInput.placeholder = "Nhập số lượng";
+        quantityInput.name = "rooms[" + roomIndex + "].numbers";  // Thêm index vào tên trường
         quantityCell.appendChild(quantityInput);
         row.appendChild(quantityCell);
 
@@ -221,6 +241,7 @@
         descriptionInput.type = "text";
         descriptionInput.className = "form-control";
         descriptionInput.placeholder = "Nhập mô tả phòng";
+        descriptionInput.name = "rooms[" + roomIndex + "].description";  // Thêm index vào tên trường
         descriptionCell.appendChild(descriptionInput);
         row.appendChild(descriptionCell);
 
@@ -232,12 +253,27 @@
         deleteButton.className = "btn btn-danger btn-sm";
         deleteButton.onclick = function() {
             row.remove();
+            // Cập nhật lại chỉ số sau khi xóa
+            updateRoomIndices();
         };
         actionCell.appendChild(deleteButton);
 
         row.appendChild(actionCell);
         tableBody.appendChild(row);
+
+        // Tăng chỉ số cho phòng tiếp theo
+        roomIndex++;
+    }
+    function updateRoomIndices() {
+        const roomRows = document.querySelectorAll("#roomTable tr");
+        roomRows.forEach((row, index) => {
+            row.querySelector('input[name^="rooms["]').name = "rooms[" + index + "].image";
+            row.querySelector('input[name^="rooms["]').name = "rooms[" + index + "].type";
+            row.querySelector('input[name^="rooms["]').name = "rooms[" + index + "].numbers";
+            row.querySelector('input[name^="rooms["]').name = "rooms[" + index + "].description";
+        });
     }
 </script>
+
 </body>
 </html>
