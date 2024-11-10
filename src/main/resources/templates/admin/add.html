@@ -34,7 +34,7 @@
     </div>
     <div class = "editcol col-10">
         <h3>Thêm mới Homestay</h3>
-        <form class="border p-2 mb-2" id="listForm">
+        <form class="border p-2 mb-2" id="listForm"  enctype="multipart/form-data">
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label class="name">Tên Homestay</label>
@@ -56,6 +56,10 @@
                             <option th:value="${province.id}" th:text="${province.name}"></option>
                         </div>
                     </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="image">Image:</label>
+                    <input type="file" id="image" name="image" accept="image/*" required><br>
                 </div>
                 <div class="form-group col-md-12">
                     <label for="address">Mô tả Homestay</label>
@@ -116,45 +120,62 @@
 </div>
 
 <script>
+//    function submitFormData(event) {
+//        // Ngừng gửi form mặc định khi click nút
+//        event.preventDefault();
+//
+//        // Thu thập dữ liệu từ form
+//        var formData = new FormData(document.getElementById("listForm"));
+//        var formObject = {};
+//
+//        // Lặp qua dữ liệu FormData và tạo đối tượng
+//        formData.forEach(function(value, key) {
+//            if (key === "facilities") {
+//                // Nếu là "facilities", tạo mảng
+//                if (!formObject[key]) {
+//                    formObject[key] = [];
+//                }
+//                formObject[key].push(value);
+//            } else {
+//                // Các trường khác
+//                formObject[key] = value;
+//            }
+//        });
+//
+//        // Gửi dữ liệu dưới dạng JSON
+//        fetch("/admin/homestay-add", {
+//            method: "POST",
+//            headers: {
+//                "Content-Type": "application/json"
+//            },
+//            body: JSON.stringify(formObject)  // Chuyển formObject thành JSON
+//        })
+//            .then(response => response.json())
+//            .then(data => {
+//            console.log("Success:", data);
+//        })
+//            .catch(error => {
+//            console.error("Error:", error);
+//        });
+//    }
     function submitFormData(event) {
-        // Ngừng gửi form mặc định khi click nút
         event.preventDefault();
-
-        // Thu thập dữ liệu từ form
         var formData = new FormData(document.getElementById("listForm"));
-        var formObject = {};
 
-        // Lặp qua dữ liệu FormData và tạo đối tượng
-        formData.forEach(function(value, key) {
-            if (key === "facilities") {
-                // Nếu là "facilities", tạo mảng
-                if (!formObject[key]) {
-                    formObject[key] = [];
-                }
-                formObject[key].push(value);
-            } else {
-                // Các trường khác
-                formObject[key] = value;
-            }
-        });
-
-        // Gửi dữ liệu dưới dạng JSON
         fetch("/admin/homestay-add", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(formObject)  // Chuyển formObject thành JSON
+            body: formData  // Gửi FormData mà không chuyển thành JSON
         })
             .then(response => response.json())
             .then(data => {
             console.log("Success:", data);
+            var successToast = new bootstrap.Toast(document.getElementById("successToast"));
+            successToast.show();
         })
             .catch(error => {
             console.error("Error:", error);
         });
     }
-
 </script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>

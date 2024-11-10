@@ -1,5 +1,7 @@
 package com.javaweb.app.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 public class HomestayCreateDTO {
@@ -15,7 +17,7 @@ public class HomestayCreateDTO {
     private List<Long> rooms;
     private List<Long> facilities;
     private List<Long> services;
-
+    private MultipartFile image;
 
     public Long getId() {
         return id;
@@ -111,5 +113,13 @@ public class HomestayCreateDTO {
 
     public void setServices(List<Long> services) {
         this.services = services;
+    }
+
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
     }
 }

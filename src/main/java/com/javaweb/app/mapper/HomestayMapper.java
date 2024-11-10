@@ -9,7 +9,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 
@@ -61,6 +63,8 @@ public class HomestayMapper {
         homestayResponse.setAddress(homestayEntity.getAddress() + ", " + homestayEntity.getProvince().getName());
         homestayResponse.setFacilities(mapToHomestayFacilities(homestayEntity.getFacilities()));
         homestayResponse.setRooms(roomMapper.mapToRoomDTOS(homestayEntity.getRooms()));
+        String imageBase64 = homestayEntity.getImage() != null ? Base64.getEncoder().encodeToString(homestayEntity.getImage()) : null;
+        homestayResponse.setImage("data:image/jpeg;base64," + imageBase64);
         return homestayResponse;
     }
 
@@ -73,6 +77,13 @@ public class HomestayMapper {
         homestayEntity.setRating(6L);
         homestayEntity.setDescription(homestayCreateDTO.getDescription());
         homestayEntity.setAddress(homestayCreateDTO.getAddress());
+        if (homestayCreateDTO.getImage() != null && !homestayCreateDTO.getImage().isEmpty()) {
+            try {
+                homestayEntity.setImage(homestayCreateDTO.getImage().getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return homestayEntity;
     }
 }

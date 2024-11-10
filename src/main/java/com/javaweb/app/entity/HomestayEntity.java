@@ -35,6 +35,10 @@ public class HomestayEntity {
     @Column(name = "capacity")
     private Long capacity;
 
+    @Lob
+    @Column(name = "image", columnDefinition = "MEDIUMBLOB")  // Chỉ định cột và các thuộc tính của nó
+    private byte[] image;
+
     @ManyToOne
     @JoinColumn(name = "province_id")
     private ProvinceEntity province;
@@ -171,5 +175,13 @@ public class HomestayEntity {
 
     public void setRooms(List<RoomEntity> rooms) {
         this.rooms = rooms;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

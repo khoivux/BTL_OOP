@@ -13,6 +13,7 @@ public class HomestayResponseDTO {
     private List<RoomDTO> rooms;
     private List<FacilitiesDTO> facilities;
     private List<ServiceDTO> services;
+    private String image;
 
 
     public Long getId() {
@@ -85,6 +86,14 @@ public class HomestayResponseDTO {
 
     public void setServices(List<ServiceDTO> services) {
         this.services = services;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public static Comparator<HomestayResponseDTO> priceAsc = new Comparator<HomestayResponseDTO>() {

@@ -99,7 +99,7 @@
     }
 </script>
 <div class="container">
-    <form id="filterForm" form id="filterForm" action="/search" method="GET">
+    <form id="filterForm" action="/search" method="GET">
         <div class="filters">
             <!-- Tìm kiếm cơ bản -->
             <div class="search-box">
@@ -216,7 +216,7 @@
             <div class="row" th:if="${homestays != null}">
                 <div class="item" th:each="homestay : ${homestays}">
                     <div class="img">
-                        <img th:src="@{/img/homestay1.jpg}" alt="Homestay Image">
+                        <img th:src="${homestay.image}" alt="Homestay Image">
                     </div>
                     <div class="info">
                         <h2 class="card-title" th:text="${homestay.name}">Tên Homestay</h2>
