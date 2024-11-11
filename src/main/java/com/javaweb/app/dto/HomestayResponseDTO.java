@@ -1,5 +1,6 @@
 package com.javaweb.app.dto;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 public class HomestayResponseDTO {
