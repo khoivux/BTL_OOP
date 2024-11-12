@@ -35,8 +35,8 @@ public class UserService {
     }
 
     //user register
-    public void registerUser(String username, String email, String password) {
-        User newUser = new User(username, email, password);
+    public void registerUser(String username, String email, String password, String phoneNumber) {
+        User newUser = new User(username, email, password, phoneNumber);
         if(userRepository.findByUsername(username) != null) {
             throw new RuntimeException("Username đã tồn tại!");
         }

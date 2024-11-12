@@ -52,10 +52,11 @@ public class UserController {
     public ResponseEntity handleRegister(
             @RequestParam String username,
             @RequestParam String email,
-            @RequestParam String password
+            @RequestParam String password,
+            @RequestParam String phoneNumber
     ) {
         try {
-            userService.registerUser(username, email, password);
+            userService.registerUser(username, email, password, phoneNumber);
             return new ResponseEntity<>("Success register!", HttpStatus.OK);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);

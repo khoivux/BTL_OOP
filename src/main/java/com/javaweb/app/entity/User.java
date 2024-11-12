@@ -23,10 +23,14 @@ public class User {
     @Column (name = "role")
     private String role;
 
+    @Column(name = "phoneNumber")
+    private String phoneNumber;
+
     public User() {
         this.username = "";
         this.email = "";
         this.password = "";
+        this.phoneNumber = "";
         this.role = "user";
     }
 
@@ -35,6 +39,14 @@ public class User {
         this.email = email;
         this.password = password;
         this.role = "user";
+    }
+
+    public User(String username, String email, String password, String phoneNumber) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = "user";
+        this.phoneNumber = phoneNumber;
     }
 
     public String getUserName() {

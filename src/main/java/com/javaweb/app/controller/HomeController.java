@@ -21,25 +21,11 @@ public class HomeController {
         return new ModelAndView("home");
     }
 
-//    @GetMapping(value = "/search")
-//    public ModelAndView searchPage(@RequestParam Map<String, Object> params) {
-//        List<HomestaySearchResponse> list = homestayService.findByFilter(params, , );
-//        ModelAndView model = new ModelAndView("search");
-//        model.addObject("homestays", list);
-//        return model;
-//    }
-
-    @GetMapping(value = "/login")
-    public ModelAndView loginPage() {
-        ModelAndView model = new ModelAndView("login");
-        //model.addObject();
-        return model;
-    }
-
-    @GetMapping(value = "/register")
-    public ModelAndView registerPage() {
-        ModelAndView model = new ModelAndView("register");
-        //model.addObject();
+    @GetMapping(value = "/search")
+    public ModelAndView searchPage(@RequestParam Map<String, Object> params) {
+        List<HomestaySearchResponse> list = homestayService.findAll();
+        ModelAndView model = new ModelAndView("search");
+        model.addObject("homestays", list);
         return model;
     }
 }
