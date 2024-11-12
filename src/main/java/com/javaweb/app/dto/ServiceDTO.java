@@ -1,16 +1,18 @@
 package com.javaweb.app.dto;
 
-import com.javaweb.app.entity.HomestayEntity;
 
-import java.util.List;
-
-public class ProvinceDto {
+public class ServiceDTO {
     private Long id;
     private String name;
+    private Long price;
 
-    public ProvinceDto(Long id, String name) {
+    public ServiceDTO() {
+    }
+
+    public ServiceDTO(Long id, String name, Long price) {
         this.id = id;
         this.name = name;
+        this.price = price;
     }
 
     public Long getId() {
@@ -27,5 +29,13 @@ public class ProvinceDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
     }
 }

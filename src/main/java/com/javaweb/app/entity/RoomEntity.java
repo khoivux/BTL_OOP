@@ -9,40 +9,81 @@ import java.util.List;
 @Table(name = "room")
 public class RoomEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "name")
-    private String name;
 
     @Column(name = "type")
     private String type;
 
-    @Column(name = "price")
-    private Long price;
+    @Column(name = "numbers")
+    private Long numbers;
+
+    @Column(name = "description")
+    private String description;
+
+    @Lob
+    @Column(name = "image", columnDefinition = "MEDIUMBLOB")  // Chỉ định cột và các thuộc tính của nó
+    private byte[] image;
 
     @ManyToOne
-    @JoinColumn(name = "homestay_id", nullable = false)
+    @JoinColumn(name = "homestay_id")
     private HomestayEntity homestay;
-
-    @OneToMany(mappedBy = "room",  cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<BookingEntity> bookingList = new ArrayList<>();
-
-    @ManyToMany
-    @JoinTable(
-            name = "room_facilities", // Tên bảng trung gian
-            joinColumns = @JoinColumn(name = "room_id"), // Khóa ngoại trỏ tới HomestayEntity
-            inverseJoinColumns = @JoinColumn(name = "facilities_id") // Khóa ngoại trỏ tới ServiceEntity
-    )
-    private List<RoomFacilitiesEntity> facilities;
 
     public RoomEntity() {
     }
 
-    public RoomEntity(Long id, String name, String type, Long price, HomestayEntity homestay) {
-        this.id = id;
-        this.name = name;
+    public RoomEntity(String type, Long numbers, String description) {
         this.type = type;
-        this.price = price;
+        this.numbers = numbers;
+        this.description = description;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public HomestayEntity getHomestay() {
+        return homestay;
+    }
+
+    public void setHomestay(HomestayEntity homestay) {
         this.homestay = homestay;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Long getNumbers() {
+        return numbers;
+    }
+
+    public void setNumbers(Long numbers) {
+        this.numbers = numbers;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
 }

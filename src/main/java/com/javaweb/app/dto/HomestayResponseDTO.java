@@ -1,31 +1,22 @@
 package com.javaweb.app.dto;
 
+
+import java.util.Comparator;
+
 import java.util.List;
 
-public class HomestayDto {
+public class HomestayResponseDTO {
     private Long id;
     private String name;
-    private Long price;
     private String address;
-    private Long provinceid;
+    private Long price;
     private Long rating;
     private String description;
     private List<RoomDTO> rooms;
     private List<FacilitiesDTO> facilities;
-    public HomestayDto() {
-    }
+    private List<ServiceDTO> services;
+    private String image;
 
-    public HomestayDto(Long id, String name, Long price, String address, Long provinceid, Long rating, String description, List<RoomDTO> rooms, List<FacilitiesDTO> facilities) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.address = address;
-        this.provinceid = provinceid;
-        this.rating = rating;
-        this.description = description;
-        this.rooms = rooms;
-        this.facilities = facilities;
-    }
 
     public Long getId() {
         return id;
@@ -43,14 +34,6 @@ public class HomestayDto {
         this.name = name;
     }
 
-    public Long getPrice() {
-        return price;
-    }
-
-    public void setPrice(Long price) {
-        this.price = price;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -59,12 +42,16 @@ public class HomestayDto {
         this.address = address;
     }
 
-    public Long getProvinceid() {
-        return provinceid;
+    public Long getPrice() {
+        return price;
     }
 
-    public void setProvinceid(Long provinceid) {
-        this.provinceid = provinceid;
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public List<FacilitiesDTO> getFacilities() {
+        return facilities;
     }
 
     public Long getRating() {
@@ -91,11 +78,38 @@ public class HomestayDto {
         this.rooms = rooms;
     }
 
-    public List<FacilitiesDTO> getFacilities() {
-        return facilities;
-    }
 
     public void setFacilities(List<FacilitiesDTO> facilities) {
         this.facilities = facilities;
     }
+
+    public List<ServiceDTO> getServices() {
+        return services;
+    }
+
+    public void setServices(List<ServiceDTO> services) {
+        this.services = services;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public static Comparator<HomestayResponseDTO> priceAsc = new Comparator<HomestayResponseDTO>() {
+        @Override
+        public int compare(HomestayResponseDTO h1, HomestayResponseDTO h2) {
+            return Double.compare(h1.price, h2.price); // Tăng dần
+        }
+    };
+
+    public static Comparator<HomestayResponseDTO> priceDesc = new Comparator<HomestayResponseDTO>() {
+        @Override
+        public int compare(HomestayResponseDTO h1, HomestayResponseDTO h2) {
+            return Double.compare(h2.price, h1.price); // Giảm dần
+        }
+    };
 }

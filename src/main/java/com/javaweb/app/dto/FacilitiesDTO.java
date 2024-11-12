@@ -1,14 +1,15 @@
 package com.javaweb.app.dto;
 
-import com.javaweb.app.entity.HomestayEntity;
 
-import java.util.List;
-
-public class ProvinceDto {
+public class FacilitiesDTO {
     private Long id;
+
     private String name;
 
-    public ProvinceDto(Long id, String name) {
+    public FacilitiesDTO() {
+    }
+
+    public FacilitiesDTO(Long id, String name) {
         this.id = id;
         this.name = name;
     }

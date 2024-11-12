@@ -1,8 +1,10 @@
 package com.javaweb.app.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
-public class HomestayDto {
+public class HomestayCreateDTO {
     private Long id;
     private String name;
     private Long price;
@@ -10,22 +12,11 @@ public class HomestayDto {
     private Long provinceid;
     private Long rating;
     private String description;
+    private Long capacity;
     private List<RoomDTO> rooms;
-    private List<FacilitiesDTO> facilities;
-    public HomestayDto() {
-    }
-
-    public HomestayDto(Long id, String name, Long price, String address, Long provinceid, Long rating, String description, List<RoomDTO> rooms, List<FacilitiesDTO> facilities) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.address = address;
-        this.provinceid = provinceid;
-        this.rating = rating;
-        this.description = description;
-        this.rooms = rooms;
-        this.facilities = facilities;
-    }
+    private List<Long> facilities;
+    private List<Long> services;
+    private MultipartFile image;
 
     public Long getId() {
         return id;
@@ -82,6 +73,22 @@ public class HomestayDto {
     public void setDescription(String description) {
         this.description = description;
     }
+    public Long getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Long capacity) {
+        this.capacity = capacity;
+    }
+
+
+    public List<Long> getFacilities() {
+        return facilities;
+    }
+
+    public void setFacilities(List<Long> facilities) {
+        this.facilities = facilities;
+    }
 
     public List<RoomDTO> getRooms() {
         return rooms;
@@ -91,11 +98,19 @@ public class HomestayDto {
         this.rooms = rooms;
     }
 
-    public List<FacilitiesDTO> getFacilities() {
-        return facilities;
+    public List<Long> getServices() {
+        return services;
     }
 
-    public void setFacilities(List<FacilitiesDTO> facilities) {
-        this.facilities = facilities;
+    public void setServices(List<Long> services) {
+        this.services = services;
+    }
+
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
     }
 }

@@ -4,13 +4,13 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "booking")
 public class BookingEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "checkin_date")
@@ -30,8 +30,8 @@ public class BookingEntity {
     private  HomestayEntity homestay;
 
     @ManyToOne
-    @JoinColumn(name = "room_id")
-    private  RoomEntity room;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToMany
     @JoinTable(
@@ -41,19 +41,35 @@ public class BookingEntity {
     )
     private List<ServiceEntity> services;
 
-
-
-    public BookingEntity() {
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public BookingEntity(Long id, LocalDate checkInDate, LocalDate checkOutDate, LocalDateTime bookingTime, String status, HomestayEntity homestay, RoomEntity room, List<ServiceEntity> services) {
-        this.id = id;
+    public void setCheckInDate(LocalDate checkInDate) {
         this.checkInDate = checkInDate;
+    }
+
+    public void setCheckOutDate(LocalDate checkOutDate) {
         this.checkOutDate = checkOutDate;
+    }
+
+    public void setBookingTime(LocalDateTime bookingTime) {
         this.bookingTime = bookingTime;
+    }
+
+    public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void setHomestay(HomestayEntity homestay) {
         this.homestay = homestay;
-        this.room = room;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setServices(List<ServiceEntity> services) {
         this.services = services;
     }
 }
