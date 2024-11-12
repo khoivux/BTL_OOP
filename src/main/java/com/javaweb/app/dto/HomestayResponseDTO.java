@@ -1,10 +1,8 @@
 package com.javaweb.app.dto;
 
-<<<<<<< HEAD
-import org.springframework.beans.factory.annotation.Autowired;
-=======
+
 import java.util.Comparator;
->>>>>>> feat/booking
+
 import java.util.List;
 
 public class HomestayResponseDTO {
