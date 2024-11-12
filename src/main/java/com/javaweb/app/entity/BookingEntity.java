@@ -10,6 +10,7 @@ import java.util.List;
 @Table(name = "booking")
 public class BookingEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "checkin_date")
@@ -39,21 +40,6 @@ public class BookingEntity {
             inverseJoinColumns = @JoinColumn(name = "service_id") // Khóa ngoại trỏ tới ServiceEntity
     )
     private List<ServiceEntity> services;
-
-
-
-    public BookingEntity() {
-    }
-
-    public BookingEntity(Long id, LocalDate checkInDate, LocalDate checkOutDate, LocalDateTime bookingTime, String status, HomestayEntity homestay, List<ServiceEntity> services) {
-        this.id = id;
-        this.checkInDate = checkInDate;
-        this.checkOutDate = checkOutDate;
-        this.bookingTime = bookingTime;
-        this.status = status;
-        this.homestay = homestay;
-        this.services = services;
-    }
 
     public Long getId() {
         return id;

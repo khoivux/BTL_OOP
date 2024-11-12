@@ -6,10 +6,12 @@ import com.javaweb.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 public class UserService {
@@ -21,6 +23,7 @@ public class UserService {
     // admin login
     public User authAdmin(String email, String password) {
         User admin = userRepository.findByEmail(email);
+        //List<User> list = userRepository.findAll();
         if(admin != null) {
             if(admin.getUserPassword().equals(password) && admin.getUserRole().equals("admin")) {
                 return admin;
@@ -43,8 +46,8 @@ public class UserService {
     }
 
     //user register
-    public void registerUser(String username, String email, String password) {
-        User newUser = new User(username, email, password);
+    public void registerUser(String username, String fullName, String email, String password, String phoneNumber) {
+        User newUser = new User(username, fullName , email, password, phoneNumber);
         if(userRepository.findByUsername(username) != null) {
             throw new RuntimeException("Username đã tồn tại!");
         }

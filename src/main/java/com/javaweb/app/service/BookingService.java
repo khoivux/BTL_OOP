@@ -1,6 +1,7 @@
 package com.javaweb.app.service;
 
 import com.javaweb.app.dto.BookingDTO;
+
 import com.javaweb.app.entity.BookingEntity;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface BookingService {
     List<BookingDTO> getPaymentHistory(Long userId);
 
     void deleteBooking(Long id);
+
+    BookingDTO createBooking(BookingDTO bookingDTO);
 }
