@@ -51,7 +51,7 @@ public class HomestayServiceImpl implements HomestayService {
         ProvinceEntity provinceEntity = provinceRepository.getById(homestayCreateDTO.getProvinceid());
 
         HomestayEntity homestayEntity = homestayMapper.mapToSavedHomestayEntity(homestayCreateDTO);
-        homestayEntity.setRooms(roomMapper.mapToRoomEntities(homestayCreateDTO.getRooms()));
+        homestayEntity.setRooms(roomMapper.mapToRoomEntities(homestayCreateDTO.getRooms(), homestayEntity));
         homestayEntity.setServices(serviceEntities);
         homestayEntity.setFacilities(facilitiesEntities);
         homestayEntity.setProvince(provinceEntity);

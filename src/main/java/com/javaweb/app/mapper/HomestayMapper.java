@@ -56,7 +56,7 @@ public class HomestayMapper {
         HomestayResponseDTO homestayResponse = modelMapper.map(homestayEntity, HomestayResponseDTO.class);
         homestayResponse.setAddress(homestayEntity.getAddress() + ", " + homestayEntity.getProvince().getName());
         homestayResponse.setFacilities(mapToHomestayFacilities(homestayEntity.getFacilities()));
-        //homestayResponse.setRooms(roomMapper.mapToRoomDTOS(homestayEntity.getRooms()));
+        homestayResponse.setRooms(roomMapper.mapToRoomDTOS(homestayEntity.getRooms()));
         String imageBase64 = homestayEntity.getImage() != null ? Base64.getEncoder().encodeToString(homestayEntity.getImage()) : null;
         homestayResponse.setImage("data:image/jpeg;base64," + imageBase64);
         return homestayResponse;

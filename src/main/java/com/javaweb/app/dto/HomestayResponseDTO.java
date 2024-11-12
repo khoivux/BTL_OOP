@@ -48,6 +48,10 @@ public class HomestayResponseDTO {
         this.price = price;
     }
 
+    public List<FacilitiesDTO> getFacilities() {
+        return facilities;
+    }
+
     public Long getRating() {
         return rating;
     }

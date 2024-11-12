@@ -1,6 +1,7 @@
 package com.javaweb.app.mapper;
 
 import com.javaweb.app.dto.RoomDTO;
+import com.javaweb.app.entity.HomestayEntity;
 import com.javaweb.app.entity.RoomEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class RoomMapper {
         List<RoomDTO> roomDTOS = new ArrayList<>();
         for(RoomEntity roomEntity : entities) {
             RoomDTO roomDTO = new RoomDTO(roomEntity.getType(), roomEntity.getNumbers(), roomEntity.getDescription());
-            String imageBase64 = roomDTO.getImage() != null ? Base64.getEncoder().encodeToString(roomEntity.getImage()) : null;
+            String imageBase64 = roomEntity.getImage() != null ? Base64.getEncoder().encodeToString(roomEntity.getImage()) : null;
             roomDTO.setImgURL("data:image/jpeg;base64," + imageBase64);
 
             roomDTOS.add(roomDTO);
@@ -30,7 +31,7 @@ public class RoomMapper {
         return roomDTOS;
     }
     // Kéo về
-    public List<RoomEntity> mapToRoomEntities(List<RoomDTO> roomDTOS) {
+    public List<RoomEntity> mapToRoomEntities(List<RoomDTO> roomDTOS, HomestayEntity homestayEntity) {
         if(roomDTOS == null) return null;
         List<RoomEntity> roomEntities = new ArrayList<>();
         for (RoomDTO roomDTO : roomDTOS) {
@@ -42,6 +43,7 @@ public class RoomMapper {
                     e.printStackTrace();
                 }
             }
+            roomEntity.setHomestay(homestayEntity);
             roomEntities.add(roomEntity);
         }
         return roomEntities;

@@ -121,42 +121,8 @@
 
 <script>
 
-//    function submitFormData(event) {
-//        event.preventDefault();
-//        var formData = new FormData(document.getElementById("listForm"));
-//
-//        fetch("/admin/homestay-add", {
-//            method: "POST",
-//            body: formData  // Gửi FormData mà không chuyển thành JSON
-//        })
-//            .then(response => response.json())
-//            .then(data => {
-//            console.log("Success:", data);
-//            var successToast = new bootstrap.Toast(document.getElementById("successToast"));
-//            successToast.show();
-//        })
-//            .catch(error => {
-//            console.error("Error:", error);
-//        });
-//    }
 function submitFormData(event) {
     event.preventDefault();
-//    const formData = new FormData(document.getElementById("listForm"));
-//
-//    const roomRows = document.querySelectorAll("#roomTable tr");
-//    roomRows.forEach((row, index) => {
-//        const imageInput = row.querySelector('input[name^="rooms[' + index + '].image"]');
-//        const typeInput = row.querySelector('input[name^="rooms[' + index + '].type"]');
-//        const quantityInput = row.querySelector('input[name^="rooms[' + index + '].numbers"]');
-//        const descriptionInput = row.querySelector('input[name^="rooms[' + index + '].description"]');
-//
-//
-//        formData.append("rooms[" + index + "].image", imageInput.files[0]);
-//        formData.append("rooms[" + index + "].type", typeInput.value);
-//        formData.append("rooms[" + index + "].numbers", quantityInput.value);
-//        formData.append("rooms[" + index + "].description", descriptionInput.value);
-//
-//    });
     const formData = new FormData(document.getElementById("listForm"));
 
     // Giả sử bạn có một mảng rooms[] trong JavaScript

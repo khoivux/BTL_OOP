@@ -19,6 +19,43 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
         integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+    <style>
+        .custom-border {
+            border: 1px solid #eeeeee; /* Viền màu xanh */
+            border-radius: 10px; /* Bo tròn góc */
+            padding: 10px; /* Khoảng cách bên trong */
+            margin-bottom: 15px; /* Tạo khoảng cách phía dưới (hoặc dùng margin-right nếu theo chiều ngang) */
+            /*            transition: transform 0.3s, box-shadow 0.3s; *//* Hiệu ứng hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        /* Danh sách tiện nghi */
+        .list-unstyled {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .list-unstyled li {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0;
+            font-size: 1rem;
+            color: #555;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Biểu tượng dấu tích */
+        .list-unstyled li i {
+            color: #08ff42; /* Màu xanh cho dấu tích */
+            margin-right: 0.5rem;
+        }
+
+        /* Khoảng cách của danh sách */
+        .list-unstyled li:last-child {
+            border-bottom: none;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -39,92 +76,29 @@
             <span id="listbars" class="fa fa-bars" onclick="menutoggle()"></span>
         </div>
     </header>
-    <script>
 
-        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        console.log(isLoggedIn);
-        const updateUserAction = () => {
-            const userName = localStorage.getItem('name');
-
-            const userActionDiv = document.getElementById("user-action");
-            console.log(userActionDiv);
-            if (localStorage.getItem('isLoggedIn') === 'true') {
-                userActionDiv.innerHTML =
-                `
-                <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
-                    <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
-                    <ul show-ul class="d-none" id="userlist">
-                        <li><a href="#">Thông tin tài khoản</a></li>    <!--url trang profile-->
-                        <li><a href="#">Lịch sử đặt phòng</a></li>      <!--url trang history-->
-                        <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
-                    </ul>
-                </div>
-                `;
-            } else {
-                userActionDiv.innerHTML = `<a href="/user"><button class="primary-btn">Đăng nhập</button></a>`;
-            }
-        }
-
-        function logout() {
-            localStorage.setItem('isLoggedIn', false);
-            updateUserAction();
-        }
-        updateUserAction();
-    </script>
-
-    
-    <script>
-        var Menulist = document.getElementsByClassName("navlinks");
-        // menulist.style.maxHeight = "0px";
-        function menutoggle() {
-            if (menulist.style.maxHeight == "0px") {
-                menulist.style.maxHeight = "60vh";
-            } else {
-                menulist.style.maxHeight = "0px";
-            }
-        }
-        
-        let shown = false;
-        const showInfor = document.querySelector('[show-info]');
-        console.log(showInfor);
-        const showUl = showInfor.querySelector(`[show-ul]`);
-        console.log(showUl);
-        function showInfo() {
-           
-            if(shown){
-                showUl.classList.remove('d-block');
-                showUl.classList.add("d-none");
-                // const userName = showInfor.querySelector(`.user`);
-                shown = false;
-            }
-            else{
-                showUl.classList.remove('d-none');
-                showUl.classList.add("d-block");
-                const userName = showInfor.querySelector(`.user`);
-                // console.log(userName);
-                // userName.classList.add("d-none");
-                shown = true;
-            }
-            
-        }
-    </script>
 
 <main class="container my-5">
+    <form action="/" method="GET">
     <div class="row">
-        <div class="col-lg-7">
+        <div class="col-lg-7 custom-border" >
             <!--Hình ảnh sản phẩm-->
             <div class="image-gallery mb-4">
                 <!-- Sử dụng Thymeleaf để hiển thị hình ảnh từ HomestayDTO -->
                 <img th:src="${homestay.image}" class="img-fluid" alt="Phòng lớn homestay"
-                     style="width: 100%; max-height: 500px; object-fit: cover;" onclick="openModal(this.src)">
+                     style="width: 85%; max-height: 500px; object-fit: cover;" onclick="openModal(this.src)">
             </div>
             <div class="image-thumbnails d-flex gap-2">
-                <img th:src="@{/img/homestay1.jpg}" class="img-thumbnail" alt="Hình ảnh homestay 1" style="width: 100px; height: 100px;" onclick="openModal(this.src)">
-                <img th:src="@{/img/homestay2.jpg}" class="img-thumbnail" alt="Hình ảnh homestay 2" style="width: 100px; height: 100px;" onclick="openModal(this.src)">
-                <img th:src="@{/img/homestay3.jpg}" class="img-thumbnail" alt="Hình ảnh homestay 3" style="width: 100px; height: 100px;" onclick="openModal(this.src)">
+                <div th:each="room : ${rooms}">
+                    <div class="room-item">
+                        <!-- Hiển thị ảnh của phòng -->
+                        <img th:src="${room.imgURL}"
+                             class="img-fluid"
+                             style="width: 40%; max-height: 500px; object-fit: cover;"
+                             onclick="openModal(this.src)">
+                    </div>
+                </div>
             </div>
-
-
             <!-- model phóng to hình ảnh khi click vào -->
             <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -138,6 +112,7 @@
                     </div>
                 </div>
             </div>
+
             <script>
                 // Hàm mở modal và hiển thị hình ảnh
                 function openModal(imageSrc) {
@@ -148,23 +123,70 @@
                 }
             </script>
         </div>
-        <div class="col-lg-5">
-            <h2 class="card-title">Tên: <span th:text="${homestay.name}">Tên homestay</span></h2>
+        <div class="col-lg-5 custom-border">
+            <h2 class="card-title"><span th:text="${homestay.name}">Tên homestay</span></h2>
             <p class="text-muted">Địa chỉ: <span th:text="${homestay.address}">Địa chỉ homestay</span></p>
             <p class="text-muted">Homestay Tây Bắc mang đậm bản sắc văn hóa dân tộc vùng cao...</p>
-            <h4 class="mt-4">Tiện nghi</h4>
-            <ul class="list-unstyled">
-                <li>Phòng nghỉ dân dã, ấm cúng</li>
-                <li>Khu vực đốt lửa trại</li>
-                <li>Tour tham quan bản làng và ruộng bậc thang</li>
-                <li>Bữa ăn địa phương truyền thống</li>
-            </ul>
+
             <h4 class="mt-4">Giá</h4>
             <p><span th:text="${homestay.price}">0</span>.000 VND / đêm</p>
+
+            <div class="search-box">
+                <div class="date-picker">
+                    <label for="checkin-date">Ngày nhận phòng</label>
+                    <input type="date" id="checkin-date" required name="checkinDate"
+                           th:value="${checkInDate != null ? checkInDate : ''}">
+                </div>
+
+                <div class="date-picker">
+                    <label for="checkout-date">Ngày trả phòng</label>
+                    <input type="date" id="checkout-date" required name="checkoutDate"
+                           th:value="${checkOutDate != null ? checkOutDate : ''}">
+                </div>
+            </div>
             <a th:href="@{/book}" class="btn btn-primary">Đặt ngay</a>
         </div>
     </div>
-
+    </form>
+    <div>
+        <h4>Tiện nghi:</h4>
+        <ul class="list-unstyled">
+            <li th:each="facility : ${facilities}">
+                <i class="fas fa-check-circle"></i> <span th:text="${facility.name}"></span>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <h4 class="my-4">Thông tin i6chi tiết:</h4>
+        <table class=" table table-bordered ">
+            <thead>
+            <tr>
+                <th style="width:30%"></th>
+                <th style="width:15%">Loại Phòng</th>
+                <th style="width:10%">Số Lượng</th>
+                <th style="width:40%">Mô Tả Phòng</th>
+            </tr>
+            </thead>
+            <tbody id="roomTable">
+            <!-- Duyệt qua danh sách phòng và hiển thị dữ liệu -->
+            <tr th:each="room : ${rooms}">
+                <!-- Hình ảnh phòng -->
+                <td>
+                    <img th:src="${room.imgURL}"
+                         class="img-fluid"
+                         style="width: 40%; max-height: 500px; object-fit: cover;"
+                         onclick="openModal(this.src)">
+                </td>
+                <!-- Tên phòng -->
+                <td th:text="${room.type}"></td>
+                <!-- Số lượng người -->
+                <td th:text="${room.numbers}"></td>
+                <!-- Mô tả phòng -->
+                <td th:text="${room.description}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     <hr>
     <section class="services">
@@ -205,7 +227,75 @@
         </div>
     </section>
 </main>
+    <script>
 
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        console.log(isLoggedIn);
+        const updateUserAction = () => {
+            const userName = localStorage.getItem('name');
+
+            const userActionDiv = document.getElementById("user-action");
+            console.log(userActionDiv);
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                userActionDiv.innerHTML =
+                `
+                <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
+                    <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
+                    <ul show-ul class="d-none" id="userlist">
+                        <li><a href="#">Thông tin tài khoản</a></li>    <!--url trang profile-->
+                        <li><a href="#">Lịch sử đặt phòng</a></li>      <!--url trang history-->
+                        <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
+                    </ul>
+                </div>
+                `;
+            } else {
+                userActionDiv.innerHTML = `<a href="/user"><button class="primary-btn">Đăng nhập</button></a>`;
+            }
+        }
+
+        function logout() {
+            localStorage.setItem('isLoggedIn', false);
+            updateUserAction();
+        }
+        updateUserAction();
+    </script>
+
+
+    <script>
+        var Menulist = document.getElementsByClassName("navlinks");
+        // menulist.style.maxHeight = "0px";
+        function menutoggle() {
+            if (menulist.style.maxHeight == "0px") {
+                menulist.style.maxHeight = "60vh";
+            } else {
+                menulist.style.maxHeight = "0px";
+            }
+        }
+
+        let shown = false;
+        const showInfor = document.querySelector('[show-info]');
+        console.log(showInfor);
+        const showUl = showInfor.querySelector(`[show-ul]`);
+        console.log(showUl);
+        function showInfo() {
+
+            if(shown){
+                showUl.classList.remove('d-block');
+                showUl.classList.add("d-none");
+                // const userName = showInfor.querySelector(`.user`);
+                shown = false;
+            }
+            else{
+                showUl.classList.remove('d-none');
+                showUl.classList.add("d-block");
+                const userName = showInfor.querySelector(`.user`);
+                // console.log(userName);
+                // userName.classList.add("d-none");
+                shown = true;
+            }
+
+        }
+    </script>
     <footer>
         <div class="container-footer">
             <div class="box">

@@ -73,9 +73,12 @@ public class WebController {
     public ModelAndView getProductById(@PathVariable Long id,
                                        @RequestParam Map<String, String> params) {
         ModelAndView modelAndView = new ModelAndView("product");
-        modelAndView.addObject("homestay", homestayService.findHomestayById(id));
+        HomestayResponseDTO homestayResponseDTO = homestayService.findHomestayById(id);
+        modelAndView.addObject("homestay", homestayResponseDTO);
         modelAndView.addObject("checkInDate", params.get("checkinDate"));
         modelAndView.addObject("checkOutDate", params.get("checkoutDate"));
+        modelAndView.addObject("facilities", homestayResponseDTO.getFacilities());
+        modelAndView.addObject("rooms", homestayResponseDTO.getRooms());
         return modelAndView;
     }
 }
