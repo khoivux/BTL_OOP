@@ -3,12 +3,17 @@ package com.javaweb.app.controller;
 
 import com.javaweb.app.dto.HomestayResponseDTO;
 import com.javaweb.app.dto.HomestayDto;
+import com.javaweb.app.dto.UserDTO;
+import com.javaweb.app.entity.User;
 import com.javaweb.app.repository.HomestayRepository;
+import com.javaweb.app.service.BookingService;
 import com.javaweb.app.service.HomestayService;
+import com.javaweb.app.service.UserService;
 import com.javaweb.app.service.impl.HomestayServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
@@ -22,6 +27,10 @@ public class                                                                    
     public HomestayService homestayService;
     @Autowired
     public HomestayRepository homestayRepository;
+    @Autowired
+    public UserService userService;
+    @Autowired
+    public BookingService bookingService;
 
     // CREATE
     @PostMapping("/admin/homestay-add")  // Thêm mới homestay
@@ -61,5 +70,17 @@ public class                                                                    
                                                   @RequestParam List<Long> homestayFacilities) {
         List<HomestayResponseDTO> list = homestayService.findByFilter(params, homestayFacilities);
         return list;
+    }
+    // Xoa User
+    @PostMapping("/admin/user-delete/{id}") // Xóa user theo id
+    public RedirectView deleteUserById(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return new RedirectView("/admin/user");
+    }
+    // xoa lich su booking
+    @PostMapping("/admin/user-paymenthistory-delete/{id}")// Xóa booking theo id
+    public RedirectView deleteBookingById(@PathVariable Long id) {
+        bookingService.deleteBooking(id);
+        return new RedirectView("/admin/user-paymenthistory/{id}");
     }
 }

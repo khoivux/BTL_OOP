@@ -60,21 +60,21 @@
                 <table class="table table-bordered" style="width: 150vh">
                     <thead class="thead-light">
                         <tr>
-                            <th style="width: 7%">ID</th>
-                            <th style="width: 20%">Tên</th>
-                            <th style="width: 45%">địa chỉ</th>
-                            <th style="width: 13%">Giá</th>
-                            <th style="width: 15%">Thao tác</th>
+                            <th style="width: 7%; text-align: center">ID</th>
+                            <th style="width: 20%; text-align: center">Tên</th>
+                            <th style="width: 45%; text-align: center">Địa chỉ</th>
+                            <th style="width: 13%; text-align: center">Giá</th>
+                            <th style="width: 15%; text-align: center">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="homestay : ${homestays}" th:if="${homestays != null}">
-                            <td class="p-2" th:text="${homestay.id}"></td>
-                            <td class="p-2" th:text="${homestay.name}"></td>
-                            <td class="p-2" th:text="${homestay.address}"></td>
-                            <td class="p-2" th:text="${homestay.price + '/ngày'}"></td>
+                            <td class="p-2" style="text-align: center" th:text="${homestay.id}"></td>
+                            <td class="p-2" style="text-align: center" th:text="${homestay.name}"></td>
+                            <td class="p-2" style="text-align: center" th:text="${homestay.address}"></td>
+                            <td class="p-2" style="text-align: center" th:text="${homestay.price + '/ngày'}"></td>
 
-                            <td class = "p-2">
+                            <td class = "p-2" style="text-align: center">
                                 <!-- Sửa -->
                                 <form th:action="@{/admin/homestay-edit/{id}(id=${homestay.id})}" method="GET" style="display:inline;">
                                     <button type="submit" class="btn btn-warning btn-sm">Sửa</button>

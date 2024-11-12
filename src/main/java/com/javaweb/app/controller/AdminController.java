@@ -1,8 +1,13 @@
 package com.javaweb.app.controller;
 
+import com.javaweb.app.dto.BookingDTO;
+import com.javaweb.app.service.BookingService;
+import org.springframework.ui.Model;
 import com.javaweb.app.dto.HomestayDto;
 
 import com.javaweb.app.dto.HomestayResponseDTO;
+import com.javaweb.app.dto.UserDTO;
+import com.javaweb.app.entity.User;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.service.HomestayService;
 import com.javaweb.app.service.UserService;
@@ -12,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +33,8 @@ public class AdminController {
     public HomestayRepository homestayRepository;
     @Autowired
     public UserService userService;
+    @Autowired
+    public BookingService bookingService;
 
     @GetMapping()
     public ModelAndView adminLogin() {
@@ -45,17 +54,17 @@ public class AdminController {
             return modelAndView;
         }
     }
-
     @GetMapping("/homestay-list") // Trang quản lý Homestay
     public ModelAndView adminHomestayPage(@RequestParam Map<String, Object> params,
-                                          @RequestParam List<Long> homestayFacilities,
-                                            @RequestParam List<Long> roomFacilities) {
+                                          @RequestParam (required = false) List<Long> homestayFacilities
+                                            ) {
         int cnt = 1;
         List<HomestayResponseDTO> list = homestayService.findByFilter(params, homestayFacilities);
         ModelAndView model = new ModelAndView("admin/homestay");
         model.addObject("homestays", list);
         return model;
     }
+
 
     @GetMapping("/homestay-edit") // Trang thêm mới homestay
     public ModelAndView addHomestayPage() {
@@ -68,5 +77,21 @@ public class AdminController {
         HomestayDto homestayDto = homestayService.findHomestayById(id);
         modelAndView.addObject("homestay", homestayDto);
         return modelAndView;
+    }
+
+    @GetMapping("/user") // Trang quản lý người dùng
+    public ModelAndView showAdminUserPage() {
+        List<UserDTO> users = userService.getAllUser(); // Lấy danh sách người dùng
+        ModelAndView model = new ModelAndView("admin/user"); // Tạo ModelAndView
+        model.addObject("users", users); // Gửi danh sách người dùng vào model
+        return model;
+    }
+
+    @GetMapping("/user-paymenthistory/{id}")
+    public ModelAndView showPaymentHistory(@PathVariable Long id) {
+        List<BookingDTO> bookings = bookingService.getPaymentHistory(id);
+        ModelAndView model = new ModelAndView("admin/user-paymenthistory");
+        model.addObject("paymentHistories", bookings);
+        return model;
     }
 }

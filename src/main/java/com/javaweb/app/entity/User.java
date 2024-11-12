@@ -34,7 +34,7 @@ public class User {
         this.password = password;
         this.role = "user";
     }
-
+    public Long getUserID(){return id; }
     public String getUserName() {
         return username;
     }
