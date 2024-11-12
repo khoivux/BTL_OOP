@@ -3,8 +3,14 @@ package com.javaweb.app.controller;
 import com.javaweb.app.dto.HomestayDto;
 
 import com.javaweb.app.dto.HomestayResponseDTO;
+import com.javaweb.app.dto.ProvinceDto;
 import com.javaweb.app.repository.HomestayRepository;
+import com.javaweb.app.service.FacilitiesService;
 import com.javaweb.app.service.HomestayService;
+<<<<<<< HEAD
+=======
+import com.javaweb.app.service.ProvinceService;
+>>>>>>> feat/booking
 import com.javaweb.app.service.UserService;
 import com.javaweb.app.service.impl.HomestayServiceImpl;
 import jakarta.servlet.http.HttpSession;
@@ -26,6 +32,7 @@ public class AdminController {
     @Autowired
     public HomestayRepository homestayRepository;
     @Autowired
+<<<<<<< HEAD
     public UserService userService;
 
     @GetMapping()
@@ -45,25 +52,74 @@ public class AdminController {
             modelAndView.addObject("error", "Invalid username or password");
             return modelAndView;
         }
+=======
+    public FacilitiesService facilitiesService;
+    @Autowired
+    public ProvinceService provinceService;
+    @Autowired
+    public UserService userService;
+
+//    @GetMapping // Trang quản trị
+//    public ModelAndView adminPage(@RequestParam Map<String, Object> params,
+//                                     @RequestParam(required = false) List<Long> homestayFacilities) {
+//       // List<HomestayResponseDTO> list = homestayService.finFilter(params, homestayFacilities);
+//        List<HomestayResponseDTO> list = homestayService.findAll();
+//        ModelAndView model = new ModelAndView("admin/homestay");
+//        model.addObject("homestays", list);
+//        return model;
+//    }
+    @GetMapping()
+    public ModelAndView adminLogin() {
+        return new ModelAndView("admin/loginAdmin");
+>>>>>>> feat/booking
     }
 
+    @PostMapping("/manage")
+    public ModelAndView handleLogin(@RequestParam("email") String email,
+                                    @RequestParam("password") String password,
+                                    HttpSession session){
+        if(userService.authAdmin(email, password) != null) {
+            session.setAttribute("admin", true); // Đánh dấu là đã đăng nhập
+            ModelAndView modelAndView = new ModelAndView("admin/homestay");
+            List<HomestayResponseDTO> list = homestayService.findAll();
+            modelAndView.addObject("homestays", list);
+            return modelAndView;
+        } else {
+            ModelAndView modelAndView = new ModelAndView("admin/loginAdmin");
+            modelAndView.addObject("error", "Invalid username or password");
+            return modelAndView;
+        }
+    }
     @GetMapping("/homestay-list") // Trang quản lý Homestay
+<<<<<<< HEAD
     public ModelAndView adminHomestayPage(@RequestParam Map<String, Object> params) {
         List<HomestayResponseDTO> list = homestayService.findByFilter(params, new ArrayList<>());
         ModelAndView model = new ModelAndView("admin/homestay");
         model.addObject("homestays", list);
+=======
+    public ModelAndView adminHomestayPage(@RequestParam Map<String, Object> params,
+                                          @RequestParam(required = false) List<Long> homestayFacilities) {
+        List<HomestayResponseDTO> list = homestayService.findAll();// Lấy từ homestay database
+        ModelAndView model = new ModelAndView("admin/homestay"); // Thêm HTML
+        model.addObject("homestays", list); // Thêm model
+>>>>>>> feat/booking
         return model;
     }
 
     @GetMapping("/homestay-edit") // Trang thêm mới homestay
     public ModelAndView addHomestayPage() {
-        return new ModelAndView("admin/add");
+        ModelAndView modelAndView = new ModelAndView("admin/add");
+        modelAndView.addObject("facilities", facilitiesService.findAll());
+        modelAndView.addObject("provinces", provinceService.findAll());
+
+       // modelAndView.addObject("rooms",)
+        return modelAndView;
     }
 
     @GetMapping("/homestay-edit/{id}") // Trang cập nhật homestay
     public ModelAndView updateHomestayPage(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("admin/update");
-        HomestayDto homestayDto = homestayService.findHomestayById(id);
+        HomestayResponseDTO homestayDto = homestayService.findHomestayById(id);
         modelAndView.addObject("homestay", homestayDto);
         return modelAndView;
     }

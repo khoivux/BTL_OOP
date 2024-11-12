@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity hanleLogin(
+    public ResponseEntity handleLogin(
             @RequestParam String email,
             @RequestParam String password) {
         try {
