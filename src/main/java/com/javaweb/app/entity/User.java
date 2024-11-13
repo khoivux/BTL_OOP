@@ -2,6 +2,8 @@ package com.javaweb.app.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table (name = "users")
 public class User {
@@ -49,5 +51,24 @@ public class User {
 
     public String getUserRole() {
         return role;
+    }
+
+    private String Otp;
+    private LocalDateTime Expired;
+
+    public void setOtp(String otp) {
+        this.Otp = otp;
+    }
+    public Object getOtp() {
+        return Otp;
+    }
+    public void setOtpExpiry(LocalDateTime localDateTime) {
+        this.Expired = localDateTime;
+    }
+    public LocalDateTime getOtpExpiry() {
+        return Expired;
+    }
+    public void setPassword(String newPassword) {
+        this.password = newPassword;
     }
 }

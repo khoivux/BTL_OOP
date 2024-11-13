@@ -49,4 +49,10 @@ public class HomeController {
         //model.addObject();
         return model;
     }
+    @GetMapping(value = "/forget")
+    public ModelAndView forgetPage() {
+        ModelAndView model = new ModelAndView("forget");
+        //model.addObject();
+        return model;
+    }
 }

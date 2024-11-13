@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi" dir="ltr">
+<head>
+    <title>Quên mật khẩu • HomesTayBac</title>
+    <link rel="stylesheet" href="/css/login.css" />
+    <style>
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+<div class="form">
+    <button class="back" type="button" onclick="goBack()">&#8592;</button>
+    <br>
+    <h2>Quên Mật Khẩu</h2>
+
+    <!-- Bước 1: Nhập email để nhận OTP -->
+    <div id="step1">
+        <input type="email" id="email" placeholder="Email..." required />
+        <button class="submit" onclick="sendOtp()">Gửi OTP</button>
+        <p id="step1Message" class="message"></p>
+    </div>
+
+    <!-- Bước 2: Xác nhận OTP -->
+    <div id="step2" class="hidden">
+        <input type="text" id="otp" placeholder="OTP..." required />
+        <button class="submit" onclick="verifyOtp()">Xác nhận OTP</button>
+        <p id="step2Message" class="message"></p>
+    </div>
+
+    <!-- Bước 3: Đặt lại mật khẩu -->
+    <div id="step3" class="hidden">
+        <input type="password" id="newPassword" placeholder="Mật khẩu mới..." required />
+        <button class="submit" onclick="resetPassword()">Đặt lại mật khẩu</button>
+        <p id="step3Message" class="message"></p>
+    </div>
+</div>
+
+<script>
+    let currentStep = 1;
+
+    async function sendOtp() {
+        const email = document.getElementById('email').value;
+        const response = await fetch('/api/auth/forgot-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ email: email })
+        });
+
+        const message = await response.text();
+        document.getElementById('step1Message').innerText = message;
+
+        if (message.includes("OTP đã được gửi")) {
+            goToStep(2);
+        }
+    }
+
+    async function verifyOtp() {
+        const email = document.getElementById('email').value;
+        const otp = document.getElementById('otp').value;
+
+        const response = await fetch('/api/auth/verify-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ email: email, otp: otp })
+        });
+
+        const isValid = await response.text();
+        if (isValid === "true") {
+            document.getElementById('step2Message').innerText = "OTP hợp lệ. Hãy đặt lại mật khẩu mới.";
+            goToStep(3);
+        } else {
+            document.getElementById('step2Message').innerText = "OTP không hợp lệ hoặc đã hết hạn.";
+        }
+    }
+
+    async function resetPassword() {
+        const email = document.getElementById('email').value;
+        const newPassword = document.getElementById('newPassword').value;
+
+        const response = await fetch('/api/auth/reset-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ email: email, newPassword: newPassword })
+        });
+
+        const message = await response.text();
+        document.getElementById('step3Message').innerText = message;
+
+        if (message.includes("Đổi mật khẩu thành công")) {
+            alert("Đổi mật khẩu thành công! Bạn có thể đăng nhập với mật khẩu mới.");
+            window.location.href = "/login";
+        }
+    }
+
+    function goToStep(step) {
+        document.getElementById(`step${currentStep}`).classList.add('hidden');
+        document.getElementById(`step${step}`).classList.remove('hidden');
+        currentStep = step;
+    }
+
+    function goBack() {
+        if (currentStep > 1) {
+            goToStep(currentStep - 1);
+        }
+    }
+</script>
+</body>
+</html>
