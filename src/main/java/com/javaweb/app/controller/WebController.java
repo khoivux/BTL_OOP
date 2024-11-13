@@ -4,6 +4,7 @@ import com.javaweb.app.dto.HomestayResponseDTO;
 import com.javaweb.app.service.FacilitiesService;
 import com.javaweb.app.service.HomestayService;
 import com.javaweb.app.service.ServiceService;
+import com.javaweb.app.utils.DateUtil;
 import com.javaweb.app.utils.MapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,7 +39,7 @@ public class WebController {
                                    @RequestParam(required = false) List<Long> rooms,
                                    @RequestParam(required = false) List<Long> services) {
 
-        List<HomestayResponseDTO> homestays = homestayService.findByFilter(params, facilities, rooms, services);
+
         // Khởi tạo model và trả về view
         ModelAndView model = new ModelAndView("search");
         // Lấy các field đã chọn
@@ -49,10 +50,23 @@ public class WebController {
         model.addObject("services", serviceService.findAll());
         model.addObject("facilities", facilitiesService.findAll());
 
+        String checkInDate = MapUtil.getObject(params, "checkinDate", String.class);
+        String checkOutDate = MapUtil.getObject(params, "checkoutDate", String.class);
+
         // Thêm ngày check-in, check-out và danh sách homestays vào model
-        model.addObject("checkInDate", MapUtil.getObject(params, "checkinDate", String.class));
-        model.addObject("checkOutDate", MapUtil.getObject(params, "checkoutDate", String.class));
+        model.addObject("checkInDate", checkInDate);
+        model.addObject("checkOutDate", checkOutDate);
         model.addObject("params", params);
+
+        List<HomestayResponseDTO> homestays;
+        String checkDate = DateUtil.isValid(checkInDate, checkOutDate);
+        if(checkDate == null) {
+            homestays = homestayService.findByFilter(params, facilities, rooms, services);
+        }
+        else {
+            homestays = homestayService.findAll();
+            model.addObject("errorMessage", checkDate);
+        }
         model.addObject("homestays", homestays);
         return model;
     }
@@ -73,10 +87,13 @@ public class WebController {
     public ModelAndView getProductById(@PathVariable Long id,
                                        @RequestParam Map<String, String> params) {
         ModelAndView modelAndView = new ModelAndView("product");
-        HomestayResponseDTO homestayResponseDTO = homestayService.findHomestayById(id);
-        modelAndView.addObject("homestay", homestayResponseDTO);
+
+
         modelAndView.addObject("checkInDate", params.get("checkinDate"));
         modelAndView.addObject("checkOutDate", params.get("checkoutDate"));
+
+        HomestayResponseDTO homestayResponseDTO = homestayService.findHomestayById(id);
+        modelAndView.addObject("homestay", homestayResponseDTO);
         modelAndView.addObject("facilities", homestayResponseDTO.getFacilities());
         modelAndView.addObject("rooms", homestayResponseDTO.getRooms());
         return modelAndView;
