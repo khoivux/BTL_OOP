@@ -2,6 +2,7 @@ package com.javaweb.app.controller;
 
 import com.javaweb.app.entity.User;
 import com.javaweb.app.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +19,21 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+//    @Autowired
+//    private HttpSession session;
+
     @GetMapping
     public ModelAndView login() {
         return new ModelAndView("login");
     }
 
     @PostMapping("/login")
-    public ResponseEntity hanleLogin(
+    public ResponseEntity handleLogin(
             @RequestParam String email,
             @RequestParam String password) {
         try {
             User user = userService.authUser(email, password);
+//            session.setAttribute("isLogged", true);
             return ResponseEntity.ok(new LoginResponse(user.getUserName()));
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
@@ -51,11 +56,13 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity handleRegister(
             @RequestParam String username,
+            @RequestParam String fullName,
             @RequestParam String email,
-            @RequestParam String password
+            @RequestParam String password,
+            @RequestParam String phoneNumber
     ) {
         try {
-            userService.registerUser(username, email, password);
+            userService.registerUser(username, fullName, email, password, phoneNumber);
             return new ResponseEntity<>("Success register!", HttpStatus.OK);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);

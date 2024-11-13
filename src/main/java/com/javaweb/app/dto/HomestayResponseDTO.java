@@ -1,5 +1,8 @@
 package com.javaweb.app.dto;
 
+
+import java.util.Comparator;
+
 import java.util.List;
 
 public class HomestayResponseDTO {
@@ -10,22 +13,10 @@ public class HomestayResponseDTO {
     private Long rating;
     private String description;
     private List<RoomDTO> rooms;
-    private List<HomestayFacilitiesDTO> facilities;
+    private List<FacilitiesDTO> facilities;
     private List<ServiceDTO> services;
-    public HomestayResponseDTO() {
-    }
+    private String image;
 
-    public HomestayResponseDTO(Long id, String name, String address, Long price, Long rating, String description, List<RoomDTO> rooms, List<HomestayFacilitiesDTO> facilities, List<ServiceDTO> services) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.price = price;
-        this.rating = rating;
-        this.description = description;
-        this.rooms = rooms;
-        this.facilities = facilities;
-        this.services = services;
-    }
 
     public Long getId() {
         return id;
@@ -59,6 +50,10 @@ public class HomestayResponseDTO {
         this.price = price;
     }
 
+    public List<FacilitiesDTO> getFacilities() {
+        return facilities;
+    }
+
     public Long getRating() {
         return rating;
     }
@@ -83,11 +78,8 @@ public class HomestayResponseDTO {
         this.rooms = rooms;
     }
 
-    public List<HomestayFacilitiesDTO> getFacilities() {
-        return facilities;
-    }
 
-    public void setFacilities(List<HomestayFacilitiesDTO> facilities) {
+    public void setFacilities(List<FacilitiesDTO> facilities) {
         this.facilities = facilities;
     }
 
@@ -98,4 +90,26 @@ public class HomestayResponseDTO {
     public void setServices(List<ServiceDTO> services) {
         this.services = services;
     }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public static Comparator<HomestayResponseDTO> priceAsc = new Comparator<HomestayResponseDTO>() {
+        @Override
+        public int compare(HomestayResponseDTO h1, HomestayResponseDTO h2) {
+            return Double.compare(h1.price, h2.price); // Tăng dần
+        }
+    };
+
+    public static Comparator<HomestayResponseDTO> priceDesc = new Comparator<HomestayResponseDTO>() {
+        @Override
+        public int compare(HomestayResponseDTO h1, HomestayResponseDTO h2) {
+            return Double.compare(h2.price, h1.price); // Giảm dần
+        }
+    };
 }

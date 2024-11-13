@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:form="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en"xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <link rel="stylesheet" th:href="@{/css/search.css}">
-    <!--    <link href="../static/css/search.css" rel="stylesheet">-->
     <script crossorigin="anonymous" src="https://kit.fontawesome.com/032d11eac3.js"></script>
     <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css"
           integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A=="
@@ -22,19 +21,15 @@
 <header>
 
     <div class="logo">
-        <a href="/"><img alt="" th:src="@{/img/logo.jpeg}"></a> <!--back về home-->
+        <a href="/"><img alt="" th:src="@{/img/logo.jpeg}" ></a> <!--back về home-->
     </div>
     <div class="navlinks">
         <ul id="menulist">
             <li><a class="link-underline link-underline-opacity-0" href="/">Trang chủ</a></li> <!--url đến home-->
             <li><a class="link-underline link-underline-opacity-0" href="#Dịch Vụ">Dịch vụ</a></li>
-            <!--url xuống dịch vụ-->
             <li><a class="link-underline link-underline-opacity-0" href="#homestay">Homestay</a></li>
-            <!--url xuống danh sách homestay-->
             <li><a class="link-underline link-underline-opacity-0" href="#nLiên Hệ">Liên hệ</a></li>
-            <!--url xuống liên hệ-->
             <li><a class="link-underline link-underline-opacity-0" href="#Feedback">Phản hồi</a></li>
-            <!--url đến trang phản hồi-->
             <li id="user-action"></li>
         </ul>
         <span class="fa fa-bars" id="listbars" onclick="menutoggle()"></span>
@@ -59,7 +54,6 @@
                 </ul>
             </div>
             `;                                                      //url trang profile
-            // url trang history
             // thoát trạng thái đăng nhập
         } else {
             userActionDiv.innerHTML = `<a th:href="@{/login}"><button class="primary-btn">Đăng nhập</button></a>`;
@@ -93,132 +87,46 @@
         if(shown){
             showUl.classList.remove("d-block");
             showUl.classList.add("d-none");
-            // const userName = showInfor.querySelector(`.user`);
             shown = false;
         }
         else{
             showUl.classList.remove('d-none');
             showUl.classList.add("d-block");
             const userName = showInfor.querySelector(`.user`);
-            // console.log(userName);
-            // userName.classList.add("d-none");
             shown = true;
         }
 
     }
 </script>
 <div class="container">
-    <!-- Bộ lọc -->
-<!--    <form:form action="/search" id="filterForm" method="GET" modelAttribute="selectedBox">-->
-<!--        <div class="filters">-->
-<!--            <div class="search-box">-->
-<!--                <h2>Tìm</h2>-->
-<!--                <label for="destination">Tên chỗ nghỉ / điểm đến:</label>-->
-<!--                <div class="search-input">-->
-<!--                    <input type="text" id="destination" name="destination" placeholder="Lào Cai">-->
-<!--                    <i class="fa fa-search"></i>-->
-<!--                </div>-->
-<!--                <label for="checkin-date">Ngày nhận phòng</label>-->
-<!--                <div class="date-picker">-->
-<!--                    <input type="date" id="checkin-date" name="checkinDate">-->
-<!--                    <i class="fa fa-calendar"></i>-->
-<!--                </div>-->
-<!--                <label for="checkout-date">Ngày trả phòng</label>-->
-<!--                <div class="date-picker">-->
-<!--                    <input type="date" id="checkout-date" name="checkoutDate">-->
-<!--                    <i class="fa fa-calendar"></i>-->
-<!--                </div>-->
-<!--                <label for="guest-info">Nghỉ 1 đêm</label>-->
-<!--                <select id="guest-info" name="guestInfo">-->
-<!--                    <option>1 người lớn · 0 trẻ em · 1 phòng</option>-->
-<!--                    <option>2 người lớn · 0 trẻ em · 1 phòng</option>-->
-<!--                </select>-->
-<!--                <button class="search-button" type="button" onclick="submitForm()">Tìm</button>-->
-<!--            </div>-->
-
-<!--            <h2>Bộ lọc theo:</h2>-->
-
-<!--            &lt;!&ndash; Đánh giá &ndash;&gt;-->
-<!--            <form id="filtersForm">-->
-
-<!--                <div class="price-range-container">-->
-<!--                    <h3>Khoảng Giá</h3>-->
-<!--                    <input type="text" class="price-input" name="priceFrom" placeholder="k TỪ">-->
-<!--                    <span> - </span>-->
-<!--                    <input type="text" class="price-input" name="priceTo" placeholder="k ĐẾN">-->
-<!--                </div>-->
-
-<!--                <div class="filter-group">-->
-<!--                    <h3>Đánh giá:</h3>-->
-<!--                    <label><input type="checkbox" name="ratings" value="5"> 5 sao</label><br>-->
-<!--                    <label><input type="checkbox" name="ratings" value="4"> 4 sao</label><br>-->
-<!--                    <label><input type="checkbox" name="ratings" value="3"> 3 sao</label><br>-->
-<!--                    <label><input type="checkbox" name="ratings" value="2"> 2 sao</label><br>-->
-<!--                    <label><input type="checkbox" name="ratings" value="1"> 1 sao</label>-->
-<!--                </div>-->
-
-
-
-<!--                &lt;!&ndash; Hoạt động giải trí&ndash;&gt;-->
-
-<!--                <label>-->
-<!--                    <input name="homestayFacilities" type="checkbox" value="1"-->
-<!--                           th:checked="${selectedFacilities.contains(1L)}">-->
-<!--                    Cho phép vật nuôi-->
-<!--                </label><br>-->
-<!--                <label>-->
-<!--                    <input name="homestayFacilities" type="checkbox" value="2"-->
-<!--                           th:checked="${selectedFacilities.contains(2L)}">-->
-<!--                    Cho thuê xe máy/ xe đạp-->
-<!--                </label><br>-->
-<!--                <label>-->
-<!--                    <input name="homestayFacilities" type="checkbox" value="3"-->
-<!--                           th:checked="${selectedFacilities.contains(3L)}">-->
-<!--                    Phòng xông hơi-->
-<!--                </label><br>-->
-<!--                <label>-->
-<!--                    <input name="homestayFacilities" type="checkbox" value="4"-->
-<!--                           th:checked="${selectedFacilities.contains(4L)}">-->
-<!--                    Wifi miễn phí-->
-<!--                </label><br>-->
-<!--                <label>-->
-<!--                    <input name="homestayFacilities" type="checkbox" value="5"-->
-<!--                           th:checked="${selectedFacilities.contains(5L)}">-->
-<!--                    Wifi miễn phí-->
-<!--                </label>-->
-
-
-<!--                &lt;!&ndash; Nút áp dụng bộ lọc &ndash;&gt;-->
-<!--                <button class="filter-button" type="button" onclick="submitForm()">Áp dụng bộ lọc</button>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </form:form>-->
-
     <form id="filterForm" action="/search" method="GET">
         <div class="filters">
             <!-- Tìm kiếm cơ bản -->
             <div class="search-box">
                 <h2>Tìm</h2>
-                <label for="destination">Tên chỗ nghỉ / điểm đến:</label>
+                <label for="address">Tên chỗ nghỉ / điểm đến:</label>
                 <div class="search-input">
-                    <input type="text" id="destination" name="destination" placeholder="Lào Cai">
+                    <input type="text" id="address" name="address" placeholder="Lào Cai"
+                           th:value="${params['address'] != null ? params['address'] : ''}">
                     <i class="fa fa-search"></i>
                 </div>
                 <label for="checkin-date">Ngày nhận phòng</label>
                 <div class="date-picker">
-                    <input type="date" id="checkin-date" name="checkinDate">
+                    <input type="date" id="checkin-date" required name="checkinDate"
+                           th:value="${checkInDate != null ? checkInDate : ''}">
                     <i class="fa fa-calendar"></i>
                 </div>
                 <label for="checkout-date">Ngày trả phòng</label>
                 <div class="date-picker">
-                    <input type="date" id="checkout-date" name="checkoutDate">
+                    <input type="date" id="checkout-date" required name="checkoutDate"
+                           th:value="${checkOutDate != null ? checkOutDate : ''}">
                     <i class="fa fa-calendar"></i>
                 </div>
-<!--                <label for="guest-info">Nghỉ 1 đêm</label>-->
-<!--                <select id="guest-info" name="guestInfo">-->
-<!--                    <option>1 người lớn · 0 trẻ em · 1 phòng</option>-->
-<!--                    <option>2 người lớn · 0 trẻ em · 1 phòng</option>-->
-<!--                </select>-->
+                <div class="search-input">
+                    <input type="text" id="capacity" name="capacity" placeholder="Số lượng"
+                           th:value="${params['capacity'] != null ? params['capacity'] : ''}">
+                    <i class="fa fa-search"></i>
+                </div>
                 <button class="search-button" type="button" onclick="submitForm()">Tìm</button>
             </div>
 
@@ -226,49 +134,35 @@
 
             <div class="price-range-container">
                 <h3>Khoảng Giá</h3>
-                <input type="text" class="price-input" name="priceFrom" placeholder="₫ TỪ">
+                <input type="text" class="price-input" name="priceFrom" placeholder="₫ TỪ"
+                       th:value="${params['priceFrom'] != null ? params['priceFrom'] : ''}">
                 <span> - </span>
-                <input type="text" class="price-input" name="priceTo" placeholder="₫ ĐẾN">
+                <input type="text" class="price-input" name="priceTo" placeholder="₫ ĐẾN"
+                       th:value="${params['priceTo'] != null ? params['priceTo'] : ''}">
             </div>
 
-            <!-- Đánh giá -->
             <div class="filter-group">
-                <h3>Đánh giá</h3>
-                <label><input type="checkbox" name="ratings" value="5"> 5 sao</label><br>
-                <label><input type="checkbox" name="ratings" value="4"> 4 sao</label><br>
-                <label><input type="checkbox" name="ratings" value="3"> 3 sao</label><br>
-                <label><input type="checkbox" name="ratings" value="2"> 2 sao</label><br>
-                <label><input type="checkbox" name="ratings" value="1"> 1 sao</label>
+                <h3>Tiện nghi</h3>
+                <div th:each="facility : ${facilities}">
+                    <label>
+                        <input name="facilities" type="checkbox"
+                               th:value="${facility.id}"
+                               th:checked="${selectedFacilities.contains(facility.id)}">
+                        <span th:text="${facility.name}">Facility Name</span>
+                    </label><br>
+                </div>
             </div>
 
-            <!-- Địa điểm -->
             <div class="filter-group">
-                <h3>Địa điểm</h3>
-                <label>
-                    <input name="homestayFacilities" type="checkbox" value="1"
-                           th:checked="${selectedFacilities.contains(1L)}">
-                    Cho phép vật nuôi
-                </label><br>
-                <label>
-                    <input name="homestayFacilities" type="checkbox" value="2"
-                           th:checked="${selectedFacilities.contains(2L)}">
-                    Cho thuê xe máy/ xe đạp
-                </label><br>
-                <label>
-                    <input name="homestayFacilities" type="checkbox" value="3"
-                           th:checked="${selectedFacilities.contains(3L)}">
-                    Phòng xông hơi
-                </label><br>
-                <label>
-                    <input name="homestayFacilities" type="checkbox" value="4"
-                           th:checked="${selectedFacilities.contains(4L)}">
-                    Wifi miễn phí
-                </label><br>
-                <label>
-                    <input name="homestayFacilities" type="checkbox" value="5"
-                           th:checked="${selectedFacilities.contains(5L)}">
-                    Wifi miễn phí
-                </label>
+                <h3>Dịch vụ</h3>
+                <div th:each="service : ${services}">
+                    <label>
+                        <input name="services" type="checkbox"
+                               th:value="${service.id}"
+                               th:checked="${selectedServices.contains(service.id)}">
+                        <span th:text="${service.name}">Facility Name</span>
+                    </label><br>
+                </div>
             </div>
 
             <button class="filter-button" type="button" onclick="submitForm()">Áp dụng bộ lọc</button>
@@ -287,13 +181,13 @@
     <!-- Kết quả tìm kiếm -->
     <div class="search-results">
         <!-- Kết quả tìm kiếm sẽ hiển thị ở đây -->
-        <!-- homestays: một list kết quả tìm kiếm đựơc backend trả về -->
 
         <div class="search-price">
             <h3>Sắp xếp:</h3>
-            <select id="price sort" onchange="sortHomestays()">
-                <option th:selected="${current_sort == 'asc'}" value="asc">Giá tăng dần</option>
-                <option th:selected="${current_sort == 'desc'}" value="desc">Giá giảm dần</option>
+            <select id="price-sort" onchange="sortHomestays()">
+                <option></option>
+                <option value="asc" th:selected="${params['sort'] == 'asc'}">Giá tăng dần</option>
+                <option value="desc" th:selected="${params['sort'] == 'desc'}">Giá giảm dần</option>
             </select>
         </div>
 
@@ -301,8 +195,19 @@
         <script>
             function sortHomestays() {
                 let sortOption = document.getElementById("price-sort").value;
-                let currentUrl = window.location.href.split('?')[0];
-                window.location.href = currentUrl + "?sort=" + sortOption;
+                let currentUrl = window.location.href.split('?')[0]; // Lấy phần URL trước dấu hỏi chấm (không bao gồm các tham số)
+                // Lấy tất cả tham số trong URL hiện tại
+                let params = new URLSearchParams(window.location.search);
+                // Cập nhật hoặc thêm tham số 'sort'
+                if (sortOption) {
+                    params.set('sort', sortOption);
+                } else {
+                    params.delete('sort');  // Nếu không chọn giá trị, xóa tham số 'sort'
+                }
+                // Tạo lại URL với các tham số đã cập nhật
+                let newUrl = currentUrl + '?' + params.toString();
+                // Chuyển hướng tới URL mới
+                window.location.href = newUrl;
             }
         </script>
 
@@ -311,16 +216,21 @@
             <div class="row" th:if="${homestays != null}">
                 <div class="item" th:each="homestay : ${homestays}">
                     <div class="img">
-                        <img th:src="@{/img/homestay1.jpg}" alt="Homestay Image">
+                        <img th:src="${homestay.image}" alt="Homestay Image">
                     </div>
                     <div class="info">
                         <h2 class="card-title" th:text="${homestay.name}">Tên Homestay</h2>
                         <div class="star-rating">
                             <!-- Mã hiển thị đánh giá sao nếu có -->
                         </div>
+                        <p th:text="${homestay.address}"></p>
                         <h3 th:text="'Giá: ' + ${homestay.price} + 'k'">Giá</h3>
                         <p th:text="${homestay.description}"></p>
-                        <form method="GET" th:action="@{/product/{id}(id=${homestay.id})}">
+                        <form method="POST" th:action="@{/homestay/{id}(id=${homestay.id})}">
+                            <div>
+                                <input type="date" style="display:none;" name="checkinDate" th:value="${checkInDate != null ? checkInDate : ''}">
+                                <input type="date" style="display:none;" name="checkoutDate" th:value="${checkOutDate != null ? checkOutDate : ''}">
+                            </div>
                             <button class="book-button">Đặt phòng</button>
                         </form>
                     </div>
@@ -330,11 +240,7 @@
         </div>
     </div>
 </div>
-<!--<<<<<<< HEAD
-=======
-    </div>
-</div>
->>>>>>> develop -->
+
 
 <script>
     function performSearch() {
@@ -347,7 +253,6 @@
 <footer>
     <div class="container grid">
         <div class="box">
-            <!--                <img th:src="@{/img/homestay1.jpg}">-->
             <div class="icon">
                 <a href="#"><i class="fa fa-facebook"></i></a>
                 <a href="#"><i class="fa fa-instagram"></i></a>

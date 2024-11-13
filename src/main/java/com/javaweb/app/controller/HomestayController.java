@@ -1,11 +1,13 @@
 package com.javaweb.app.controller;
 
 
+import com.javaweb.app.dto.HomestayCreateDTO;
 import com.javaweb.app.dto.HomestayResponseDTO;
 import com.javaweb.app.dto.HomestayDto;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.service.HomestayService;
 import com.javaweb.app.service.impl.HomestayServiceImpl;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,21 +17,18 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class                                                                                 HomestayController {
-    @Autowired
-    public HomestayServiceImpl homestayServiceImpl;
+public class HomestayController {
     @Autowired
     public HomestayService homestayService;
     @Autowired
     public HomestayRepository homestayRepository;
 
     // CREATE
-    @PostMapping("/admin/homestay-add")  // Thêm mới homestay
-    public ResponseEntity<HomestayDto> addHomestay(@RequestBody HomestayDto homestayDto) {
-        HomestayDto addedHomestay = homestayService.createHomestay(homestayDto);
-        return ResponseEntity.ok(homestayDto);
+    @PostMapping("/admin/homestay-add")
+    public ResponseEntity<HomestayResponseDTO> addHomestay(@ModelAttribute HomestayCreateDTO homestayCreateDTO) {
+        HomestayResponseDTO homestayResponseDTO = homestayService.createHomestay(homestayCreateDTO);
+        return ResponseEntity.ok(homestayResponseDTO);
     }
-
     // UPDATE
     @PutMapping("/admin/homestay-update")
     public ResponseEntity<HomestayDto> updateHomestay(@RequestBody HomestayDto updateHomestayDto) {
@@ -51,15 +50,7 @@ public class                                                                    
 
     // READ
     @GetMapping("/admin/homestay/{id}")
-    public ResponseEntity<HomestayDto> getById(@PathVariable Long id){
-        HomestayDto homestayDto = homestayService.findHomestayById(id);
-        return ResponseEntity.ok(homestayDto);
-    }
-
-    @GetMapping("/getall")
-    public List<HomestayResponseDTO> getAllFIlter(@RequestParam  Map<String, Object> params,
-                                                  @RequestParam List<Long> homestayFacilities) {
-        List<HomestayResponseDTO> list = homestayService.findByFilter(params, homestayFacilities);
-        return list;
+    public HomestayResponseDTO getById(@PathVariable Long id){
+        return homestayService.findHomestayById(id);
     }
 }

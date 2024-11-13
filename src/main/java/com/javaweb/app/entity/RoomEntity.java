@@ -9,33 +9,33 @@ import java.util.List;
 @Table(name = "room")
 public class RoomEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "type")
     private String type;
 
-
     @Column(name = "numbers")
     private Long numbers;
 
+    @Column(name = "description")
+    private String description;
+
+    @Lob
+    @Column(name = "image", columnDefinition = "MEDIUMBLOB")  // Chỉ định cột và các thuộc tính của nó
+    private byte[] image;
+
     @ManyToOne
-    @JoinColumn(name = "homestay_id", nullable = false)
+    @JoinColumn(name = "homestay_id")
     private HomestayEntity homestay;
 
     public RoomEntity() {
     }
 
-    public RoomEntity(Long id, String type, Long numbers, HomestayEntity homestay) {
-        this.id = id;
+    public RoomEntity(String type, Long numbers, String description) {
         this.type = type;
         this.numbers = numbers;
-        this.homestay = homestay;
-    }
-
-    public RoomEntity(Long id, String type, Long numbers) {
-        this.id = id;
-        this.type = type;
-        this.numbers = numbers;
+        this.description = description;
     }
 
     public Long getId() {
@@ -44,6 +44,22 @@ public class RoomEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public HomestayEntity getHomestay() {
+        return homestay;
+    }
+
+    public void setHomestay(HomestayEntity homestay) {
+        this.homestay = homestay;
     }
 
     public String getType() {
@@ -62,11 +78,12 @@ public class RoomEntity {
         this.numbers = numbers;
     }
 
-    public HomestayEntity getHomestay() {
-        return homestay;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setHomestay(HomestayEntity homestay) {
-        this.homestay = homestay;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
+
 }
