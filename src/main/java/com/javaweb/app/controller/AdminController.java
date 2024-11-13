@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,17 +35,14 @@ public class AdminController {
     @Autowired
     public UserService userService;
 
-//    @GetMapping // Trang quản trị
-//    public ModelAndView adminPage(@RequestParam Map<String, Object> params,
-//                                     @RequestParam(required = false) List<Long> homestayFacilities) {
-//       // List<HomestayResponseDTO> list = homestayService.finFilter(params, homestayFacilities);
-//        List<HomestayResponseDTO> list = homestayService.findAll();
-//        ModelAndView model = new ModelAndView("admin/homestay");
-//        model.addObject("homestays", list);
-//        return model;
-//    }
     @GetMapping()
-    public ModelAndView adminLogin() {
+    public ModelAndView adminLogin(HttpSession session) {
+        if (session.getAttribute("admin") != null) {
+            List<HomestayResponseDTO> list = homestayService.findAll();
+            ModelAndView model = new ModelAndView("admin/homestay");
+            model.addObject("homestays", list);
+            return model;
+        }
         return new ModelAndView("admin/loginAdmin");
     }
 
@@ -64,30 +62,50 @@ public class AdminController {
             return modelAndView;
         }
     }
+
+    @GetMapping("/logout")
+    public ModelAndView logout(HttpSession session) {
+        session.removeAttribute("admin");
+        return new ModelAndView("admin/loginAdmin");
+    }
+
+
     @GetMapping("/homestay-list") // Trang quản lý Homestay
     public ModelAndView adminHomestayPage(@RequestParam Map<String, Object> params,
-                                          @RequestParam(required = false) List<Long> homestayFacilities) {
-        List<HomestayResponseDTO> list = homestayService.findAll();// Lấy từ homestay database
-        ModelAndView model = new ModelAndView("admin/homestay"); // Thêm HTML
-        model.addObject("homestays", list); // Thêm model
-        return model;
+                                          @RequestParam(required = false) List<Long> homestayFacilities,
+                                          HttpSession session) {
+        if(session.getAttribute("admin") != null){
+            List<HomestayResponseDTO> list = homestayService.findAll();// Lấy từ homestay database
+            ModelAndView model = new ModelAndView("admin/homestay"); // Thêm HTML
+            model.addObject("homestays", list); // Thêm model
+            return model;
+        }
+        return new ModelAndView("admin/loginAdmin");
     }
 
     @GetMapping("/homestay-edit") // Trang thêm mới homestay
-    public ModelAndView addHomestayPage() {
-        ModelAndView modelAndView = new ModelAndView("admin/add");
-        modelAndView.addObject("facilities", facilitiesService.findAll());
-        modelAndView.addObject("provinces", provinceService.findAll());
+    public ModelAndView addHomestayPage(HttpSession session) {
+        if(session.getAttribute("admin") != null){
+            ModelAndView modelAndView = new ModelAndView("admin/add");
+            modelAndView.addObject("facilities", facilitiesService.findAll());
+            modelAndView.addObject("provinces", provinceService.findAll());
 
-       // modelAndView.addObject("rooms",)
-        return modelAndView;
+           // modelAndView.addObject("rooms",)
+            return modelAndView;
+        }
+        return new ModelAndView("admin/loginAdmin");
     }
 
     @GetMapping("/homestay-edit/{id}") // Trang cập nhật homestay
-    public ModelAndView updateHomestayPage(@PathVariable("id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("admin/update");
-        HomestayResponseDTO homestayDto = homestayService.findHomestayById(id);
-        modelAndView.addObject("homestay", homestayDto);
-        return modelAndView;
+    public ModelAndView updateHomestayPage(
+            @PathVariable("id") Long id,
+            HttpSession session) {
+        if(session.getAttribute("admin") != null){
+            ModelAndView modelAndView = new ModelAndView("admin/update");
+            HomestayResponseDTO homestayDto = homestayService.findHomestayById(id);
+            modelAndView.addObject("homestay", homestayDto);
+            return modelAndView;
+        }
+        return new ModelAndView("admin/loginAdmin");
     }
 }
