@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" dir="ltr">
+<html lang="vi">
 <head>
     <title>Quên mật khẩu • HomesTayBac</title>
     <link rel="stylesheet" href="/css/login.css" />
@@ -9,7 +9,10 @@
 </head>
 <body>
 <div class="form">
-    <button class="back" type="button" onclick="goBack()">&#8592;</button>
+    <a href = "/login">
+        <button class="back" type="button" >&#8592;</button>
+    </a>
+
     <br>
     <h2>Quên Mật Khẩu</h2>
 
@@ -46,26 +49,20 @@
             body: new URLSearchParams({ email: email })
         });
 
-        const message = await response.text();
-        document.getElementById('step1Message').innerText = message;
-
-        if (message.includes("OTP đã được gửi")) {
+        const otp = await response.text();
+        if (otp.includes("Gửi email thất bại") || otp.includes("Email không tồn tại")) {
+            document.getElementById('step1Message').innerText = otp;
+        } else {
+            localStorage.setItem('otp', otp); // Lưu OTP vào localStorage
             goToStep(2);
         }
     }
 
-    async function verifyOtp() {
-        const email = document.getElementById('email').value;
-        const otp = document.getElementById('otp').value;
+    function verifyOtp() {
+        const enteredOtp = document.getElementById('otp').value;
+        const storedOtp = localStorage.getItem('otp');
 
-        const response = await fetch('/api/auth/verify-otp', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({ email: email, otp: otp })
-        });
-
-        const isValid = await response.text();
-        if (isValid === "true") {
+        if (enteredOtp === storedOtp) {
             document.getElementById('step2Message').innerText = "OTP hợp lệ. Hãy đặt lại mật khẩu mới.";
             goToStep(3);
         } else {
@@ -87,6 +84,7 @@
         document.getElementById('step3Message').innerText = message;
 
         if (message.includes("Đổi mật khẩu thành công")) {
+            localStorage.removeItem('otp'); // Xóa OTP khỏi localStorage
             alert("Đổi mật khẩu thành công! Bạn có thể đăng nhập với mật khẩu mới.");
             window.location.href = "/login";
         }
