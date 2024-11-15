@@ -91,7 +91,7 @@
 
 
 <main class="container my-5">
-    <form action="/" method="GET">
+    <form th:action="@{/booking}" method="POST">
     <div class="row">
         <div class="col-lg-7 custom-border" >
             <!--Hình ảnh sản phẩm-->
@@ -146,17 +146,18 @@
             <div class="search-box">
                 <div class="date-picker">
                     <label for="checkin-date">Ngày nhận phòng</label>
-                    <input type="date" id="checkin-date" required name="checkinDate"
+                    <input type="date" id="checkin-date" required name="checkInDate"
                            th:value="${checkInDate != null ? checkInDate : ''}">
                 </div>
 
                 <div class="date-picker">
                     <label for="checkout-date">Ngày trả phòng</label>
-                    <input type="date" id="checkout-date" required name="checkoutDate"
+                    <input type="date" id="checkout-date" required name="checkOutDate"
                            th:value="${checkOutDate != null ? checkOutDate : ''}">
                 </div>
             </div>
-            <a th:href="@{/book}" class="btn btn-primary">Đặt ngay</a>
+            <input type="number" id="homestayId" name="homestayId" th:value="${homestay.id}">
+            <button class="btn btn-primary" type="submit">Đặt ngay</button>
         </div>
     </div>
     </form>
@@ -240,7 +241,6 @@
     </section>
 </main>
     <script>
-
         let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         console.log(isLoggedIn);
         const updateUserAction = () => {

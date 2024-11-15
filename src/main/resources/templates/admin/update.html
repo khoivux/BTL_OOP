@@ -13,7 +13,7 @@
             <h2 class="text-white">Trang quản trị</h2>
             <div>
                 <span class="text-white">Xin chào, admin</span>
-                <div class = "d-flex justify-content-end"><a href = "#" class = "text-light">đăng xuất</a></div>  <!--đăng xuất-->
+                <div class = "d-flex justify-content-end"><a th:href = "@{/admin/logout}" class = "text-light">đăng xuất</a></div>  <!--đăng xuất-->
             </div>
         </div>
     </header>
@@ -34,11 +34,11 @@
         </div>
         <div class = "editcol col-10">
             <h3>Cập nhật Homestay</h3>
-            <form class="border p-2 mb-2" id="listForm" >
+            <form class="border p-2 mb-2" id="listForm" enctype="multipart/form-data">
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label class="id">Mã</label>
-                        <input type="text" class="form-control" placeholder="Nhập mã Homestay" name="id" th:value="${homestay.id}"/>
+                        <input type="text" class="form-control" placeholder="Nhập mã Homestay" name="id" th:value="${homestay.id}" readonly />
                     </div>
                     <div class="form-group col-md-3">
                         <label class="name">Tên Homestay</label>
@@ -52,26 +52,68 @@
                         <label class="address">Địa chỉ</label>
                         <input type="text" class="form-control" placeholder="Nhập địa chỉ Homestay" name="address" th:value="${homestay.address}">
                     </div>
-                    <div class="form-group col-md-6">
-                        <label class="rating">Đánh giá</label>
-                        <input type="text" class="form-control" placeholder="Nhập đánh giá Homestay" name="rating" th:value="${homestay.rating}">
-                    </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-12 ">
                         <label for="provinceid">Tỉnh/Thành phố</label>
-                        <select name="provinceid" id="provinceid" class="form-control">
-                            <option value="">Chọn Tỉnh/Thành phố</option>
-                            <option value="1">Lào Cai</option>
-                            <option value="2">Lai Châu</option>
-                            <option value="3">Sơn La</option>
+                        <select name="provinceid" id="provinceid" required class="form-control">
+                            <option th:value="${homestay.province}">Chọn Tỉnh/Thành phố</option>
+                            <div th:each="province : ${provinces}">
+                                <option th:value="${province.id}" th:text="${province.name}"></option>
+                            </div>
                         </select>
                     </div>
 
-                    <div class="form-group col-md-12">
-                        <label class="description">Mô tả Homestay</label>
-                        <input type="text" class="form-control" placeholder="Nhập mô tả Homestay" name="description" th:value="${homestay.description}">
+                    <div class="form-group col-md-6">
+                        <label>Ảnh Homestay</label>
+                        <input type="file" class="form-control-file" th:name="'image'" />
+                        <div>
+                            <!-- Hiển thị ảnh hiện tại của Homestay -->
+                            <img th:src="@{${homestay.image}}" alt="Ảnh Homestay" style="max-width: 200px;" />
+                        </div>
                     </div>
-
                 </div>
+                <table class="table table-bordered">
+                    <thead class="thead-light">
+                    <tr>
+                        <th style="width:30%">Ảnh Phòng</th>
+                        <th style="width:15%">Loại Phòng</th>
+                        <th style="width:5%">Số Lượng</th>
+                        <th style="width:40%">Mô Tả Phòng</th>
+<!--                        <th style="width:5%">Hành Động</th>-->
+                    </tr>
+                    </thead>
+                    <tbody id="roomTable">
+                    <!-- Lặp qua các phòng để hiển thị thông tin -->
+                    <tr th:each="room, iterStat : ${homestay.rooms}">
+                        <!-- Cột Ảnh Phòng -->
+                        <td>
+                            <input type="file" class="form-control-file" th:name="'rooms[' + ${iterStat.index} + '].image'" />
+                            <img th:src="@{${room.imgURL}}" alt="Ảnh phòng" style="max-width: 100px;" />
+                        </td>
+                        <!-- Loại Phòng -->
+                        <td>
+                            <input type="text" class="form-control"
+                                   th:name="${'rooms[' + iterStat.index + '].type'}"
+                                   th:value="${room.type}" />
+                        </td>
+                        <!-- Số Lượng -->
+                        <td>
+                            <input type="number" class="form-control"
+                                   th:name="${'rooms[' + iterStat.index + '].numbers'}"
+                                   th:value="${room.numbers}" />
+                        </td>
+                        <!-- Mô Tả -->
+                        <td>
+                            <input type="text" class="form-control"
+                                   th:name="${'rooms[' + iterStat.index + '].description'}"
+                                   th:value="${room.description}" />
+                        </td>
+                        <!-- Cột Hành Động với nút Xóa -->
+<!--                        <td>-->
+<!--                            <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">Xóa</button>-->
+<!--                        </td>-->
+                    </tr>
+                    </tbody>
+                </table>
                 <div class="d-flex justify-content-end mb-1">
                     <button type="submit" class="btn btn-success" onclick="submitForm(event)" >Cập nhật</button>         <!-- sau khi bấm quay về trang qlsp-->
                 </div>
@@ -79,83 +121,45 @@
         </div>
     </div>
     <!-- Thông báo Cập nhật thành công -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="10000"> <!-- Thay đổi ở đây -->
-            <div class="toast-header">
-                <strong class="me-auto text-success">Thành công</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                Homestay đã được cập nhật thành công!
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Thêm giá trị provinceid của homestay vào thẻ hidden -->
-    <input type="hidden" id="homestayProvinceId" th:value="${homestay.provinceid}">
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Lấy giá trị provinceid từ thẻ hidden
-            const homestayProvinceId = document.getElementById("homestayProvinceId").value;
-            const provinceSelect = document.getElementById("provinceid");
-
-            // Tự động chọn option có value trùng với provinceid của homestay
-            for (const option of provinceSelect.options) {
-                if (option.value === homestayProvinceId) {
-                    option.selected = true;
-                    break;
-                }
-            }
-        });
-    </script>
     <script>
         function submitForm(event) {
-            event.preventDefault();  // Ngăn chặn hành động mặc định của form
+            // Ngừng việc gửi form theo mặc định
+            event.preventDefault();
 
             // Lấy dữ liệu từ form
-            const formData = {
-                id: document.querySelector('[name="id"]').value,
-                name: document.querySelector('[name="name"]').value,
-                price: document.querySelector('[name="price"]').value,
-                address: document.querySelector('[name="address"]').value,
-                provinceid: document.querySelector('[name="provinceid"]').value,
-                description: document.querySelector('[name="description"]').value,
-                rating: document.querySelector('[name="rating"]').value
-            };
+            const formData = new FormData(document.getElementById("listForm"));
 
-            // Kiểm tra id, price và rating phải là số
-            if (isNaN(formData.id) || isNaN(formData.price) || isNaN(formData.rating)) {
-                alert("Vui lòng nhập mã, giá tiền và đánh giá ở dạng số!");
-                return; // Ngăn không cho gửi form
-            }
-
-            // Gửi dữ liệu dưới dạng JSON
-            fetch("/admin/homestay-update", {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formData)
-            })
-                .then(response => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok " + response.statusText);
+            // Chuyển FormData thành đối tượng JSON để gửi
+            const formObject = {};
+            formData.forEach((value, key) => {
+                // Nếu key đã tồn tại trong formObject, thì tạo một mảng để chứa tất cả các giá trị với key đó
+                if (formObject[key]) {
+                    if (Array.isArray(formObject[key])) {
+                        formObject[key].push(value);
+                    } else {
+                        formObject[key] = [formObject[key], value];
+                    }
+                } else {
+                    formObject[key] = value;
                 }
-                return response.json();  // Chỉ chuyển đổi thành JSON nếu có phản hồi
-            })
-                .then(data => {
-                console.log("Success:", data);
-                // Hiển thị thông báo thành công
-                const toast = new bootstrap.Toast(document.getElementById('successToast'));
-                toast.show();
+            });
 
-                // Tự động ẩn Toast sau 5 giây
-                setTimeout(() => {
-                    toast.hide(); // Ẩn Toast sau 5 giây (5000 ms)
-                }, 10000);
+            // Gửi dữ liệu lên server
+            fetch("/admin/homestay-add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json", // Nếu gửi dưới dạng JSON
+                },
+                body: JSON.stringify(formObject), // Chuyển đổi đối tượng JavaScript thành JSON
             })
-                .catch(error => console.error("Error:", error));
+                .then(response => response.json())
+                .then(data => {
+                console.log("Dữ liệu đã được gửi thành công:", data);
+                // Thực hiện hành động sau khi gửi thành công (ví dụ: thông báo, chuyển hướng)
+            })
+                .catch(error => {
+                console.error("Có lỗi xảy ra:", error);
+            });
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

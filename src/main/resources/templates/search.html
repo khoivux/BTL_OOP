@@ -146,16 +146,17 @@
     </div>
 </header>
 <script>
-    let isLoggedIn = false; // thêm phương thức kiểm tra trạng thái đăng nhập
-    const userName = "Nguyễn Văn A";
+    let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    console.log(isLoggedIn);
+    const updateUserAction = () => {
+        const userName = localStorage.getItem('name');
 
-    function updateUserAction() {
         const userActionDiv = document.getElementById("user-action");
         console.log(userActionDiv);
-        if (isLoggedIn) {
+        if (localStorage.getItem('isLoggedIn') === 'true') {
             userActionDiv.innerHTML =
             `
-            <div show-info onclick="showInfo()" class="navlinks">
+            <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
                 <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
                 <ul show-ul class="d-none" id="userlist">
                     <li><a href="#">Thông tin tài khoản</a></li>    <!--url trang profile-->
@@ -163,15 +164,14 @@
                     <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
                 </ul>
             </div>
-            `;                                                      //url trang profile
-            // thoát trạng thái đăng nhập
+            `;
         } else {
-            userActionDiv.innerHTML = `<a th:href="@{/login}"><button class="primary-btn">Đăng nhập</button></a>`;
+            userActionDiv.innerHTML = `<a href="/user"><button class="primary-btn">Đăng nhập</button></a>`;
         }
     }
 
     function logout() {
-        isLoggedIn = false;
+        localStorage.setItem('isLoggedIn', false);
         updateUserAction();
     }
     updateUserAction();
