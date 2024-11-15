@@ -23,5 +23,4 @@ public class BookingController {
     public BookingDTO createBooking(@RequestBody BookingDTO bookingDTO) {
         return bookingService.createBooking(bookingDTO);
     }
-
 }
