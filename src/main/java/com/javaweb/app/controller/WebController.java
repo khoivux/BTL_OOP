@@ -69,6 +69,13 @@ public class WebController {
         return new ModelAndView("register");
     }
 
+    @GetMapping(value = "/forget")
+    public ModelAndView forgetPage() {
+        ModelAndView model = new ModelAndView("forget");
+        //model.addObject();
+        return model;
+    }
+
     @PostMapping("/homestay/{id}")
     public ModelAndView getProductById(@PathVariable Long id,
                                        @RequestParam Map<String, String> params) {

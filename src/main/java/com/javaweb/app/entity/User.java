@@ -2,6 +2,8 @@ package com.javaweb.app.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table (name = "users")
 public class User {
@@ -63,5 +65,8 @@ public class User {
 
     public String getUserRole() {
         return role;
+    }
+    public void setPassword(String newPassword) {
+        this.password = newPassword;
     }
 }
