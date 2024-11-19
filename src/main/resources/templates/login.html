@@ -7,7 +7,7 @@
 <body>
   <div class="form">
     <!-- Sử dụng thẻ <a> để tạo liên kết quay lại trang chính -->
-    <a href="/home">
+    <a href="/">
         <button class="back" type="button">&#8592</button>
     </a>
     <br>
@@ -44,6 +44,7 @@
                     alert('Đăng nhập thành công!');
                     localStorage.setItem('isLoggedIn', true);
                     localStorage.setItem('name', responseData.name);
+                    localStorage.setItem('id', responseData.id);
                     window.location.href = '/';
                 } else {
                     const errorMessage = await response.text();
