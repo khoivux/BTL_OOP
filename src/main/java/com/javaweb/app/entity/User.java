@@ -29,12 +29,19 @@ public class User {
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "date", columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
+    private LocalDateTime date;
+
     public User() {
         this.username = "";
         this.fullName = "";
         this.email = "";
         this.password = "";
         this.phoneNumber = "";
+        this.address = "";
         this.role = "user";
     }
 
@@ -47,8 +54,20 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
     public String getFullName() {
         return fullName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public String getUserName() {
@@ -66,7 +85,25 @@ public class User {
     public String getUserRole() {
         return role;
     }
+
     public void setPassword(String newPassword) {
         this.password = newPassword;
+    }
+
+
+    public void setUserFullName(String newFullName) {
+        this.fullName = newFullName;
+    }
+
+    public void setUserEmail(String newEmail) {
+        this.email = newEmail;
+    }
+
+    public void setUserPhoneNumber(String newPhoneNumber) {
+        this.phoneNumber = newPhoneNumber;
+    }
+
+    public void setUserAddress(String newAddress) {
+        this.address = newAddress;
     }
 }

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile • HomesTayBac</title>
+    <link rel="stylesheet" th:href="@{/css/user_profile.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css"
+          integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+          integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+    <div class="logo">
+        <a href=""><img th:src="@{/img/logo.jpeg}"></a> <!--back về home-->
+    </div>
+    <div class="navlinks">
+        <ul id="menulist">
+            <li><a href="/" class="link-underline link-underline-opacity-0">Trang chủ</a></li> <!--url đến home-->
+            <li><a href="#Dịch Vụ" class="link-underline link-underline-opacity-0">Dịch vụ</a></li> <!--url xuống dịch vụ-->
+            <li><a href="#homestay" class="link-underline link-underline-opacity-0">Homestay</a></li> <!--url xuống danh sách homestay-->
+            <li><a href="#Liên Hệ" class="link-underline link-underline-opacity-0">Liên hệ</a></li> <!--url xuống liên hệ-->
+            <li><a href="#Feedback" class="link-underline link-underline-opacity-0">Phản hồi</a></li> <!--url đến trang phản hồi-->
+            <li id="user-action"></li>
+        </ul>
+        <span id="listbars" class="fa fa-bars" onclick="menutoggle()"></span>
+    </div>
+</header>
+<script>
+    let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    console.log(isLoggedIn);
+    const updateUserAction = () => {
+        const userName = localStorage.getItem('name');
+
+        const userActionDiv = document.getElementById("user-action");
+        console.log(userActionDiv);
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            userActionDiv.innerHTML =
+                `
+                <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
+                    <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
+                    <ul show-ul class="d-none" id="userlist">
+                        <li><a href="/user/user_profile">Thông tin tài khoản</a></li>    <!--url trang profile-->
+                        <li><a href="#">Lịch sử đặt phòng</a></li>      <!--url trang history-->
+                        <li><a href="/" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
+                    </ul>
+                </div>
+                `;
+        } else {
+            userActionDiv.innerHTML = `<a href="/user"><button class="primary-btn">Đăng nhập</button></a>`;
+        }
+    }
+
+    function logout() {
+        localStorage.setItem('isLoggedIn', false);
+        updateUserAction();
+    }
+    updateUserAction();
+</script>
+<script>
+    var Menulist = document.getElementsByClassName("navlinks");
+    // menulist.style.maxHeight = "0px";
+    function menutoggle() {
+        if (menulist.style.maxHeight == "0px") {
+            menulist.style.maxHeight = "60vh";
+        } else {
+            menulist.style.maxHeight = "0px";
+        }
+    }
+
+    let shown = false;
+    const showInfor = document.querySelector('[show-info]');
+    console.log(showInfor);
+    const showUl = showInfor.querySelector(`[show-ul]`);
+    console.log(showUl);
+    function showInfo() {
+
+        if(shown){
+            showUl.classList.remove('d-block');
+            showUl.classList.add("d-none");
+            // const userName = showInfor.querySelector(`.user`);
+            shown = false;
+        }
+        else{
+            showUl.classList.remove('d-none');
+            showUl.classList.add("d-block");
+            const userName = showInfor.querySelector(`.user`);
+            // console.log(userName);
+            // userName.classList.add("d-none");
+            shown = true;
+        }
+
+    }
+</script>
+<!-- Main Content, full màn hình -->
+<div class="container-fluid main-content py-5">
+    <div class="row w-100">
+        <!-- Sidebar menu, full chiều cao -->
+        <div class="col-md-3">
+            <div class="profile-sidebar">
+                <nav class="nav flex-column">
+                    <a class="nav-link active" href="#">Thông tin cá nhân</a>
+                    <a class="nav-link" href="#">Cài đặt bảo mật</a>
+                    <a class="nav-link" href="#">Lịch sử giao dịch</a>
+                    <a class="nav-link" href="#">Cài đặt quyền riêng tư</a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Profile content -->
+        <div class="col-md-9">
+            <div class="profile-content">
+                <h4>Thông tin cá nhân</h4>
+                <p>Cập nhật thông tin của bạn và tìm hiểu các thông tin này được sử dụng ra sao.</p>
+                <form action="/user/update_profile" method="post">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div><strong>Username</strong></div>
+                            <input class="input-field form-control" type="text" th:value="${user.userName}" readonly>
+                        </div>
+
+                        <!-- Tên -->
+                        <div class="col-md-6 mb-3">
+                            <div><strong>Tên</strong></div>
+                            <input class="input-field form-control" type="text" name="fullName" th:value="${user.fullName}">
+                        </div>
+
+                        <!-- Địa chỉ email -->
+                        <div class="col-md-6 mb-3">
+                            <div><strong>Địa chỉ email</strong></div>
+                            <input class="input-field form-control" type="email" name="email" th:value="${user.userEmail}">
+                        </div>
+
+                        <!-- Số điện thoại -->
+                        <div class="col-md-6 mb-3">
+                            <div><strong>Số điện thoại</strong></div>
+                            <input class="input-field form-control" type="text" name="phoneNumber" th:value="${user.phoneNumber}">
+                        </div>
+
+                        <!-- Ngày sinh -->
+                        <div class="col-md-6 mb-3">
+                            <div><strong>Ngày sinh</strong></div>
+                            <input class="input-field form-control" type="date" value="1990-01-01">
+                        </div>
+
+                        <!-- Giới tính -->
+                        <div class="col-md-6 mb-3">
+                            <div><strong>Giới tính</strong></div>
+                            <select class="input-field form-control">
+                                <option value="Nam" selected>Nam</option>
+                                <option value="Nữ">Nữ</option>
+                            </select>
+                        </div>
+
+                        <!-- Địa chỉ -->
+                        <div class="col-md-6 mb-3">
+                            <div><strong>Địa chỉ</strong></div>
+                            <input class="input-field form-control" type="text" name="address" th:value="${user.address}">
+                        </div>
+                    </div>
+
+                    <!-- Nút lưu thông tin -->
+                    <button class="btn btn-primary mt-3" type="submit">Lưu thay đổi</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function toggleEdit(button) {
+        var parentDiv = button.parentElement;
+        parentDiv.classList.toggle('edit-mode');
+    }
+
+    function saveChanges() {
+
+        alert('Thông tin đã được lưu!');
+    }
+</script>
+
+<footer>
+    <div class="container grid">
+        <div class="box">
+            <img src="static/img/homestay1.jpg" alt="">
+            <div class="icon">
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-instagram"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+                <a href="#"><i class="fa fa-youtube"></i></a>
+            </div>
+        </div>
+        <div class="box">
+            <h2>GIỚI THIỆU</h2>
+            <a href="#">Trang chủ</a><br>
+            <a href="#">Dịch vụ</a><br>
+            <a href="#">Tin tức</a><br>
+            <a href="#">Liên hệ</a><br>
+        </div>
+        <div class="box">
+            <h2>LIÊN KẾT</h2>
+            <a href="#">Điều khoản sử dụng</a><br>
+            <a href="#">Chính sách bảo mật</a><br>
+            <a href="#">Chính sách hoàn tiền</a><br>
+            <a href="#">FAQs</a>
+        </div>
+        <div class="box">
+            <h2>LIÊN HỆ</h2>
+            <div class = "flex">
+                <i class="fa fa-location-dot"></i>
+                <p>30 Tran Phu, Ha Dong, Ha Noi, Viet Nam</p>
+            </div>
+            <div class = "flex">
+                <i class="fa fa-phone"></i>
+                <p>0987352163</p>
+            </div>
+            <div class = "flex">
+                <i class="fa fa-envelope"></i>
+                <p>nhan54v@gmail.com</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

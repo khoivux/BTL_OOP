@@ -48,4 +48,17 @@ public class UserService {
         }
         userRepository.save(newUser);
     }
+
+    // update profile
+    public void updateProfile(Long id, String fullName, String email, String phoneNumber, String address) {
+        User user = userRepository.getById(id);
+        if(user == null) {
+            throw new RuntimeException("Tài khoản không tồn tại");
+        }
+        user.setUserFullName(fullName);
+        user.setUserEmail(email);
+        user.setUserPhoneNumber(phoneNumber);
+        user.setUserAddress(address);
+        userRepository.save(user);
+    }
 }
