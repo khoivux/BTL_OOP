@@ -5,6 +5,7 @@ import com.javaweb.app.service.FacilitiesService;
 import com.javaweb.app.service.HomestayService;
 import com.javaweb.app.service.ServiceService;
 import com.javaweb.app.utils.MapUtil;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
