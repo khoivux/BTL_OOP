@@ -8,6 +8,7 @@ import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.service.HomestayService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -22,19 +23,22 @@ public class HomestayController {
 
     // CREATE
     @PostMapping("/admin/homestay-add")
-    public RedirectView addHomestay(@ModelAttribute HomestayCreateDTO homestayCreateDTO,
+    public ResponseEntity<String> addHomestay(@ModelAttribute HomestayCreateDTO homestayCreateDTO,
                                     RedirectAttributes redirectAttributes,
                                     HttpSession session) {
-        HomestayResponseDTO homestayResponseDTO = homestayService.createHomestay(homestayCreateDTO);
-        redirectAttributes.addFlashAttribute("message", "Homestay đã được thêm.");
-        return new RedirectView("/admin/homestay-list");
+        try {
+            HomestayResponseDTO homestayResponseDTO = homestayService.createHomestay(homestayCreateDTO);
+            return ResponseEntity.ok("Thêm mới homestay thành công!");
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
     // UPDATE
     @PostMapping("/admin/homestay-update")
-    public ResponseEntity<HomestayDto> updateHomestay(@RequestBody HomestayCreateDTO homestayCreateDTO,
+    public ResponseEntity<HomestayDto> updateHomestay(@ModelAttribute HomestayCreateDTO homestayCreateDTO,
                                                       HttpSession session) {
 
-        int cnt = 1;
        // HomestayDto homestayDto = homestayService.updateHomestay(updateHomestayDto.getId(), updateHomestayDto);
         return ResponseEntity.ok(null);
     }
@@ -51,7 +55,8 @@ public class HomestayController {
 
     // READ
     @GetMapping("/admin/homestay/{id}")
-    public HomestayResponseDTO getById(@PathVariable Long id){
+    public HomestayResponseDTO getById(@PathVariable Long id,
+                                       HttpSession session){
         return homestayService.findHomestayById(id);
     }
 }

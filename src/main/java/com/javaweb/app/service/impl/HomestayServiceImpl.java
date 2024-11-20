@@ -5,7 +5,6 @@ import com.javaweb.app.entity.FacilitiesEntity;
 import com.javaweb.app.entity.HomestayEntity;
 import com.javaweb.app.entity.ProvinceEntity;
 import com.javaweb.app.entity.ServiceEntity;
-import com.javaweb.app.exception.ResourceNotFoundException;
 import com.javaweb.app.mapper.HomestayMapper;
 import com.javaweb.app.mapper.HomestayRequestMapper;
 import com.javaweb.app.dto.HomestaySearchRequestDTO;
@@ -109,8 +108,7 @@ public class HomestayServiceImpl implements HomestayService {
     // UPDATE
     @Override // Cập nhật thông tin một Homestay ở DB
     public HomestayDto updateHomestay(Long id, HomestayDto updatedHomestayDto) {
-        HomestayEntity homestayEntity = homestayRepository.findById(id) //Optional
-                .orElseThrow(() -> new ResourceNotFoundException("Không tồn tại Homestay có id là " + id));
+        HomestayEntity homestayEntity = homestayRepository.getById(id); //Optional
         homestayEntity.setName(updatedHomestayDto.getName());
         homestayEntity.setAddress(updatedHomestayDto.getAddress());
         homestayEntity.setRating(updatedHomestayDto.getRating());

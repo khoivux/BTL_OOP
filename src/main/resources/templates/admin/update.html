@@ -6,8 +6,92 @@
     <title>Trang Quản Trị</title>
     <link rel="stylesheet" th:href="@{/admin.css}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* CSS cho Toast */
+        .toast {
+            position: fixed;
+            top: 20px; /* Hiển thị ở trên cùng */
+            left: 50%;
+            transform: translateX(-50%); /* Đẩy sang giữa */
+            padding: 10px;
+            background-color: #ffffff; /* Màu nền trắng cho thông báo */
+            color: #333; /* Màu chữ */
+            border-radius: 5px;
+            opacity: 0; /* Ban đầu ẩn */
+            visibility: hidden; /* Không hiển thị */
+            transition: opacity 0.5s, visibility 0.5s, transform 0.3s ease-in-out; /* Hiệu ứng mờ dần và mở rộng */
+            z-index: 1050; /* Đảm bảo nó ở trên các phần tử khác */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Đổ bóng nhẹ cho toast */
+            border: 1px solid #28a745; /* Viền màu xanh lá cây */
+            transform: translateX(-50%) scale(0.9); /* Bắt đầu nhỏ hơn và sẽ phóng to */
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) scale(1); /* Phóng to */
+        }
+
+        /* Tiêu đề Toast */
+        .toast-title {
+            background-color: #7FC142; /* Nền xanh lá cây cho tiêu đề */
+            color: white; /* Chữ màu trắng */
+            padding: 5px 5px;
+            /*            border-radius: 5px 5px 0 0; *//* Cạnh trên tròn */
+            font-weight: bold;
+        }
+
+        .toast-body {
+            padding: 10px;
+        }
+
+        /* CSS cho nút đóng Toast */
+        .toast-close {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: #696969;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .toast-close:hover {
+            color: #dc3545; /* Màu đỏ khi hover */
+        }
+    </style>
 </head>
 <body>
+<div id="toast" class="toast">
+    <div class="toast-title">Thông Báo</div>
+    <div class="toast-body">
+        <p id="toast-message"></p>
+        <button class="toast-close" onclick="closeToast()">×</button>
+    </div>
+</div>
+
+<script>
+    // JavaScript để hiển thị Toast
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toast-message').textContent = message;
+
+        // Thêm lớp 'show' để hiển thị Toast
+        toast.classList.add('show');
+
+        // Ẩn Toast sau 5 giây
+        setTimeout(function() {
+            toast.classList.remove('show');
+        }, 5000); // 5000ms = 5 giây
+    }
+
+    // Đóng Toast khi click vào nút "×"
+    function closeToast() {
+        const toast = document.getElementById('toast');
+        toast.classList.remove('show');
+    }
+</script>
     <header>
         <div class="d-flex justify-content-between align-items-center bg-success p-3">
             <h2 class="text-white">Trang quản trị</h2>
@@ -107,58 +191,39 @@
                                    th:name="${'rooms[' + iterStat.index + '].description'}"
                                    th:value="${room.description}" />
                         </td>
-                        <!-- Cột Hành Động với nút Xóa -->
-<!--                        <td>-->
-<!--                            <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">Xóa</button>-->
-<!--                        </td>-->
                     </tr>
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-end mb-1">
-                    <button type="submit" class="btn btn-success" onclick="submitForm(event)" >Cập nhật</button>         <!-- sau khi bấm quay về trang qlsp-->
+                    <button type="submit" class="btn btn-success" onclick="submitFormDate(event)" >Cập nhật</button>         <!-- sau khi bấm quay về trang qlsp-->
                 </div>
             </form>
         </div>
     </div>
     <!-- Thông báo Cập nhật thành công -->
     <script>
-        function submitForm(event) {
-            // Ngừng việc gửi form theo mặc định
-            event.preventDefault();
+        function submitFormData(event) {
+            event.preventDefault();  // Ngừng hành động gửi form mặc định
 
-            // Lấy dữ liệu từ form
+            // Lấy dữ liệu form bao gồm tệp và thông tin văn bản
             const formData = new FormData(document.getElementById("listForm"));
 
-            // Chuyển FormData thành đối tượng JSON để gửi
-            const formObject = {};
-            formData.forEach((value, key) => {
-                // Nếu key đã tồn tại trong formObject, thì tạo một mảng để chứa tất cả các giá trị với key đó
-                if (formObject[key]) {
-                    if (Array.isArray(formObject[key])) {
-                        formObject[key].push(value);
-                    } else {
-                        formObject[key] = [formObject[key], value];
-                    }
-                } else {
-                    formObject[key] = value;
-                }
-            });
-
-            // Gửi dữ liệu lên server
-            fetch("/admin/homestay-add", {
+            // Gửi yêu cầu POST đến API
+            fetch("/admin/homestay-update", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json", // Nếu gửi dưới dạng JSON
-                },
-                body: JSON.stringify(formObject), // Chuyển đổi đối tượng JavaScript thành JSON
+                body: formData  // Gửi formData bao gồm tệp và dữ liệu văn bản
             })
-                .then(response => response.json())
+                .then(response => response.json())  // Xử lý phản hồi JSON từ API
                 .then(data => {
-                console.log("Dữ liệu đã được gửi thành công:", data);
-                // Thực hiện hành động sau khi gửi thành công (ví dụ: thông báo, chuyển hướng)
+                console.log("Success:", data);
+                // Xử lý sau khi cập nhật thành công (ví dụ: thông báo hoặc chuyển hướng)
+                alert("Cập nhật Homestay thành công!");
+                // Nếu bạn muốn chuyển hướng sau khi cập nhật
+                window.location.href = "/admin/homestay-list";  // Ví dụ: quay lại danh sách homestay
             })
                 .catch(error => {
-                console.error("Có lỗi xảy ra:", error);
+                console.error("Error:", error);
+                alert("Có lỗi xảy ra. Vui lòng thử lại.");
             });
         }
     </script>

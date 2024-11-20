@@ -15,13 +15,10 @@ public class DateUtil {
             LocalDate checkOutDate = strToDate(checkOutDateStr);
             if(checkInDate == null && checkOutDate == null)
                 return null;
-
             if((checkInDate == null && checkOutDate != null) || (checkOutDate == null && checkInDate != null))
-                return "Cần nhập cả ngày nhận và trả phòng!";
-
+                throw new RuntimeException("Cần nhập cả ngày nhận và trả phòng!");
             if(checkOutDate.isBefore(checkInDate))
-                return "Ngày trả phòng cần phải sau ngày nhận phòng!";
-
+                throw new RuntimeException("Ngày trả phòng cần phải sau ngày nhận phòng!");
             return null;
     }
 }

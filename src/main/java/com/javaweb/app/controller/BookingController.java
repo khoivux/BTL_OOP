@@ -12,6 +12,7 @@ import com.javaweb.app.service.BookingService;
 import com.javaweb.app.service.HomestayService;
 import com.javaweb.app.utils.DateUtil;
 import com.javaweb.app.utils.MapUtil;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,16 +31,20 @@ public class BookingController {
     public HomestayService homestayService;
 
     @PostMapping("/create")
-    public BookingDTO Booking(@RequestBody BookingDTO bookingDTO) {
-        return bookingService.createBooking(bookingDTO);
+    public BookingDTO Booking(@RequestParam Map<String, Object> params,
+                              HttpSession session) {
+        BookingDTO bookingDTO = bookingService.createBooking(params);
+        return null;
     }
-    @PostMapping()
-    public ModelAndView informBooking(@RequestParam Map<String, Object> params) {
+    @PostMapping("/form")
+    public ModelAndView informBooking(@RequestParam Map<String, Object> params,
+                                      HttpSession session) {
         LocalDate checkInDate = DateUtil.strToDate(MapUtil.getObject(params, "checkInDate", String.class));
         LocalDate checkOutDate = DateUtil.strToDate(MapUtil.getObject(params, "checkOutDate", String.class));
         Long stayDays = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
         HomestayResponseDTO homestay = homestayService.findHomestayById(MapUtil.getObject(params, "homestayId", Long.class));
 
+        Long id = (Long) session.getAttribute("userId");
         ModelAndView modelAndView = new ModelAndView("booking");
         modelAndView.addObject("checkInDate", checkInDate);
         modelAndView.addObject("checkOutDate", checkOutDate);
@@ -48,6 +53,5 @@ public class BookingController {
         modelAndView.addObject("stayDays", stayDays);
         modelAndView.addObject("rent_price", stayDays * homestay.getPrice());
         return modelAndView;
-
     }
 }

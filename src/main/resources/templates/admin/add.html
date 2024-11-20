@@ -93,16 +93,6 @@
             toast.classList.remove('show');
         }
     </script>
-
-    <!-- Thymeleaf Script để hiển thị Toast khi có message -->
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        var message = [[${message}]];  // Đổi từ errorMessage thành message
-        if (message) {
-        showToast(message);  // Hiển thị Toast với message
-        }
-        /*]]>*/
-    </script>
     <div class="d-flex justify-content-between align-items-center bg-success p-3">
         <h2 class="text-white">Trang quản trị</h2>
         <div>
@@ -231,12 +221,24 @@ function submitFormData(event) {
         method: "POST",
         body: formData
     })
-        .then(response => response.json())
-        .then(data => {
-        console.log("Success:", data);
+        .then(response => {
+        if (response.ok) {
+            return response.text();  // Nhận thông báo trả về từ server (dạng text)
+        } else {
+            return response.text().then(errorMessage => {
+                // Ném lỗi để xử lý ở catch
+                throw new Error(errorMessage || 'Đã có lỗi xảy ra');
+            });
+        }
+    })
+        .then(message => {
+        // Hiển thị thông báo Toast thành công
+        showToast(message, "success");  // Thành công
     })
         .catch(error => {
-        console.error("Error:", error);
+        console.error("Error:", error.message);
+        // Hiển thị thông báo lỗi
+        showToast(error.message || "Có lỗi xảy ra khi thêm homestay", "error");  // Lỗi
     });
 }
 </script>

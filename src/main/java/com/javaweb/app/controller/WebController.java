@@ -6,6 +6,7 @@ import com.javaweb.app.service.HomestayService;
 import com.javaweb.app.service.ServiceService;
 import com.javaweb.app.utils.DateUtil;
 import com.javaweb.app.utils.MapUtil;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,7 @@ public class WebController {
 
 
     @GetMapping(value = "/")
-    public ModelAndView homePage() {
+    public ModelAndView homePage(HttpSession session) {
         return new ModelAndView("home");
     }
 
@@ -37,9 +38,10 @@ public class WebController {
     public ModelAndView searchPage(@RequestParam Map<String, Object> params,
                                    @RequestParam(required = false) List<Long> facilities,
                                    @RequestParam(required = false) List<Long> rooms,
-                                   @RequestParam(required = false) List<Long> services) {
+                                   @RequestParam(required = false) List<Long> services,
+                                   HttpSession session) {
 
-
+        Long user = (Long) session.getAttribute("userId");
         // Khởi tạo model và trả về view
         ModelAndView model = new ModelAndView("search");
         // Lấy các field đã chọn
@@ -58,34 +60,35 @@ public class WebController {
         model.addObject("checkOutDate", checkOutDate);
         model.addObject("params", params);
 
-        List<HomestayResponseDTO> homestays;
-        String checkDate = DateUtil.isValid(checkInDate, checkOutDate);
-        if(checkDate == null) {
-            homestays = homestayService.findByFilter(params, facilities, rooms, services);
+        List<HomestayResponseDTO> homestays = new ArrayList<>();  // Khai báo biến homestays
+        try {
+            String checkDate = DateUtil.isValid(checkInDate, checkOutDate);  // Kiểm tra tính hợp lệ của ngày
+            homestays = homestayService.findByFilter(params, facilities, rooms, services);  // Lấy homestay theo bộ lọc
+        } catch (RuntimeException e) {
+            homestays = homestayService.findAll();  // Nếu có lỗi, lấy tất cả homestay
+            model.addObject("errorMessage", e.getMessage());  // Thêm thông báo lỗi vào model
         }
-        else {
-            homestays = homestayService.findAll();
-            model.addObject("errorMessage", checkDate);
-        }
-        model.addObject("homestays", homestays);
+
+        model.addObject("homestays", homestays);  // Thêm homestay vào model
         return model;
     }
 
     @GetMapping(value = "/login")
-    public ModelAndView loginPage() {
+    public ModelAndView loginPage(HttpSession session) {
         //model.addObject();
         return new ModelAndView("login");
     }
 
     @GetMapping(value = "/register")
-    public ModelAndView registerPage() {
+    public ModelAndView registerPage(HttpSession session) {
         //model.addObject();
         return new ModelAndView("register");
     }
 
     @PostMapping("/homestay/{id}")
     public ModelAndView getProductById(@PathVariable Long id,
-                                       @RequestParam Map<String, String> params) {
+                                       @RequestParam Map<String, String> params,
+                                       HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("product");
 
 

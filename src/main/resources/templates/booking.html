@@ -321,8 +321,7 @@
         </div>
     </header>
 
-
-    <form  id = "Details">  <!--nhập thông tin--> 
+    <form  id = "Details" action="/booking/create" method="POST">  <!--nhập thông tin-->
         <div class="container mt-4">
             <!-- Header -->
             <div class="general-info text-center">
@@ -366,47 +365,36 @@
                         </ul>
                     </div>
                 </div>
-            </div>
-    
-                <!-- User Information Form -->
                 <div class="col-md-8">
                     <div class="info-box">
                         <div class="book-cus info-box">
                             <h5>Thông tin người đặt phòng</h5>
                             <div class="mb-3">
-                                <label for="lastName" class="form-label">Họ</label>
-                                <input type="text" class="form-control" id="lastNam" placeholder="Ví dụ: Nguyễn">
+                                <label class="form-label">Họ và tên</label>
+                                <input type="text" class="form-control" name="userName" placeholder="Ví dụ: Nguyễn Thế Lâm">
                             </div>
                             <div class="mb-3">
-                                <label for="firstName" class="form-label">Tên</label>
-                                <input type="text" class="form-control" id="firstNam" placeholder="Ví dụ: Tuấn">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="userEmail" placeholder="email@example.com">
                             </div>
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="emai" placeholder="email@example.com">
-                            </div>
-                            <div class="mb-3">
-                                <label for="phone" class="form-label">Số điện thoại</label>
-                                <input type="text" class="form-control" id="phon" placeholder="+84">
+                                <label class="form-label">Số điện thoại</label>
+                                <input type="text" class="form-control" name="userPhone" placeholder="+84">
                             </div>
                         </div>
                         <div class="check-in-cus info-box">
                             <h5>Thông tin người nhận phòng</h5>
                             <div class="mb-3">
-                                <label for="lastName" class="form-label">Họ</label>
-                                <input type="text" class="form-control" id="lastName" placeholder="Ví dụ: Nguyễn">
+                                <label  class="form-label">Họ và tên</label>
+                                <input type="text" class="form-control" name="customerName" placeholder="Ví dụ: Mai Xuân Nhân">
                             </div>
                             <div class="mb-3">
-                                <label for="firstName" class="form-label">Tên</label>
-                                <input type="text" class="form-control" id="firstName" placeholder="Ví dụ: Tuấn">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="customerEmail" placeholder="email@example.com">
                             </div>
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" placeholder="email@example.com">
-                            </div>
-                            <div class="mb-3">
-                                <label for="phone" class="form-label">Số điện thoại</label>
-                                <input type="text" class="form-control" id="phone" placeholder="+84">
+                                <label class="form-label">Số điện thoại</label>
+                                <input type="text" class="form-control" name="customerPhone" placeholder="+84">
                             </div>
                         </div>
                         <div class="check-in-time">
@@ -447,12 +435,18 @@
                                 <li>- Không cho phép thú cưng</li>
                             </ul>
                         </div>
+                        <input type="date" id="checkin-date"  name="checkInDate" hidden
+                               th:value="${checkInDate != null ? checkInDate : ''}">
+                        <input type="date" id="checkout-date"  name="checkOutDate" hidden
+                               th:value="${checkOutDate != null ? checkOutDate : ''}">
+                        <input type="number"  id="homestayId" name="homestayId" th:value="${homestay.id}" hidden>
                         <div class="d-flex justify-content-end mt-5">
-                            <button type="submit" class="btn btn-primary">Thanh toán</button></div>                             
+                            <button type="submit" class="btn btn-primary">Thanh toán</button>
                         </div>
                     </div>
                 </div>
-        </div>                 
+            </div><!-- User Information Form -->
+        </div>
     </form> 
   
 <script>

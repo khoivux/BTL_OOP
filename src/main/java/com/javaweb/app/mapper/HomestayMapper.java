@@ -54,7 +54,6 @@ public class HomestayMapper {
     }
     public HomestayResponseDTO mapToHomestayResponse(HomestayEntity homestayEntity) {
         HomestayResponseDTO homestayResponse = modelMapper.map(homestayEntity, HomestayResponseDTO.class);
-        homestayResponse.setAddress(homestayEntity.getAddress());
         homestayResponse.setProvince(homestayEntity.getProvince().getName());
         homestayResponse.setFacilities(mapToHomestayFacilities(homestayEntity.getFacilities()));
         homestayResponse.setRooms(roomMapper.mapToRoomDTOS(homestayEntity.getRooms()));
@@ -64,17 +63,19 @@ public class HomestayMapper {
     }
 
     public HomestayEntity mapToSavedHomestayEntity(HomestayCreateDTO homestayCreateDTO) {
-        HomestayEntity homestayEntity = new HomestayEntity();
-        homestayEntity.setName(homestayCreateDTO.getName());
-        homestayEntity.setPrice(homestayCreateDTO.getPrice());
+        HomestayEntity homestayEntity = modelMapper.map(homestayCreateDTO, HomestayEntity.class);
         homestayEntity.setRating(5L);
-        homestayEntity.setDescription(homestayCreateDTO.getDescription());
-        homestayEntity.setAddress(homestayCreateDTO.getAddress());
         if (homestayCreateDTO.getImage() != null && !homestayCreateDTO.getImage().isEmpty()) {
-            try {
-                homestayEntity.setImage(homestayCreateDTO.getImage().getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
+            String fileName = homestayCreateDTO.getImage().getOriginalFilename();
+            String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+            if ("jpg".equals(fileExtension) || "png".equals(fileExtension) || "jpeg".equals(fileExtension)) {
+                try {
+                    homestayEntity.setImage(homestayCreateDTO.getImage().getBytes());
+                } catch (IOException e) {
+                    throw new RuntimeException("Lỗi khi xử lý file ảnh!");
+                }
+            } else {
+                throw new RuntimeException("File không phải ảnh hợp lệ! Chỉ chấp nhận file .jpg, .png hoặc .jpeg");
             }
         }
         return homestayEntity;

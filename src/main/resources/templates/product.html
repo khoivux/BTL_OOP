@@ -91,7 +91,7 @@
 
 
 <main class="container my-5">
-    <form th:action="@{/booking}" method="POST">
+    <form th:action="@{/booking/form}" method="POST">
     <div class="row">
         <div class="col-lg-7 custom-border" >
             <!--Hình ảnh sản phẩm-->
@@ -156,7 +156,7 @@
                            th:value="${checkOutDate != null ? checkOutDate : ''}">
                 </div>
             </div>
-            <input type="number" id="homestayId" name="homestayId" th:value="${homestay.id}">
+            <input type="number"  id="homestayId" name="homestayId" th:value="${homestay.id}" hidden>
             <button class="btn btn-primary" type="submit">Đặt ngay</button>
         </div>
     </div>

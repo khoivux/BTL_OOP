@@ -25,6 +25,15 @@ public class BookingEntity {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "customer_name")
+    private String customerName;
+
+    @Column(name = "customer_Email")
+    private String customerEmail;
+
+    @Column(name = "customer_Phone")
+    private String customerPhone;
+
     @ManyToOne
     @JoinColumn(name = "homestay_id")
     private  HomestayEntity homestay;
@@ -40,6 +49,30 @@ public class BookingEntity {
             inverseJoinColumns = @JoinColumn(name = "service_id") // Khóa ngoại trỏ tới ServiceEntity
     )
     private List<ServiceEntity> services;
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
+
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
+    }
 
     public void setId(Long id) {
         this.id = id;

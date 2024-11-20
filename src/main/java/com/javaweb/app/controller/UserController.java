@@ -19,8 +19,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    @Autowired
-//    private HttpSession session;
+    @Autowired
+    private HttpSession session;
 
     @GetMapping
     public ModelAndView login() {
@@ -30,10 +30,14 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity handleLogin(
             @RequestParam String email,
-            @RequestParam String password) {
+            @RequestParam String password,
+            HttpSession session) {
         try {
             User user = userService.authUser(email, password);
+            Long idd = user.getId();
+            session.setAttribute("userId", user.getId());
 //            session.setAttribute("isLogged", true);
+            idd++;
             return ResponseEntity.ok(new LoginResponse(user.getUserName()));
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
