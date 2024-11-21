@@ -19,8 +19,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private HttpSession session;
+//    @Autowired
+//    private HttpSession session;
 
     @GetMapping
     public ModelAndView login() {
@@ -34,11 +34,8 @@ public class UserController {
             HttpSession session) {
         try {
             User user = userService.authUser(email, password);
-            Long idd = user.getId();
-            session.setAttribute("userId", user.getId());
-//            session.setAttribute("isLogged", true);
-            idd++;
-            return ResponseEntity.ok(new LoginResponse(user.getUserName()));
+            session.setAttribute("user", user);
+            return ResponseEntity.ok(new LoginResponse(user.getId(), user.getUserName()));
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
@@ -48,7 +45,7 @@ public class UserController {
     public class LoginResponse {
         private String name;
 
-        public LoginResponse(String name) {
+        public LoginResponse(Long id, String name) {
             this.name = name;
         }
 

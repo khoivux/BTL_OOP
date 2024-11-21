@@ -5,6 +5,7 @@ import com.javaweb.app.dto.HomestayDto;
 import com.javaweb.app.dto.HomestayResponseDTO;
 import com.javaweb.app.entity.BookingEntity;
 import com.javaweb.app.entity.HomestayEntity;
+import com.javaweb.app.entity.User;
 import com.javaweb.app.repository.BookingRepository;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.repository.UserRepository;
@@ -33,7 +34,9 @@ public class BookingController {
     @PostMapping("/create")
     public BookingDTO Booking(@RequestParam Map<String, Object> params,
                               HttpSession session) {
-        BookingDTO bookingDTO = bookingService.createBooking(params);
+        User user = (User) session.getAttribute("user");
+        int cnt = 0;
+        BookingDTO bookingDTO = bookingService.createBooking(params, user.getId());
         return null;
     }
     @PostMapping("/form")
@@ -44,8 +47,10 @@ public class BookingController {
         Long stayDays = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
         HomestayResponseDTO homestay = homestayService.findHomestayById(MapUtil.getObject(params, "homestayId", Long.class));
 
-        Long id = (Long) session.getAttribute("userId");
+        User user = (User) session.getAttribute("user");
+
         ModelAndView modelAndView = new ModelAndView("booking");
+        modelAndView.addObject("user", user);
         modelAndView.addObject("checkInDate", checkInDate);
         modelAndView.addObject("checkOutDate", checkOutDate);
         modelAndView.addObject("homestay", homestay);

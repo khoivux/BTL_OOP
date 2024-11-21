@@ -1,6 +1,7 @@
 package com.javaweb.app.controller;
 
 import com.javaweb.app.dto.HomestayResponseDTO;
+import com.javaweb.app.entity.User;
 import com.javaweb.app.service.FacilitiesService;
 import com.javaweb.app.service.HomestayService;
 import com.javaweb.app.service.ServiceService;
@@ -85,13 +86,20 @@ public class WebController {
         return new ModelAndView("register");
     }
 
+    @GetMapping(value = "/forget")
+    public ModelAndView forgetPage() {
+        ModelAndView model = new ModelAndView("forget");
+        //model.addObject();
+        return model;
+    }
+
     @PostMapping("/homestay/{id}")
     public ModelAndView getProductById(@PathVariable Long id,
                                        @RequestParam Map<String, String> params,
                                        HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("product");
 
-
+        User user = (User) session.getAttribute("user");
         modelAndView.addObject("checkInDate", params.get("checkinDate"));
         modelAndView.addObject("checkOutDate", params.get("checkoutDate"));
 

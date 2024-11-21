@@ -40,15 +40,13 @@ public class RoomMapper {
                 String fileName = roomDTO.getImage().getOriginalFilename();
                 String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
 
-                // Kiểm tra xem file có phải là ảnh với định dạng jpg, png, jpeg không
                 if ("jpg".equals(fileExtension) || "png".equals(fileExtension) || "jpeg".equals(fileExtension)) {
                     try {
                         roomEntity.setImage(roomDTO.getImage().getBytes());
                     } catch (IOException e) {
-                        e.printStackTrace(); // Log lỗi nếu không thể lấy bytes từ file
+                        throw new RuntimeException("Lỗi khi xử lý file ảnh!");
                     }
                 } else {
-                    // Ném lỗi nếu file không phải là ảnh hợp lệ
                     throw new RuntimeException("File không phải ảnh hợp lệ! Chỉ chấp nhận file .jpg, .png hoặc .jpeg");
                 }
             }

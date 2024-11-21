@@ -371,15 +371,15 @@
                             <h5>Thông tin người đặt phòng</h5>
                             <div class="mb-3">
                                 <label class="form-label">Họ và tên</label>
-                                <input type="text" class="form-control" name="userName" placeholder="Ví dụ: Nguyễn Thế Lâm">
+                                <input type="text" class="form-control" name="userName" th:value="${user.fullName}" placeholder="Ví dụ: Nguyễn Thế Lâm" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Email</label>
-                                <input type="email" class="form-control" name="userEmail" placeholder="email@example.com">
+                                <input type="email" class="form-control" name="userEmail" th:value="${user.email}" placeholder="email@example.com" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Số điện thoại</label>
-                                <input type="text" class="form-control" name="userPhone" placeholder="+84">
+                                <input type="text" class="form-control" name="userPhone" th:value="${user.phoneNumber}" placeholder="+84" readonly>
                             </div>
                         </div>
                         <div class="check-in-cus info-box">

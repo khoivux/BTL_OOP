@@ -75,7 +75,7 @@ public class HomestayMapper {
                     throw new RuntimeException("Lỗi khi xử lý file ảnh!");
                 }
             } else {
-                throw new RuntimeException("File không phải ảnh hợp lệ! Chỉ chấp nhận file .jpg, .png hoặc .jpeg");
+                throw new RuntimeException("File không hợp lệ! Chỉ chấp nhận file .jpg, .png hoặc .jpeg");
             }
         }
         return homestayEntity;

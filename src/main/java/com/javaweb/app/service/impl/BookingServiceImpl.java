@@ -24,10 +24,9 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     public UserRepository userRepository;
 
-    public BookingDTO createBooking(Map<String, Object> params) {
+    public BookingDTO createBooking(Map<String, Object> params, Long userId) {
         BookingEntity bookingEntity = new BookingEntity();
-
-        bookingEntity.setUser(userRepository.getById(1L));
+        bookingEntity.setUser(userRepository.getById(userId));
         bookingEntity.setCustomerName(MapUtil.getObject(params, "customerName", String.class));
         bookingEntity.setCustomerEmail(MapUtil.getObject(params, "customerEmail", String.class));
         bookingEntity.setCustomerPhone(MapUtil.getObject(params, "customerPhone", String.class));
