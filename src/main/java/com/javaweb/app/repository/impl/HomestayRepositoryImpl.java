@@ -84,6 +84,12 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
 
     public static void querySpecial(HomestaySearchRequestDTO homestaySearchRequestDTO,
                                     StringBuilder where) {
+        // Tìm theo số lượng
+        Long capacity = homestaySearchRequestDTO.getCapacity();
+        if(capacity != null) {
+            where.append("AND h.capacity >= " + capacity + "\n");
+        }
+
 
         // Tìm theo giá phòng
         Long priceTo = homestaySearchRequestDTO.getPriceTo();
@@ -98,10 +104,16 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate checkIn = homestaySearchRequestDTO.getCheckInDate();
         LocalDate checkOut = homestaySearchRequestDTO.getCheckOutDate();
-        if(checkIn != null && checkOut != null) {
-            where.append("AND ('" + checkIn.format(formatter) + "' > booking.checkout_date \n" +
-                         "OR '" + checkOut.format(formatter) + "' < booking.checkin_date \n" +
-                         "OR booking.homestay_id IS NULL) \n");
+        if (checkIn != null && checkOut != null) {
+            where.append("AND NOT EXISTS ( \n" +
+                    "    SELECT 1 \n" +
+                    "    FROM booking b \n" +
+                    "    WHERE b.homestay_id = h.id \n" +
+                    "    AND NOT ( \n" +
+                    "        '" + checkIn.format(formatter) + "' > b.checkout_date \n" +
+                    "        OR '" + checkOut.format(formatter) + "' < b.checkin_date \n" +
+                    "    ) \n" +
+                    ") \n");
         }
 
         // Tìm theo tiện nghi Homestay
@@ -140,7 +152,14 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
         queryNormal(homestaySearchRequestDTO, where);
         // Xử lý câu lệnh đặc biệt như cần Join Tablle, cần <, >, IN, NOT IN,...
         querySpecial(homestaySearchRequestDTO, where);
-        sql.append(where).append("GROUP BY h.id");
+
+        sql.append(where).append("GROUP BY h.id \n" +
+                                "HAVING 1 = 1 \n");
+
+        List<Long> homestayFacilities = homestaySearchRequestDTO.getHomestayFacilities();
+        if(homestayFacilities != null && !homestayFacilities.isEmpty()) {
+            sql.append("AND COUNT(DISTINCT fac.id) = " + homestayFacilities.size() + "\n");
+        }
 
         Query query = entityManager.createNativeQuery(sql.toString(), HomestayEntity.class);
         return query.getResultList();

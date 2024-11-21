@@ -54,6 +54,18 @@
         .list-unstyled li:last-child {
             border-bottom: none;
         }
+        body {
+            margin: 0; /* Xóa khoảng trắng mặc định */
+            padding: 0;
+            font-family: Arial, sans-serif; /* Tùy chọn font */
+        }
+        .container {
+            max-width: 1200px; /* Chiều rộng tối đa của nội dung */
+            margin: 0 auto; /* Căn giữa nội dung theo chiều ngang */
+            padding: 20px; /* Thêm khoảng cách bên trong */
+            /*            background-color: #f9f9f9; *//* Tùy chọn màu nền */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng */
+        }
     </style>
 
 </head>
@@ -79,7 +91,7 @@
 
 
 <main class="container my-5">
-    <form action="/" method="GET">
+    <form th:action="@{/booking/form}" method="POST">
     <div class="row">
         <div class="col-lg-7 custom-border" >
             <!--Hình ảnh sản phẩm-->
@@ -134,17 +146,18 @@
             <div class="search-box">
                 <div class="date-picker">
                     <label for="checkin-date">Ngày nhận phòng</label>
-                    <input type="date" id="checkin-date" required name="checkinDate"
+                    <input type="date" id="checkin-date" required name="checkInDate"
                            th:value="${checkInDate != null ? checkInDate : ''}">
                 </div>
 
                 <div class="date-picker">
                     <label for="checkout-date">Ngày trả phòng</label>
-                    <input type="date" id="checkout-date" required name="checkoutDate"
+                    <input type="date" id="checkout-date" required name="checkOutDate"
                            th:value="${checkOutDate != null ? checkOutDate : ''}">
                 </div>
             </div>
-            <a th:href="@{/book}" class="btn btn-primary">Đặt ngay</a>
+            <input type="number"  id="homestayId" name="homestayId" th:value="${homestay.id}" hidden>
+            <button class="btn btn-primary" type="submit">Đặt ngay</button>
         </div>
     </div>
     </form>
@@ -228,7 +241,6 @@
     </section>
 </main>
     <script>
-
         let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         console.log(isLoggedIn);
         const updateUserAction = () => {
