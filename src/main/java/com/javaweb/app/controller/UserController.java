@@ -43,17 +43,12 @@ public class UserController {
 
     // Tạo lớp LoginResponse để gửi tên người dùng
     public class LoginResponse {
-        private Long id;
         private String name;
 
         public LoginResponse(Long id, String name) {
-            this.id = id;
             this.name = name;
         }
 
-        public Long getId() {
-            return id;
-        }
         public String getName() {
             return name;
         }
@@ -70,34 +65,6 @@ public class UserController {
         try {
             userService.registerUser(username, fullName, email, password, phoneNumber);
             return new ResponseEntity<>("Success register!", HttpStatus.OK);
-        } catch (RuntimeException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @GetMapping("user_profile")
-    public ModelAndView userProfile(HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        System.out.println(user.getUserName());
-        ModelAndView model = new ModelAndView("user_profile");
-        model.addObject("user", user);
-        return model;
-    }
-
-    @PostMapping("update_profile")
-    public ResponseEntity updateProfile(
-            @RequestParam String fullName,
-            @RequestParam String email,
-            @RequestParam String phoneNumber,
-            @RequestParam String address,
-            HttpSession session
-    ) {
-        try {
-            User user = (User) session.getAttribute("user");
-            userService.updateProfile(user.getId(), fullName, email, phoneNumber, address);
-            // update session
-            session.setAttribute("user", userService.userRepository.getById(user.getId()));
-            return new ResponseEntity<>("Success update profile!", HttpStatus.OK);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }

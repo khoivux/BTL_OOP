@@ -1,9 +1,11 @@
 package com.javaweb.app.controller;
 
 import com.javaweb.app.dto.HomestayResponseDTO;
+import com.javaweb.app.entity.User;
 import com.javaweb.app.service.FacilitiesService;
 import com.javaweb.app.service.HomestayService;
 import com.javaweb.app.service.ServiceService;
+import com.javaweb.app.utils.DateUtil;
 import com.javaweb.app.utils.MapUtil;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,7 @@ public class WebController {
 
 
     @GetMapping(value = "/")
-    public ModelAndView homePage() {
+    public ModelAndView homePage(HttpSession session) {
         return new ModelAndView("home");
     }
 
@@ -37,9 +39,10 @@ public class WebController {
     public ModelAndView searchPage(@RequestParam Map<String, Object> params,
                                    @RequestParam(required = false) List<Long> facilities,
                                    @RequestParam(required = false) List<Long> rooms,
-                                   @RequestParam(required = false) List<Long> services) {
+                                   @RequestParam(required = false) List<Long> services,
+                                   HttpSession session) {
 
-        List<HomestayResponseDTO> homestays = homestayService.findByFilter(params, facilities, rooms, services);
+        User user = (User) session.getAttribute("user");
         // Khởi tạo model và trả về view
         ModelAndView model = new ModelAndView("search");
         // Lấy các field đã chọn
@@ -50,22 +53,35 @@ public class WebController {
         model.addObject("services", serviceService.findAll());
         model.addObject("facilities", facilitiesService.findAll());
 
+        String checkInDate = MapUtil.getObject(params, "checkinDate", String.class);
+        String checkOutDate = MapUtil.getObject(params, "checkoutDate", String.class);
+
         // Thêm ngày check-in, check-out và danh sách homestays vào model
-        model.addObject("checkInDate", MapUtil.getObject(params, "checkinDate", String.class));
-        model.addObject("checkOutDate", MapUtil.getObject(params, "checkoutDate", String.class));
+        model.addObject("checkInDate", checkInDate);
+        model.addObject("checkOutDate", checkOutDate);
         model.addObject("params", params);
-        model.addObject("homestays", homestays);
+
+        List<HomestayResponseDTO> homestays = new ArrayList<>();  // Khai báo biến homestays
+        try {
+            String checkDate = DateUtil.isValid(checkInDate, checkOutDate);  // Kiểm tra tính hợp lệ của ngày
+            homestays = homestayService.findByFilter(params, facilities, rooms, services);  // Lấy homestay theo bộ lọc
+        } catch (RuntimeException e) {
+            homestays = homestayService.findAll();  // Nếu có lỗi, lấy tất cả homestay
+            model.addObject("errorMessage", e.getMessage());  // Thêm thông báo lỗi vào model
+        }
+
+        model.addObject("homestays", homestays);  // Thêm homestay vào model
         return model;
     }
 
     @GetMapping(value = "/login")
-    public ModelAndView loginPage() {
+    public ModelAndView loginPage(HttpSession session) {
         //model.addObject();
         return new ModelAndView("login");
     }
 
     @GetMapping(value = "/register")
-    public ModelAndView registerPage() {
+    public ModelAndView registerPage(HttpSession session) {
         //model.addObject();
         return new ModelAndView("register");
     }
@@ -79,12 +95,16 @@ public class WebController {
 
     @PostMapping("/homestay/{id}")
     public ModelAndView getProductById(@PathVariable Long id,
-                                       @RequestParam Map<String, String> params) {
+                                       @RequestParam Map<String, String> params,
+                                       HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("product");
-        HomestayResponseDTO homestayResponseDTO = homestayService.findHomestayById(id);
-        modelAndView.addObject("homestay", homestayResponseDTO);
+
+        User user = (User) session.getAttribute("user");
         modelAndView.addObject("checkInDate", params.get("checkinDate"));
         modelAndView.addObject("checkOutDate", params.get("checkoutDate"));
+
+        HomestayResponseDTO homestayResponseDTO = homestayService.findHomestayById(id);
+        modelAndView.addObject("homestay", homestayResponseDTO);
         modelAndView.addObject("facilities", homestayResponseDTO.getFacilities());
         modelAndView.addObject("rooms", homestayResponseDTO.getRooms());
         return modelAndView;
