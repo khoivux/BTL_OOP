@@ -6,10 +6,14 @@ import com.javaweb.app.repository.BookingRepository;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.repository.UserRepository;
 import com.javaweb.app.service.BookingService;
+import com.javaweb.app.utils.DateUtil;
+import com.javaweb.app.utils.MapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -20,15 +24,18 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     public UserRepository userRepository;
 
-    public BookingDTO createBooking(BookingDTO bookingDTO) {
+    public BookingDTO createBooking(Map<String, Object> params, Long userId) {
         BookingEntity bookingEntity = new BookingEntity();
-        bookingEntity.setUser(userRepository.getById(bookingDTO.getUser_id()));
-        bookingEntity.setHomestay(homestayRepository.getById(bookingDTO.getHomestay_id()));
-        bookingEntity.setStatus("Đã cọc");
-        bookingEntity.setCheckInDate(bookingDTO.getCheckInDate());
-        bookingEntity.setCheckOutDate(bookingDTO.getCheckOutDate());
+        bookingEntity.setUser(userRepository.getById(userId));
+        bookingEntity.setCustomerName(MapUtil.getObject(params, "customerName", String.class));
+        bookingEntity.setCustomerEmail(MapUtil.getObject(params, "customerEmail", String.class));
+        bookingEntity.setCustomerPhone(MapUtil.getObject(params, "customerPhone", String.class));
+        bookingEntity.setHomestay(homestayRepository.getById(Objects.requireNonNull(MapUtil.getObject(params, "homestayId", Long.class))));
+        bookingEntity.setStatus("Chưa thanh toán");
+        bookingEntity.setCheckInDate(DateUtil.strToDate(MapUtil.getObject(params, "checkInDate", String.class)));
+        bookingEntity.setCheckOutDate(DateUtil.strToDate(MapUtil.getObject(params, "checkOutDate", String.class)));
         bookingEntity.setBookingTime(LocalDateTime.now());
         bookingRepository.save(bookingEntity);
-        return bookingDTO;
+        return null;
     }
 }

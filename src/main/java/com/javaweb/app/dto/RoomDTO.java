@@ -1,11 +1,13 @@
 package com.javaweb.app.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.web.multipart.MultipartFile;
 
 public class RoomDTO {
     private String type;
     private Long numbers;
+    @JsonIgnore
     private MultipartFile image;
     private String description;
     private String imgURL;
