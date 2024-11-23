@@ -55,10 +55,10 @@ public class UserService {
         if(user == null) {
             throw new RuntimeException("Tài khoản không tồn tại");
         }
-        user.setUserFullName(fullName);
-        user.setUserEmail(email);
-        user.setUserPhoneNumber(phoneNumber);
-        user.setUserAddress(address);
+        user.setFullName(fullName);
+        user.setEmail(email);
+        user.setPhoneNumber(phoneNumber);
+        //user.setAddress(address);
         userRepository.save(user);
     }
 }

@@ -12,6 +12,7 @@ public class HomestaySearchRequestDTO {
     private Long priceTo;
     private Long provinceId;
     private Long rating;
+    private Long capacity;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private List<Long> facilities = new ArrayList<>();
@@ -33,6 +34,10 @@ public class HomestaySearchRequestDTO {
         this.id = builder.id;
         this.rooms = builder.rooms;
         this.services = builder.services;
+    }
+
+    public Long getCapacity() {
+        return capacity;
     }
 
     public String getName() {
@@ -94,65 +99,70 @@ public class HomestaySearchRequestDTO {
         private Long priceTo;
         private Long provinceId;
         private Long rating;
+        private Long capacity;
         private LocalDate checkInDate;
         private LocalDate checkOutDate;
         private List<Long> facilities = new ArrayList<>();
         private List<Long> rooms = new ArrayList<>();
         private List<Long> services = new ArrayList<>();
 
-        public Builder setName(String name) {
+        public Builder name(String name) {
             this.name = name;
             return this;
         }
 
-        public Builder setAddress(String address) {
+        public Builder address(String address) {
             this.address = address;
             return this;
         }
 
-        public Builder setPriceFrom(Long priceFrom) {
+        public Builder priceFrom(Long priceFrom) {
             this.priceFrom = priceFrom;
             return this;
         }
 
-        public Builder setPriceTo(Long priceTo) {
+        public Builder priceTo(Long priceTo) {
             this.priceTo = priceTo;
             return this;
         }
 
-        public Builder setProvinceId(Long provinceId) {
+        public Builder provinceId(Long provinceId) {
             this.provinceId = provinceId;
             return this;
         }
 
-        public Builder setRating(Long rating) {
+        public Builder rating(Long rating) {
             this.rating = rating;
             return this;
         }
 
-        public Builder setCheckInDate(LocalDate checkInDate) {
+        public Builder checkInDate(LocalDate checkInDate) {
             this.checkInDate = checkInDate;
             return this;
         }
 
-        public Builder setCheckOutDate(LocalDate checkOutDate) {
+        public Builder checkOutDate(LocalDate checkOutDate) {
             this.checkOutDate = checkOutDate;
             return this;
         }
-        public Builder setFacilities(List<Long> facilities) {
+        public Builder facilities(List<Long> facilities) {
             this.facilities = facilities;
             return this;
         }
-        public Builder setRooms(List<Long> rooms) {
+        public Builder rooms(List<Long> rooms) {
             this.rooms = rooms;
             return this;
         }
-        public Builder setServices(List<Long> services) {
+        public Builder services(List<Long> services) {
             this.services = services;
             return this;
         }
-        public Builder setId(Long id) {
+        public Builder id(Long id) {
             this.id = id;
+            return this;
+        }
+        public Builder capacity(Long capacity) {
+            this.capacity = capacity;
             return this;
         }
         public HomestaySearchRequestDTO build() {

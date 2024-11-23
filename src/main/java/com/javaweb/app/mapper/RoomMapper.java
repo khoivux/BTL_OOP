@@ -37,10 +37,17 @@ public class RoomMapper {
         for (RoomDTO roomDTO : roomDTOS) {
             RoomEntity roomEntity = new RoomEntity(roomDTO.getType(), roomDTO.getNumbers(), roomDTO.getDescription());
             if (roomDTO.getImage() != null && !roomDTO.getImage().isEmpty()) {
-                try {
-                    roomEntity.setImage(roomDTO.getImage().getBytes());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                String fileName = roomDTO.getImage().getOriginalFilename();
+                String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+
+                if ("jpg".equals(fileExtension) || "png".equals(fileExtension) || "jpeg".equals(fileExtension)) {
+                    try {
+                        roomEntity.setImage(roomDTO.getImage().getBytes());
+                    } catch (IOException e) {
+                        throw new RuntimeException("Lỗi khi xử lý file ảnh!");
+                    }
+                } else {
+                    throw new RuntimeException("File không phải ảnh hợp lệ! Chỉ chấp nhận file .jpg, .png hoặc .jpeg");
                 }
             }
             roomEntity.setHomestay(homestayEntity);
