@@ -29,6 +29,7 @@ public class User {
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
+    // now we add address and date
     @Column(name = "address")
     private String address;
 
