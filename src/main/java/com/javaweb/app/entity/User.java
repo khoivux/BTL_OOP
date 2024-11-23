@@ -92,19 +92,19 @@ public class User {
     }
 
 
-    public void setUserFullName(String newFullName) {
+    public void setFullName(String newFullName) {
         this.fullName = newFullName;
     }
 
-    public void setUserEmail(String newEmail) {
+    public void setEmail(String newEmail) {
         this.email = newEmail;
     }
 
-    public void setUserPhoneNumber(String newPhoneNumber) {
+    public void setPhoneNumber(String newPhoneNumber) {
         this.phoneNumber = newPhoneNumber;
     }
 
-    public void setUserAddress(String newAddress) {
+    public void setAddress(String newAddress) {
         this.address = newAddress;
     }
 }
