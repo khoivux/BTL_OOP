@@ -39,7 +39,7 @@ public class BookingServiceImpl implements BookingService {
         bookingEntity.setCheckInDate(DateUtil.strToDate(MapUtil.getObject(params, "checkInDate", String.class)));
         bookingEntity.setCheckOutDate(DateUtil.strToDate(MapUtil.getObject(params, "checkOutDate", String.class)));
         bookingEntity.setBookingTime(LocalDateTime.now());
-        bookingRepository.save(bookingEntity);
+
         return null;
     }
 }

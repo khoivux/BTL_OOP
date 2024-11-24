@@ -42,7 +42,7 @@ public class WebController {
                                    @RequestParam(required = false) List<Long> services,
                                    HttpSession session) {
 
-        Long user = (Long) session.getAttribute("userId");
+        User user = (User) session.getAttribute("user");
         // Khởi tạo model và trả về view
         ModelAndView model = new ModelAndView("search");
         // Lấy các field đã chọn
