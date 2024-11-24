@@ -32,7 +32,21 @@ public class WebController {
 
     @GetMapping(value = "/")
     public ModelAndView homePage(HttpSession session) {
-        return new ModelAndView("home");
+        ModelAndView model = new ModelAndView("home");
+        List<HomestayResponseDTO> homestays = homestayService.findAll();
+
+        // Tính toán kích thước mỗi nhóm
+        int totalSize = homestays.size();
+        int groupSize = (int) Math.ceil((double) totalSize / 3); // Chia đều thành 3 nhóm
+
+        // Chia danh sách thành 3 nhóm
+        List<List<HomestayResponseDTO>> groupedHomestays = new ArrayList<>();
+        for (int i = 0; i < totalSize; i += groupSize) {
+            groupedHomestays.add(homestays.subList(i, Math.min(i + groupSize, totalSize)));
+        }
+
+        model.addObject("groupedHomestays", groupedHomestays);
+        return model;
     }
 
     @GetMapping(value = "/search")
