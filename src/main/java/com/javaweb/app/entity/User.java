@@ -63,11 +63,11 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
+    public String getUserName() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUserName(String username) {
         this.username = username;
     }
 
@@ -79,7 +79,7 @@ public class User {
         this.fullName = fullName;
     }
 
-    public String getEmail() {
+    public String getUserEmail() {
         return email;
     }
 
@@ -87,7 +87,7 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
+    public String getUserPassword() {
         return password;
     }
 
@@ -95,7 +95,7 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public String getUserRole() {
         return role;
     }
 
