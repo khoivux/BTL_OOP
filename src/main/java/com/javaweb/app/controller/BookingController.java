@@ -31,14 +31,6 @@ public class BookingController {
     @Autowired
     public HomestayService homestayService;
 
-    @PostMapping("/create")
-    public BookingDTO Booking(@RequestParam Map<String, Object> params,
-                              HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        int cnt = 0;
-        BookingDTO bookingDTO = bookingService.createBooking(params, user.getId());
-        return null;
-    }
     @PostMapping("/form")
     public ModelAndView informBooking(@RequestParam Map<String, Object> params,
                                       HttpSession session) {
@@ -59,6 +51,15 @@ public class BookingController {
         modelAndView.addObject("rent_price", stayDays * homestay.getPrice());
         return modelAndView;
     }
-
-
+    @PostMapping("/invoice")
+    public ModelAndView Booking(@RequestParam Map<String, Object> params,
+                                HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        BookingDTO bookingDTO = bookingService.createBooking(params, user.getId(), session);
+        session.setAttribute("bookingTmp", bookingDTO);
+        ModelAndView modelAndView = new ModelAndView("invoice");
+        modelAndView.addObject("booking", bookingDTO);
+        modelAndView.addObject("homestay", bookingDTO.getHomestay());
+        return modelAndView;
+    }
 }
