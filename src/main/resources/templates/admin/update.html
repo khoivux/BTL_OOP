@@ -104,7 +104,6 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>                                      <!--về trang chủ-->
-            <li class="breadcrumb-item active" aria-current="page"><a href="/admin">Trang quản trị</a></li>
             <li class="breadcrumb-item active" aria-current="page">Quản lý Homestay</li>
         </ol>
     </nav>
@@ -139,13 +138,22 @@
                     <div class="form-group col-md-12 ">
                         <label for="provinceid">Tỉnh/Thành phố</label>
                         <select name="provinceid" id="provinceid" required class="form-control">
-                            <option th:value="${homestay.province}">Chọn Tỉnh/Thành phố</option>
-                            <div th:each="province : ${provinces}">
-                                <option th:value="${province.id}" th:text="${province.name}"></option>
+                            <option th:value="${homestay.province}" th:text="${homestay.province}"></option>
+                            <div th:each="provincee : ${provinces}">
+                                <option th:value="${provincee.id}" th:text="${provincee.name}"></option>
                             </div>
                         </select>
                     </div>
-
+                    <div class="form-group col-md-12">
+                        <label>Tiện nghi Homestay</label>
+                        <div th:each="facility : ${facilities}">
+                            <label>
+                                <input name="facilities" type="checkbox"
+                                       th:value="${facility.id}">
+                                <span th:text="${facility.name}">Facility Name</span>
+                            </label><br>
+                        </div>
+                    </div>
                     <div class="form-group col-md-6">
                         <label>Ảnh Homestay</label>
                         <input type="file" class="form-control-file" th:name="'image'" />

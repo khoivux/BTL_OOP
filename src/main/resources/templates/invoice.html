@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông Tin Đặt Phòng Homestay</title>
+    <link rel="stylesheet" th:href="@{/hoadon.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+        }
+        .primary-btn{
+            padding: 15px 40px;
+            background: #7fc142ed;
+            font-weight: bold;
+            color: white;
+        }
+        .primary-btn:hover{
+            background: #67a32f;
+        }
+        header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            background-color: #90b99042;
+            padding: 10px 20px;
+        }
+
+        header img{
+            max-width: 200px;
+            max-height: 9vh;
+        }
+        header ul{
+            display: flex;
+            align-items: center;
+        }
+        header ul li{
+            display: inline-block;
+            text-transform: uppercase;
+        }
+        header ul li a{
+            color: #000;
+            margin: 0 10px;
+            transition: 0.5s;
+        }
+        header ul li a:hover{
+            color: #7fc142;
+        }
+        header i{
+            margin: 0 20px;
+        }
+        header button{
+            padding: 13px 40px;
+        }
+        header .navlinks #listbars{
+            display: none;
+        }
+        .user{
+            color:#00b312;
+            text-decoration:underline;
+            font-weight: bold;
+        }
+        .d-none {
+            display: none;
+        }
+        .d-block {
+        a{
+            color: white;
+        }
+        display: block;
+            position: absolute;
+            top: 110%;
+            right: 20px;
+            width: 20%;
+            height: fit-content;
+            border-radius: 10px;
+            background-color : #01ac57ed;
+            overflow : hidden;
+            transition: max-height 0.5s;
+            text-align: center;
+            z-index: 9;
+        li{
+            margin:10px;
+        }
+        }
+        @media only screen and (max-width: 850px){
+            .d-none{
+                display: block;
+            }
+            .d-block{
+                display:block;
+            }
+            header .user{
+                color:white
+            }
+            header ul{
+                display: block;
+                position: absolute;
+                top: 10vh;
+                right:10px;
+                width: fit-content;
+                height: fit-content;
+                background : #009f7f;
+                overflow : hidden;
+                transition: max-height 0.5s;
+                text-align: center;
+                z-index: 9;
+            }
+            header ul li{
+                display:block;
+                margin:10px;
+            }
+            header ul li a{
+                color: white;
+            }
+            header i{
+                color:white;
+            }
+            header .navlinks #listbars{
+                color:black;
+                display: block;
+                cursor: pointer;
+                line-height: 10vh;
+                font-size: 25px;
+            }
+        }
+        .invoice-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 50px auto;
+        }
+        .invoice-header {
+            text-align: center;
+            border-bottom: 2px solid #7fc142ed;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            padding:0;
+        }
+        .invoice-header h1 {
+            font-size: 2.5rem;
+            color: #7fc142ed;
+        }
+        .invoice-section h4 {
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .invoice-section p, .invoice-section li {
+            font-size: 1rem;
+            color: #555;
+        }
+        .total-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #7fc142ed;
+            text-align: right;
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        .btn-export {
+            background-color: #7fc142ed;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-export:hover {
+            background-color: #7fc14280;
+        }
+
+        .info-box, .summary-box {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+
+        .regulations{
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+        .qr {
+            text-align: center;
+        }
+
+        footer{
+            background: #282834;
+            color: #b6b7b9;
+            padding-top: 30px;
+        }
+        footer p{
+            color: #b6b7b9;
+            font-size: 15px;
+        }
+        footer .icon i{
+            margin: 20px 20px 20px 0;
+            color: #b6b7b9;
+        }
+        footer i{
+            color: #7fc142;
+            margin: 20px 0;
+            margin-right: 20px;
+        }
+        footer img{
+            width: 300px;
+        }
+        footer .box h2{
+            color: #7fc142;
+            margin-bottom: 20px;
+        }
+        footer .box a{
+            color: #b6b7b9;
+            margin-bottom: 10px;
+            text-decoration: none;
+        }
+
+        footer .box a:hover{
+            color: #b6b7b9ca;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href=""><img src="/static/img/logo.jpeg"></a> <!--back về home-->
+        </div>
+
+        <div class="navlinks">
+            <ul id="menulist">
+                <li><a href="" class="link-underline link-underline-opacity-0">Trang chủ</a></li> <!--url đến home-->
+                <li><a href="#Dịch Vụ" class="link-underline link-underline-opacity-0">Dịch vụ</a></li> <!--url xuống dịch vụ-->
+                <li><a href="#homestay" class="link-underline link-underline-opacity-0">Homestay</a></li> <!--url xuống danh sách homestay-->
+                <li><a href="#Liên Hệ" class="link-underline link-underline-opacity-0">Liên hệ</a></li> <!--url xuống liên hệ-->
+                <li><a href="#Feedback" class="link-underline link-underline-opacity-0">Phản hồi</a></li> <!--url đến trang phản hồi-->
+                <li id="user-action"></li>
+            </ul>
+            <span id="listbars" class="fa fa-bars" onclick="menutoggle()"></span>
+        </div>
+    </header>
+    <script>
+
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        console.log(isLoggedIn);
+        const updateUserAction = () => {
+            const userName = localStorage.getItem('name');
+
+            const userActionDiv = document.getElementById("user-action");
+            console.log(userActionDiv);
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                userActionDiv.innerHTML =
+                `
+                <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
+                    <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
+                    <ul show-ul class="d-none" id="userlist">
+                        <li><a href="/user/user_profile">Thông tin tài khoản</a></li>    <!--url trang profile-->
+                        <li><a href="#">Lịch sử đặt phòng</a></li>      <!--url trang history-->
+                        <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
+                    </ul>
+                </div>
+                `;
+            } else {
+                userActionDiv.innerHTML = `<a href="/user"><button class="primary-btn">Đăng nhập</button></a>`;
+            }
+        }
+
+        function logout() {
+            localStorage.setItem('isLoggedIn', false);
+            updateUserAction();
+        }
+        updateUserAction();
+    </script>
+    <script>
+        var Menulist = document.getElementsByClassName("navlinks");
+        // menulist.style.maxHeight = "0px";
+        function menutoggle() {
+            if (menulist.style.maxHeight == "0px") {
+                menulist.style.maxHeight = "60vh";
+            } else {
+                menulist.style.maxHeight = "0px";
+            }
+        }
+        
+        let shown = false;
+        const showInfor = document.querySelector('[show-info]');
+        console.log(showInfor);
+        const showUl = showInfor.querySelector(`[show-ul]`);
+        console.log(showUl);
+        function showInfo() {
+           
+            if(shown){
+                showUl.classList.remove('d-block');
+                showUl.classList.add("d-none");
+                // const userName = showInfor.querySelector(`.user`);
+                shown = false;
+            }
+            else{
+                showUl.classList.remove('d-none');
+                showUl.classList.add("d-block");
+                const userName = showInfor.querySelector(`.user`);
+                // console.log(userName);
+                // userName.classList.add("d-none");
+                shown = true;
+            }
+            
+        }
+        function usertoggle() {
+            const userlist = document.getElementById("userlist");
+            userlist.classList.toggle("d-none");
+            userlist.classList.toggle("d-block");
+        }
+    </script>
+    <div class="invoice-container">
+        <div class="invoice-header">
+            <h1>Thông Tin Đặt Phòng</h1>
+            <h3 class="mb-0">
+                <p class="mb-2" id="HomestayName" th:text="${homestay.name}">Homestaybac</p>
+            </h3>
+            <p class="mb-2" id="HomestayAddress" th:text="${homestay.address}">18/42 Đường Đồng Lợi, Sa Pa, Việt Nam/p>
+            
+        </div>
+
+        <div class="invoice-section" id="customer-info">
+            <h4>Thông tin người nhận phòng</h4>
+            <p><strong>Họ và tên:</strong> <span id="full-name" th:text="${booking.customerName}"></span></p>
+            <p><strong>Email:</strong> <span id="email" th:text="${booking.customerEmail}"></span></p>
+            <p><strong>Số điện thoại:</strong> <span id="phone" th:text="${booking.customerPhone}" ></span></p>
+        </div>
+
+        <div class="invoice-section" id="booking-info">
+            <h4>Chi tiết đặt phòng</h4>
+            <p><strong>Nhận phòng:</strong> <span id="check-in"  th:text="${booking.checkInDate}"></span></p>
+            <p><strong>Trả phòng:</strong> <span id="check-out"  th:text="${booking.checkOutDate}"></span></p>
+            <p><strong>Tổng thời gian lưu trú:</strong> <span id="stay-duration"  th:text="${booking.stayDuration}"></span></p>
+            <p><strong>Giá thuê:</strong> <span id="price"  th:text="${booking.total}"></span></p>
+        </div>
+
+        <div class="invoice-section" id="services">
+            <h4>Dịch vụ bổ sung</h4>
+            <ul id="service-list"></ul>
+        </div>
+
+
+        <div class="total-amount">
+            <p>Tổng tiền: <span id="total"></span></p>
+        </div>
+
+        <div class="text-end">
+            <button class="btn-export">Thanh toán</button>
+        </div>
+    </div>
+    <div class="modal fade" id="qrCodeModal" tabindex="-1" aria-labelledby="qrCodeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="qrCodeModalLabel">Quét mã QR để thanh toán</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="qr">
+                        <img src="static/img/thanhtoan.jpg.png" alt="QR Code">
+                        <h4>Phạm Ngọc Long</h4>
+                        <h6>QRD000103035625901</h6>
+                        <h6>PGD Khu công nghiệp Phố Nối A</h6>
+                    </div>
+                    <div class="services">
+                        <h5>Điều khoản</h5>
+                        <div>
+                            <input type="checkbox" name="regulations" value="">
+                            Tôi đồng ý nhận email marketing từ HomesTayBac.com, bao gồm khuyến mãi, đề xuất được cá nhân hóa, tặng thưởng, trải nghiệm du lịch và cập nhật về các sản phẩm và dịch vụ của HomesTayBac.com.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Thanh toán</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Lấy dữ liệu từ API
+            fetch("/api/invoice-data/")
+                .then(response => response.json())
+                .then(data => {
+                    // Thông tin homestay
+                    document.getElementById("HomestayName").textContent = data.booking.HomestayName;
+                    document.getElementById("HomestayAddress").textContent = data.booking.HomestayAddress;
+
+                    // Cập nhật thông tin người đặt phòng
+                    document.getElementById("full-name").textContent = data.booking.full_name;
+                    document.getElementById("email").textContent = data.booking.email;
+                    document.getElementById("phone").textContent = data.booking.phone;
+
+                    // Cập nhật thông tin đặt phòng
+                    document.getElementById("check-in").textContent = data.booking.check_in;
+                    document.getElementById("check-out").textContent = data.booking.check_out;
+                    document.getElementById("stay-duration").textContent = data.booking.stay_duration;
+                    document.getElementById("price").textContent = data.booking.price;
+
+                    // Dịch vụ bổ sung
+                    const serviceList = document.getElementById("service-list");
+                    data.services.forEach(service => {
+                        const li = document.createElement("li");
+                        li.textContent = service;
+                        serviceList.appendChild(li);
+                    });
+
+
+                    // Tổng tiền
+                    document.getElementById("total").textContent = data.total;
+                })
+                .catch(error => console.error("Error fetching invoice data:", error));
+        });
+
+        // Gọi modal khi bấm nút "Thanh toán"
+        document.querySelector(".btn-export").addEventListener("click", function() {
+            var qrCodeModal = new bootstrap.Modal(document.getElementById('qrCodeModal'));
+            qrCodeModal.show();
+        });
+
+    </script>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col box">
+                    <img src="/static/img/background2.jpg" alt="">
+                    <div class="icon">
+                        <i class="fa fa-facebook-f"></i>
+                        <i class="fa fa-instagram"></i>
+                        <i class="fa fa-twitter"></i>
+                        <i class="fa fa-youtube"></i>
+                    </div>
+                </div>
+                <div class="col box">
+                    <h2>GIỚI THIỆU</h2>
+                    <a href="#">Trang chủ</a><br>
+                    <a href="#">Dịch vụ</a><br>
+                    <a href="#">Tin tức</a><br>
+                    <a href="#">Liên hệ</a><br>
+                </div>
+                <div class="col box">
+                    <h2>LIÊN KẾT</h2>
+                    <a href="#">Điều khoản sử dụng</a><br>
+                    <a href="#">Chính sách bảo mật</a><br>
+                    <a href="#">Chính sách hoàn tiền</a><br>
+                    <a href="#">FAQs</a>
+                </div>
+                <div class="col-md-2 box">
+                    <h2>LIÊN HỆ</h2>
+                    <div class = "flex">
+                        <i class="fa fa-location-dot"></i>
+                        <p>30 Tran Phu, Ha Dong, Ha Noi, Viet Nam</p>
+                    </div>
+                    <div class = "flex">
+                        <i class="fa fa-phone"></i>
+                        <p>0987352163</p>
+                    </div>
+                    <div class = "flex">
+                        <i class="fa fa-envelope"></i>
+                        <p>nhan54v@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
