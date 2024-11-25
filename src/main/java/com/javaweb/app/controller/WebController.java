@@ -123,4 +123,11 @@ public class WebController {
         modelAndView.addObject("rooms", homestayResponseDTO.getRooms());
         return modelAndView;
     }
+
+    @GetMapping(value = "/history")
+    public ModelAndView historyPage() {
+        ModelAndView model = new ModelAndView("history");
+        //model.addObject();
+        return model;
+    }
 }

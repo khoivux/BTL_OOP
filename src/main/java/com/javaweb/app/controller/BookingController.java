@@ -59,4 +59,6 @@ public class BookingController {
         modelAndView.addObject("rent_price", stayDays * homestay.getPrice());
         return modelAndView;
     }
+
+
 }

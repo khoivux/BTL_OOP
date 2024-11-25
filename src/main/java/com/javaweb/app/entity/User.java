@@ -2,6 +2,8 @@ package com.javaweb.app.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table (name = "users")
 public class User {
@@ -27,12 +29,20 @@ public class User {
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
+    // now we add address and date
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "date", columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
+    private LocalDateTime date;
+
     public User() {
         this.username = "";
         this.fullName = "";
         this.email = "";
         this.password = "";
         this.phoneNumber = "";
+        this.address = "";
         this.role = "user";
     }
 
@@ -49,27 +59,27 @@ public class User {
         return id;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getUsername() {
+    public String getUserName() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUserName(String username) {
         this.username = username;
+    }
+
+    public String getFullName() {
+        return fullName;
     }
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
-    public String getEmail() {
+    public String getUserEmail() {
         return email;
     }
 
@@ -77,7 +87,7 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
+    public String getUserPassword() {
         return password;
     }
 
@@ -85,7 +95,7 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public String getUserRole() {
         return role;
     }
 
@@ -101,19 +111,19 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getUserName() {
-        return username;
+    public String getAddress() {
+        return address;
     }
 
-    public String getUserEmail() {
-        return email;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getUserPassword() {
-        return password;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public String getUserRole() {
-        return role;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 }

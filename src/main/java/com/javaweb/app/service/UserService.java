@@ -58,7 +58,7 @@ public class UserService {
         user.setFullName(fullName);
         user.setEmail(email);
         user.setPhoneNumber(phoneNumber);
-        //user.setAddress(address);
+        user.setAddress(address);
         userRepository.save(user);
     }
 }
