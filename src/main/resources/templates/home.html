@@ -55,7 +55,7 @@
                 <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
                     <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
                     <ul show-ul class="d-none" id="userlist">
-                        <li><a href="/user_profile">Thông tin tài khoản</a></li>    <!--url trang profile-->
+                        <li><a href="/user/user_profile">Thông tin tài khoản</a></li>    <!--url trang profile-->
                         <li><a href="/history">Lịch sử đặt phòng</a></li>      <!--url trang history-->
                         <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
                     </ul>
@@ -216,20 +216,6 @@
             return false;
         }
     </script>
-    <!-- <section class="book">
-        <div class="container flex_space">
-            <div class="form">
-                <form class="grid" action = "{% url 'page'}" method = "POST">               
-                    <input class="search" type="text" placeholder="Bạn muốn đi đâu?">
-                    <input type="date" placeholder="Ngày nhận phòng">
-                    <input type="date" placeholder="Ngày trả phòng">
-                    <input type="number" placeholder="Người lớn">
-                    <input type="number" placeholder="Trẻ em">
-                    <button type="submit">Tìm kiếm</button>
-                </form>
-            </div>
-        </div>
-    </section> -->
     <section class="about top">
         <div class="container flex">
             <div class="left">
@@ -293,7 +279,7 @@
                                     <form method="POST" th:action="@{/homestay/{id}(id=${homestay.id})}">
                                         <button class="product-btn">Đặt phòng</button>
                                     </form>
-                                    <h4 th:text="${homestay.price} + 'đ/ngày'"></h4>
+                                    <h4 th:text="${homestay.price} + 'VND/ngày'"></h4>
                                 </div>
                             </div>
                         </div>
