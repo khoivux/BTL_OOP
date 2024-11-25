@@ -19,6 +19,8 @@ public class BookingDTO {
     private String customerEmail;
     private String customerPhone;
     private HomestayEntity homestay;
+    private Long stayDuration;
+    private Long total;
     private User user;
 
     public Long getId() {
@@ -55,6 +57,22 @@ public class BookingDTO {
 
     public String getStatus() {
         return status;
+    }
+
+    public Long getStayDuration() {
+        return stayDuration;
+    }
+
+    public void setStayDuration(Long stayDuration) {
+        this.stayDuration = stayDuration;
+    }
+
+    public Long getTotal() {
+        return total;
+    }
+
+    public void setTotal(Long total) {
+        this.total = total;
     }
 
     public void setStatus(String status) {

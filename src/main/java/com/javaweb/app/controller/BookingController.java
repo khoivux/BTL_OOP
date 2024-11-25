@@ -51,12 +51,16 @@ public class BookingController {
         modelAndView.addObject("rent_price", stayDays * homestay.getPrice());
         return modelAndView;
     }
+
     @PostMapping("/invoice")
     public ModelAndView Booking(@RequestParam Map<String, Object> params,
                                 HttpSession session) {
         User user = (User) session.getAttribute("user");
         BookingDTO bookingDTO = bookingService.createBooking(params, user.getId(), session);
-        ModelAndView modelAndView = new ModelAndView("hoadon");
+        session.setAttribute("bookingTmp", bookingDTO);
+        ModelAndView modelAndView = new ModelAndView("invoice");
+        modelAndView.addObject("booking", bookingDTO);
+        modelAndView.addObject("homestay", bookingDTO.getHomestay());
         return modelAndView;
     }
 }

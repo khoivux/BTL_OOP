@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.http.HttpClient;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.Objects;
 
@@ -29,17 +30,21 @@ public class BookingServiceImpl implements BookingService {
     public BookingDTO createBooking(Map<String, Object> params,
                                     Long userId,
                                     HttpSession session) {
-        BookingEntity bookingEntity = new BookingEntity();
-        bookingEntity.setUser(userRepository.getById(userId));
-        bookingEntity.setCustomerName(MapUtil.getObject(params, "customerName", String.class));
-        bookingEntity.setCustomerEmail(MapUtil.getObject(params, "customerEmail", String.class));
-        bookingEntity.setCustomerPhone(MapUtil.getObject(params, "customerPhone", String.class));
-        bookingEntity.setHomestay(homestayRepository.getById(Objects.requireNonNull(MapUtil.getObject(params, "homestayId", Long.class))));
-        bookingEntity.setStatus("Đang thực hiện");
-        bookingEntity.setCheckInDate(DateUtil.strToDate(MapUtil.getObject(params, "checkInDate", String.class)));
-        bookingEntity.setCheckOutDate(DateUtil.strToDate(MapUtil.getObject(params, "checkOutDate", String.class)));
-        bookingEntity.setBookingTime(LocalDateTime.now());
+        BookingDTO bookingDTO = new BookingDTO();
+        bookingDTO.setUser(userRepository.getById(userId));
+        bookingDTO.setCustomerName(MapUtil.getObject(params, "customerName", String.class));
+        bookingDTO.setCustomerEmail(MapUtil.getObject(params, "customerEmail", String.class));
+        bookingDTO.setCustomerPhone(MapUtil.getObject(params, "customerPhone", String.class));
+        bookingDTO.setHomestay(homestayRepository.getById(Objects.requireNonNull(MapUtil.getObject(params, "homestayId", Long.class))));
+        bookingDTO.setStatus("Đang thực hiện");
+        bookingDTO.setCheckInDate(DateUtil.strToDate(MapUtil.getObject(params, "checkInDate", String.class)));
+        bookingDTO.setCheckOutDate(DateUtil.strToDate(MapUtil.getObject(params, "checkOutDate", String.class)));
+        bookingDTO.setBookingTime(LocalDateTime.now());
 
-        return null;
+        long daysBetween = ChronoUnit.DAYS.between(bookingDTO.getCheckInDate(), bookingDTO.getCheckOutDate());
+        bookingDTO.setStayDuration(daysBetween);
+        bookingDTO.setTotal(daysBetween * bookingDTO.getHomestay().getPrice());
+
+        return bookingDTO;
     }
 }
