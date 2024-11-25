@@ -51,7 +51,6 @@ public class BookingController {
         modelAndView.addObject("rent_price", stayDays * homestay.getPrice());
         return modelAndView;
     }
-
     @PostMapping("/invoice")
     public ModelAndView Booking(@RequestParam Map<String, Object> params,
                                 HttpSession session) {
