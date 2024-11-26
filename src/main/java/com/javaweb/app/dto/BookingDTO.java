@@ -21,7 +21,7 @@ public class BookingDTO {
     private Long stayDuration;
     private Long total;
     private User user;
-
+    private Long checkInTime;
     public Long getId() {
         return id;
     }
@@ -116,5 +116,13 @@ public class BookingDTO {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Long getCheckInTime() {
+        return checkInTime;
+    }
+
+    public void setCheckInTime(Long checkInTime) {
+        this.checkInTime = checkInTime;
     }
 }

@@ -39,7 +39,6 @@
             <table class="table table-bordered" style="width: 150vh">
                 <thead class="thead-light">
                 <tr>
-                    <th style="width: 15%;text-align:center;">ID</th>
                     <th style="width: 20%;text-align:center">Booking Time</th>
                     <th style="width: 25%;text-align:center">Checkin Date</th>
                     <th style="width: 25%;text-align:center">Checkout Date</th>
@@ -49,7 +48,6 @@
                 </thead>
                 <tbody>
                 <tr th:each="history : ${paymentHistories}" th:if="${paymentHistories != null}">
-                    <td class="p-2" style="text-align:center" th:text="${history.id}"></td>
                     <td class="p-2" style="text-align:center" th:text="${history.BookingTime}"></td>
                     <td class="p-2" style="text-align:center" th:text="${history.checkInDate}"></td>
                     <td class="p-2" style="text-align:center" th:text="${history.checkOutDate}"></td>

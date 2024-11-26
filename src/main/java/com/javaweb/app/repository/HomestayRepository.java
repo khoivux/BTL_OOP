@@ -21,17 +21,4 @@ public interface HomestayRepository extends HomestayRepositoryCustom, JpaReposit
     @NotNull
     HomestayEntity getById(Long id);
     List<HomestayEntity> findByIdIn(List<Long> ids);
-
-
-    @Query(value = "SELECT CASE WHEN COUNT(h.id) > 0 THEN true ELSE false END " +
-            "FROM homestay h " +
-            "LEFT JOIN booking b ON h.id = b.homestay_id " +
-            "WHERE h.id = :id " +
-            "AND (:checkIn > b.checkout_date " +
-            "OR :checkOut < b.checkin_date " +
-            "OR b.homestay_id IS NULL)", nativeQuery = true)
-    boolean isHomestayAvailable(@Param("id") Long id,
-                                @Param("checkIn") LocalDate checkIn,
-                                @Param("checkOut") LocalDate checkOut);
-//    List<HomestayEntity> findByIdAndNameContainingAndAddressContaining(Long id, String name, String address);
 }
