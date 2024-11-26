@@ -62,7 +62,7 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
-
+    public Long getUserID(){return id; }
     public String getUserName() {
         return username;
     }

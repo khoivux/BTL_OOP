@@ -1,10 +1,9 @@
 package com.javaweb.app.dto;
 
+
 import com.javaweb.app.entity.HomestayEntity;
 import com.javaweb.app.entity.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -59,22 +58,6 @@ public class BookingDTO {
         return status;
     }
 
-    public Long getStayDuration() {
-        return stayDuration;
-    }
-
-    public void setStayDuration(Long stayDuration) {
-        this.stayDuration = stayDuration;
-    }
-
-    public Long getTotal() {
-        return total;
-    }
-
-    public void setTotal(Long total) {
-        this.total = total;
-    }
-
     public void setStatus(String status) {
         this.status = status;
     }
@@ -109,6 +92,22 @@ public class BookingDTO {
 
     public void setHomestay(HomestayEntity homestay) {
         this.homestay = homestay;
+    }
+
+    public Long getStayDuration() {
+        return stayDuration;
+    }
+
+    public void setStayDuration(Long stayDuration) {
+        this.stayDuration = stayDuration;
+    }
+
+    public Long getTotal() {
+        return total;
+    }
+
+    public void setTotal(Long total) {
+        this.total = total;
     }
 
     public User getUser() {
