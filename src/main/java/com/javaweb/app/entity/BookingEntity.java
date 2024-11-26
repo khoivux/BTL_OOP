@@ -50,6 +50,46 @@ public class BookingEntity {
     )
     private List<ServiceEntity> services;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDate getCheckInDate() {
+        return checkInDate;
+    }
+
+    public void setCheckInDate(LocalDate checkInDate) {
+        this.checkInDate = checkInDate;
+    }
+
+    public LocalDate getCheckOutDate() {
+        return checkOutDate;
+    }
+
+    public void setCheckOutDate(LocalDate checkOutDate) {
+        this.checkOutDate = checkOutDate;
+    }
+
+    public LocalDateTime getBookingTime() {
+        return bookingTime;
+    }
+
+    public void setBookingTime(LocalDateTime bookingTime) {
+        this.bookingTime = bookingTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getCustomerName() {
         return customerName;
     }
@@ -74,32 +114,24 @@ public class BookingEntity {
         this.customerPhone = customerPhone;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setCheckInDate(LocalDate checkInDate) {
-        this.checkInDate = checkInDate;
-    }
-
-    public void setCheckOutDate(LocalDate checkOutDate) {
-        this.checkOutDate = checkOutDate;
-    }
-
-    public void setBookingTime(LocalDateTime bookingTime) {
-        this.bookingTime = bookingTime;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public HomestayEntity getHomestay() {
+        return homestay;
     }
 
     public void setHomestay(HomestayEntity homestay) {
         this.homestay = homestay;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<ServiceEntity> getServices() {
+        return services;
     }
 
     public void setServices(List<ServiceEntity> services) {

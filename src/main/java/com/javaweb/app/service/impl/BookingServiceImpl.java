@@ -6,22 +6,33 @@ import com.javaweb.app.repository.BookingRepository;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.repository.UserRepository;
 import com.javaweb.app.service.BookingService;
+import com.javaweb.app.mapper.BookingMapper;
 import com.javaweb.app.utils.DateUtil;
 import com.javaweb.app.utils.MapUtil;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.net.http.HttpClient;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.Objects;
 
-@Service
+@Service // Thêm annotation @Service
 public class BookingServiceImpl implements BookingService {
+
+    private final BookingRepository bookingRepository;
+    private final BookingMapper bookingMapper;
+
+    // Inject BookingRepository và BookingMapper
     @Autowired
-    public BookingRepository bookingRepository;
+    public BookingServiceImpl(BookingRepository bookingRepository, BookingMapper bookingMapper) {
+        this.bookingRepository = bookingRepository;
+        this.bookingMapper = bookingMapper;
+    }
     @Autowired
     public HomestayRepository homestayRepository;
     @Autowired
@@ -46,5 +57,36 @@ public class BookingServiceImpl implements BookingService {
         bookingDTO.setTotal(daysBetween * bookingDTO.getHomestay().getPrice());
 
         return bookingDTO;
+    }
+
+    @Override
+    public List<BookingEntity> getAllBookings() {
+        return bookingRepository.findAll();
+    }
+
+    @Override
+    public List<BookingEntity> getBookingsByUserId(Long userId) {
+        return bookingRepository.findByUser_Id(userId);
+    }
+
+    @Override
+    public List<BookingDTO> getPaymentHistory(Long userId) {
+        // Lấy danh sách các BookingEntity từ DB
+        int a=1;
+
+        List<BookingEntity> bookings = bookingRepository.findByUser_Id(userId);
+        if (bookings.isEmpty()) {
+            return Collections.emptyList();
+        }
+        int cnt=0;
+        // Chuyển đổi thành BookingDTO
+        return bookings.stream()
+                .map(bookingMapper::mapToBookingDTO) // Dùng BookingMapper để chuyển đổi
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteBooking(Long id) {
+        bookingRepository.deleteById(id);
     }
 }
