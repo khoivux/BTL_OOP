@@ -326,9 +326,9 @@
         <div class="invoice-header">
             <h1>Thông Tin Đặt Phòng</h1>
             <h3 class="mb-0">
-                <p class="mb-2" id="HomestayName" th:text="${homestay.name}">Homestaybac</p>
+                <p class="mb-2" id="HomestayName" th:text="${homestay.name}"></p>
             </h3>
-            <p class="mb-2" id="HomestayAddress" th:text="${homestay.address}">18/42 Đường Đồng Lợi, Sa Pa, Việt Nam/p>
+            <p class="mb-2" id="HomestayAddress" th:text="${homestay.address}"></p>
             
         </div>
 
@@ -343,18 +343,13 @@
             <h4>Chi tiết đặt phòng</h4>
             <p><strong>Nhận phòng:</strong> <span id="check-in"  th:text="${booking.checkInDate}"></span></p>
             <p><strong>Trả phòng:</strong> <span id="check-out"  th:text="${booking.checkOutDate}"></span></p>
+            <p><strong>Giờ nhận phòng:</strong> <span id="check-in-time"  th:text="${booking.checkOutDate}"></span></p>
             <p><strong>Tổng thời gian lưu trú:</strong> <span id="stay-duration"  th:text="${booking.stayDuration}"></span></p>
-            <p><strong>Giá thuê:</strong> <span id="price"  th:text="${booking.total}"></span></p>
+            <p><strong>Giá thuê:</strong> <span id="price"  th:text="${homestay.price} + '.000 VND/Đêm'" ></span></p>
         </div>
-
-        <div class="invoice-section" id="services">
-            <h4>Dịch vụ bổ sung</h4>
-            <ul id="service-list"></ul>
-        </div>
-
 
         <div class="total-amount">
-            <p>Tổng tiền: <span id="total"></span></p>
+            <p>Thành tiền: <span id="total" th:text="${booking.total} + '.000 VND'"></span></p>
         </div>
 
         <div class="text-end">
@@ -383,10 +378,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Thanh toán</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                </div>
+                <form action="/booking/save" method="POST">
+                    <!-- Các trường thông tin cần thiết cho thanh toán -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Thanh toán</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

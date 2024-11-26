@@ -5,6 +5,7 @@ import com.javaweb.app.entity.HomestayEntity;
 import com.javaweb.app.entity.FacilitiesEntity;
 import com.javaweb.app.entity.ServiceEntity;
 
+import com.javaweb.app.exception.FileNotValidException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -72,10 +73,10 @@ public class HomestayMapper {
                 try {
                     homestayEntity.setImage(homestayCreateDTO.getImage().getBytes());
                 } catch (IOException e) {
-                    throw new RuntimeException("Lỗi khi xử lý file ảnh!");
+                    throw new FileNotValidException("Lỗi khi xử lý file ảnh!");
                 }
             } else {
-                throw new RuntimeException("File không hợp lệ! Chỉ chấp nhận file .jpg, .png hoặc .jpeg");
+                throw new FileNotValidException("File không hợp lệ! Chỉ chấp nhận file .jpg, .png hoặc .jpeg");
             }
         }
         return homestayEntity;

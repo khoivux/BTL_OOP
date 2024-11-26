@@ -4,6 +4,7 @@ package com.javaweb.app.controller;
 import com.javaweb.app.dto.HomestayCreateDTO;
 import com.javaweb.app.dto.HomestayResponseDTO;
 import com.javaweb.app.dto.HomestayDto;
+import com.javaweb.app.exception.FileNotValidException;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.service.HomestayService;
 import jakarta.servlet.http.HttpSession;
@@ -30,7 +31,7 @@ public class HomestayController {
             HomestayResponseDTO homestayResponseDTO = homestayService.createHomestay(homestayCreateDTO);
             return ResponseEntity.ok("Thêm mới homestay thành công!");
         }
-        catch (RuntimeException e) {
+        catch (FileNotValidException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
@@ -45,12 +46,15 @@ public class HomestayController {
 
     // DELETE
     @PostMapping("/admin/homestay-delete/{id}") // Xóa homestay theo id
-    public RedirectView deleteHomestayById(@PathVariable Long id,
-                                           RedirectAttributes redirectAttributes,
+    public ResponseEntity<String> deleteHomestayById(@PathVariable Long id,
                                            HttpSession session) {
-        homestayService.deleteHomestay(id);
-        redirectAttributes.addFlashAttribute("message", "Homestay đã được xóa.");
-        return new RedirectView("/admin/homestay-list");
+        try {
+            homestayService.deleteHomestay(id);
+            return ResponseEntity.ok("Xóa homestay thành công!");
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     // READ

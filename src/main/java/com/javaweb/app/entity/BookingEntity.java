@@ -102,6 +102,38 @@ public class BookingEntity {
         this.user = user;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public LocalDate getCheckInDate() {
+        return checkInDate;
+    }
+
+    public LocalDate getCheckOutDate() {
+        return checkOutDate;
+    }
+
+    public LocalDateTime getBookingTime() {
+        return bookingTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public HomestayEntity getHomestay() {
+        return homestay;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public List<ServiceEntity> getServices() {
+        return services;
+    }
+
     public void setServices(List<ServiceEntity> services) {
         this.services = services;
     }
