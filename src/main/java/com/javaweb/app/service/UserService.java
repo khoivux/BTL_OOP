@@ -1,16 +1,24 @@
 package com.javaweb.app.service;
 
+import com.javaweb.app.dto.UserDTO;
 import com.javaweb.app.entity.User;
 import com.javaweb.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 @Service
 public class UserService {
     @Autowired
     public UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository1;
 
     // admin login
     public User authAdmin(String email, String password) {
@@ -49,6 +57,26 @@ public class UserService {
         userRepository.save(newUser);
     }
 
+    public List<UserDTO> getAllUser() {
+        List<User> users = userRepository.findAll();
+        List<UserDTO> userDTOS = new ArrayList<>();
+        for(User user : users) {
+            UserDTO userDTO = new UserDTO();
+            if (user.getUserRole().equals("user")) {
+                userDTO.setId(user.getUserID());
+                userDTO.setUsername(user.getUserName());
+                userDTO.setEmail(user.getUserEmail());
+                userDTOS.add(userDTO);
+            }
+        }
+        return userDTOS;
+    }
+
+
+    // xoa 1 user
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
     // update profile
     public void updateProfile(Long id, String fullName, String email, String phoneNumber, String address) {
         User user = userRepository.getById(id);

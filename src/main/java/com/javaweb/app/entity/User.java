@@ -62,7 +62,7 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
-
+    public Long getUserID(){return id; }
     public String getUserName() {
         return username;
     }
@@ -121,6 +121,26 @@ public class User {
 
     public LocalDateTime getDate() {
         return date;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     public void setDate(LocalDateTime date) {

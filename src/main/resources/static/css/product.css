@@ -13,6 +13,11 @@
     font-family: Arial, sans-serif;
 }
 
+.date-picker {
+    position: relative;
+    margin-bottom: 15px;
+}
+
 
 .date-picker input {
     width: 100%;

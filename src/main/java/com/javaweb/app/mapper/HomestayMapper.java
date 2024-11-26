@@ -5,6 +5,7 @@ import com.javaweb.app.entity.HomestayEntity;
 import com.javaweb.app.entity.FacilitiesEntity;
 import com.javaweb.app.entity.ServiceEntity;
 
+import com.javaweb.app.exception.FileNotValidException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,8 @@ public class HomestayMapper {
     private ModelMapper modelMapper;
     @Autowired
     public RoomMapper roomMapper;
-
+    @Autowired
+    public ProvinceMapper provinceMapper;
     public List<ServiceDTO> mapToServiceDTOs(List<ServiceEntity> entities) {
         if(entities == null) return null;
         List<ServiceDTO> dtos = new ArrayList<>();
@@ -54,7 +56,7 @@ public class HomestayMapper {
     }
     public HomestayResponseDTO mapToHomestayResponse(HomestayEntity homestayEntity) {
         HomestayResponseDTO homestayResponse = modelMapper.map(homestayEntity, HomestayResponseDTO.class);
-        homestayResponse.setProvince(homestayEntity.getProvince().getName());
+        homestayResponse.setProvince(provinceMapper.mapToProvinceDto(homestayEntity.getProvince()));
         homestayResponse.setFacilities(mapToHomestayFacilities(homestayEntity.getFacilities()));
         homestayResponse.setRooms(roomMapper.mapToRoomDTOS(homestayEntity.getRooms()));
         String imageBase64 = homestayEntity.getImage() != null ? Base64.getEncoder().encodeToString(homestayEntity.getImage()) : null;
@@ -72,10 +74,10 @@ public class HomestayMapper {
                 try {
                     homestayEntity.setImage(homestayCreateDTO.getImage().getBytes());
                 } catch (IOException e) {
-                    throw new RuntimeException("Lỗi khi xử lý file ảnh!");
+                    throw new FileNotValidException("Lỗi khi xử lý file ảnh!");
                 }
             } else {
-                throw new RuntimeException("File không hợp lệ! Chỉ chấp nhận file .jpg, .png hoặc .jpeg");
+                throw new FileNotValidException("File không hợp lệ! Chỉ chấp nhận file .jpg, .png hoặc .jpeg");
             }
         }
         return homestayEntity;
