@@ -1,6 +1,9 @@
 package com.javaweb.app.service;
 
 import com.javaweb.app.dto.BookingDTO;
+import jakarta.servlet.http.HttpSession;
+
+import java.util.Map;
 
 import com.javaweb.app.entity.BookingEntity;
 
@@ -14,6 +17,5 @@ public interface BookingService {
     List<BookingDTO> getPaymentHistory(Long userId);
 
     void deleteBooking(Long id);
-
-    BookingDTO createBooking(BookingDTO bookingDTO);
+    BookingDTO createBooking(Map<String, Object> params, Long userId, HttpSession session);
 }

@@ -55,8 +55,8 @@
                 <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
                     <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
                     <ul show-ul class="d-none" id="userlist">
-                        <li><a href="#">Thông tin tài khoản</a></li>    <!--url trang profile-->
-                        <li><a href="#">Lịch sử đặt phòng</a></li>      <!--url trang history-->
+                        <li><a href="/user_profile">Thông tin tài khoản</a></li>    <!--url trang profile-->
+                        <li><a href="/history">Lịch sử đặt phòng</a></li>      <!--url trang history-->
                         <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
                     </ul>
                 </div>
@@ -176,23 +176,19 @@
     <div>
         <form method="GET" th:action="@{/search}">
             <div class="container-flex text-white bg-warning py-1 px-1 book">
-                <div class="row justify-content-center">
-                    <div class="col">
-                        <div class="input-group">
-                            <input aria-label="Bạn muốn đi đâu?" class="form-control" name="address" placeholder="Bạn muốn đi đâu?"
-                                   type="text">
-                            <input aria-label="Check-in Date" class="form-control datepicker" name="checkinDate"
-                                   placeholder="dd/mm/yyyy" type="date">
-                            <input aria-label="Check-out Date" class="form-control datepicker" name="checkoutDate"
-                                   placeholder="dd/mm/yyyy" type="date">
-                            <!--                        <input aria-label="Adults" class="form-control" min="1" name="adults"-->
-                            <!--                               placeholder="Người lớn" type="number">-->
-                            <!--                        <input aria-label="Children" class="form-control" min="0" name="children"-->
-                            <!--                               placeholder="Trẻ em" type="number">-->
+                <div class="input-group">
+                    <input aria-label="Bạn muốn đi đâu?" class="form-control" name="address" placeholder="Bạn muốn đi đâu?"
+                           type="text">
+                    <input aria-label="Check-in Date" class="form-control datepicker" name="checkinDate"
+                           placeholder="dd/mm/yyyy" type="date">
+                    <input aria-label="Check-out Date" class="form-control datepicker" name="checkoutDate"
+                           placeholder="dd/mm/yyyy" type="date">
+                    <!--                        <input aria-label="Adults" class="form-control" min="1" name="adults"-->
+                    <!--                               placeholder="Người lớn" type="number">-->
+                    <!--                        <input aria-label="Children" class="form-control" min="0" name="children"-->
+                    <!--                               placeholder="Trẻ em" type="number">-->
 
-                            <button class="btn btn-primary" type="submit">Tìm kiếm</button>
-                        </div>
-                    </div>
+                    <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                 </div>
             </div>
         </form>
@@ -280,29 +276,25 @@
 
     <section class="rooms">
         <div class="container top",>
-            <div class="heading" >
+            <div class="heading" id='homestay'>
                 <h2>HOMESTAY CỦA CHÚNG TÔI</h2>
             </div>
-            <div class="content mtop">
-                <div class="owl-carousel owl-carousel1 owl-theme">
-                    <!-- Homestay Row 1 -->
-                    <div class="items">
-                        <div class="image">
-                            <img alt="Homestay 1" th:src="@{/img/homestay1.jpg}">
-                        </div>
-                        <div class="text">
-                            <h2>Suporior Homestay 1</h2>
-                            <div class="star-rating">
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">★</span>
+            <div class="content">
+                <div class="rows" th:each="Homestays : ${groupedHomestays}" th:if="${groupedHomestays != null}">
+                    <div class="owl-carousel owl-carousel1 owl-theme">
+                        <div class="items" th:each="homestay : ${Homestays}" th:if="${Homestays != null}">
+                            <div class="image">
+                                <img th:src="${homestay.image}" alt="Homestay Image">
                             </div>
-                            <p>1800 bài đánh giá</p>
-                            <div class="button flex">
-                                <button class="primary-btn">ĐẶT NGAY</button>
-                                <h3>800k/1 đêm</h3>
+                            <div class="text">
+                                <h3 th:text="${homestay.name}"></h3>
+                                <p th:text="${homestay.address}"></p>
+                                <div class="flex">
+                                    <form method="POST" th:action="@{/homestay/{id}(id=${homestay.id})}">
+                                        <button class="product-btn">Đặt phòng</button>
+                                    </form>
+                                    <h4 th:text="${homestay.price} + 'đ/ngày'"></h4>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -311,28 +303,29 @@
         </div>
     </section>
 
+    <script>
+        $('.owl-carousel').owlCarousel({
+            loop: true,
+            margin: 30,
+            nav: true,
+            dots: false,
+            navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"],
+            responsive: {
+                0: {
+                    items: 1
+                },
+                768: {
+                    items: 2,
+                    margin: 10.
+                },
+                1000: {
+                    items: 3,
+                    margin: 10,
+                }
+            }
+        })
+    </script>
 
-<!--    <script>-->
-<!--        $('.owl-carousel').owlCarousel({-->
-<!--            loop: true,-->
-<!--            margin: 40,-->
-<!--            nav: true,-->
-<!--            dots: false,-->
-<!--            navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"],-->
-<!--            responsive: {-->
-<!--                0: {-->
-<!--                    items: 1-->
-<!--                },-->
-<!--                768: {-->
-<!--                    items: 2,-->
-<!--                    margin: 10.-->
-<!--                },-->
-<!--                1000: {-->
-<!--                    items: 3-->
-<!--                }-->
-<!--            }-->
-<!--        })-->
-<!--    </script>-->
     <section class="Customer top">
         <div class="container">
             <div class="owl-carousel owl-carousel2 owl-theme">

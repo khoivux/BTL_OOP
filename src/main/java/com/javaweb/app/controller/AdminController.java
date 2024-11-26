@@ -65,7 +65,7 @@ public class AdminController {
             return modelAndView;
         } else {
             ModelAndView modelAndView = new ModelAndView("admin/loginAdmin");
-            modelAndView.addObject("error", "Invalid username or password");
+            modelAndView.addObject("error", "Sai tài khoản hoặc mật khẩu");
             return modelAndView;
         }
     }
@@ -112,6 +112,8 @@ public class AdminController {
         if(session.getAttribute("admin") != null){
             ModelAndView modelAndView = new ModelAndView("admin/update");
             HomestayResponseDTO homestayDto = homestayService.findHomestayById(id);
+            modelAndView.addObject("facilities", facilitiesService.findAll());
+            modelAndView.addObject("provinces", provinceService.findAll());
             modelAndView.addObject("homestay", homestayDto);
             return modelAndView;
         }

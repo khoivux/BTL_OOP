@@ -7,6 +7,9 @@ import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.repository.UserRepository;
 import com.javaweb.app.service.BookingService;
 import com.javaweb.app.mapper.BookingMapper;
+import com.javaweb.app.utils.DateUtil;
+import com.javaweb.app.utils.MapUtil;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,9 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.time.temporal.ChronoUnit;
+import java.util.Map;
+import java.util.Objects;
 
 @Service // Thêm annotation @Service
 public class BookingServiceImpl implements BookingService {
@@ -32,15 +38,24 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     public UserRepository userRepository;
 
-    public BookingDTO createBooking(BookingDTO bookingDTO) {
-        BookingEntity bookingEntity = new BookingEntity();
-        bookingEntity.setUser(userRepository.getById(bookingDTO.getUser_id()));
-        bookingEntity.setHomestay(homestayRepository.getById(bookingDTO.getHomestay_id()));
-        bookingEntity.setStatus("Đã cọc");
-        bookingEntity.setCheckInDate(bookingDTO.getCheckInDate());
-        bookingEntity.setCheckOutDate(bookingDTO.getCheckOutDate());
-        bookingEntity.setBookingTime(LocalDateTime.now());
-        bookingRepository.save(bookingEntity);
+    public BookingDTO createBooking(Map<String, Object> params,
+                                    Long userId,
+                                    HttpSession session) {
+        BookingDTO bookingDTO = new BookingDTO();
+        bookingDTO.setUser(userRepository.getById(userId));
+        bookingDTO.setCustomerName(MapUtil.getObject(params, "customerName", String.class));
+        bookingDTO.setCustomerEmail(MapUtil.getObject(params, "customerEmail", String.class));
+        bookingDTO.setCustomerPhone(MapUtil.getObject(params, "customerPhone", String.class));
+        bookingDTO.setHomestay(homestayRepository.getById(Objects.requireNonNull(MapUtil.getObject(params, "homestayId", Long.class))));
+        bookingDTO.setStatus("Đang thực hiện");
+        bookingDTO.setCheckInDate(DateUtil.strToDate(MapUtil.getObject(params, "checkInDate", String.class)));
+        bookingDTO.setCheckOutDate(DateUtil.strToDate(MapUtil.getObject(params, "checkOutDate", String.class)));
+        bookingDTO.setBookingTime(LocalDateTime.now());
+
+        long daysBetween = ChronoUnit.DAYS.between(bookingDTO.getCheckInDate(), bookingDTO.getCheckOutDate());
+        bookingDTO.setStayDuration(daysBetween);
+        bookingDTO.setTotal(daysBetween * bookingDTO.getHomestay().getPrice());
+
         return bookingDTO;
     }
 
@@ -66,7 +81,7 @@ public class BookingServiceImpl implements BookingService {
         int cnt=0;
         // Chuyển đổi thành BookingDTO
         return bookings.stream()
-                .map(bookingMapper::toDTO) // Dùng BookingMapper để chuyển đổi
+                .map(bookingMapper::mapToBookingDTO) // Dùng BookingMapper để chuyển đổi
                 .collect(Collectors.toList());
     }
 
