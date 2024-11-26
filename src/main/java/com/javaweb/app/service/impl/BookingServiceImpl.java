@@ -7,6 +7,7 @@ import com.javaweb.app.repository.BookingRepository;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.repository.UserRepository;
 import com.javaweb.app.service.BookingService;
+import com.javaweb.app.mapper.BookingMapper;
 import com.javaweb.app.utils.DateUtil;
 import com.javaweb.app.utils.MapUtil;
 import jakarta.servlet.http.HttpSession;
@@ -16,14 +17,25 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.Objects;
 
-@Service
+@Service // Thêm annotation @Service
 public class BookingServiceImpl implements BookingService {
+
+    private final BookingRepository bookingRepository;
+    private final BookingMapper bookingMapper;
+
+    // Inject BookingRepository và BookingMapper
     @Autowired
-    public BookingRepository bookingRepository;
+    public BookingServiceImpl(BookingRepository bookingRepository, BookingMapper bookingMapper) {
+        this.bookingRepository = bookingRepository;
+        this.bookingMapper = bookingMapper;
+    }
     @Autowired
     public HomestayRepository homestayRepository;
     @Autowired
@@ -51,6 +63,7 @@ public class BookingServiceImpl implements BookingService {
 
         return bookingDTO;
     }
+
     public BookingDTO saveBooking(BookingDTO bookingDTO) {
         bookingRepository.save(modelMapper.map(bookingDTO, BookingEntity.class));
         return bookingDTO;
@@ -60,5 +73,14 @@ public class BookingServiceImpl implements BookingService {
         if (conflictingBookings > 0) {
             throw new DateNotValidException("Homestay không sẵn có trong thời gian này!");
         }
+    }
+    public List<BookingDTO> getPaymentHistory(Long userId) {
+        List<BookingEntity> bookings = bookingRepository.findByUser_Id(userId);
+        if (bookings.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return bookings.stream()
+                .map(bookingMapper::mapToBookingDTO)
+                .collect(Collectors.toList());
     }
 }

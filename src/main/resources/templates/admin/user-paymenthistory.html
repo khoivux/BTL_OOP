@@ -15,15 +15,15 @@
             <span class="text-white">Xin chào, admin</span>
             <div class = "d-flex justify-content-end"><a href = "#" class = "text-light">đăng xuất</a></div>    <!--đăng xuất-->
         </div>
-
+    </div>
 </header>
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>                                  <!--về trang chủ-->
-            <li class="breadcrumb-item active" aria-current="page">Quản lý khách hàng</li>
-        </ol>
-    </nav>
-
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>                                      <!--về trang chủ-->
+        <li class="breadcrumb-item active" aria-current="page"><a href="/admin">Trang quản trị</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Quản lý khách hàng</li>
+    </ol>
+</nav>
 
 <div class="container-fluid row m-0">
     <div class="managecol p-0 col-2">
@@ -34,29 +34,26 @@
         </ul>
     </div>
     <div class="action col-9.5">
-        <h3>Thông tin khách hàng</h3>
+        <h3>Lịch sử giao dịch</h3>
         <div>
             <table class="table table-bordered" style="width: 150vh">
                 <thead class="thead-light">
                 <tr>
-                    <th style="width: 10%;text-align:center;">ID</th>
-                    <th style="width: 38%;text-align:center">Tên khách hàng</th>
-                    <th style="width: 35%;text-align:center">Email khách hàng</th>
-                    <th style="width: 17%;text-align:center">Thao tác</th>
+                    <th style="width: 20%;text-align:center">Booking Time</th>
+                    <th style="width: 25%;text-align:center">Checkin Date</th>
+                    <th style="width: 25%;text-align:center">Checkout Date</th>
+                    <th style="width: 10%;text-align:center">Status</th>
+                    <th style="width: 5%;text-align:center">Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user : ${users}" th:if="${users != null}">
-                    <td class="p-2" style="text-align: center" th:text="${user.id}"></td>
-                    <td class="p-2" style="text-align: center" th:text="${user.username}"></td>
-                    <td class="p-2" style="text-align: center" th:text="${user.email}"></td>
-                    <td class = "p-2">
-                        <!-- Lịch sử giao dịch -->
-                        <form th:action="@{/admin/user-paymenthistory/{id}(id=${user.id})}" method="GET" style="display:inline">
-                            <button type="submit" class="btn btn-warning btn-sm">Lịch sử giao dịch</button>
-                        </form>
-                        <!-- Xóa -->
-                        <form th:action="@{/admin/user-delete/{id}(id=${user.id})}" method="POST" style="display:inline;">
+                <tr th:each="history : ${paymentHistories}" th:if="${paymentHistories != null}">
+                    <td class="p-2" style="text-align:center" th:text="${history.BookingTime}"></td>
+                    <td class="p-2" style="text-align:center" th:text="${history.checkInDate}"></td>
+                    <td class="p-2" style="text-align:center" th:text="${history.checkOutDate}"></td>
+                    <td class="p-2" style="text-align:center" th:text="${history.status}"></td>
+                    <td class="p-2" style="text-align:center">
+                        <form th:action="@{/admin/user-paymenthistory-delete/{id}(id=${history.id})}" method="POST" style="display:inline;">
                             <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
                         </form>
                     </td>

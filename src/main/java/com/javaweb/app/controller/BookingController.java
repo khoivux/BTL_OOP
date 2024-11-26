@@ -1,15 +1,14 @@
 package com.javaweb.app.controller;
 
 import com.javaweb.app.dto.BookingDTO;
+
 import com.javaweb.app.dto.HomestayDto;
 import com.javaweb.app.dto.HomestayResponseDTO;
 import com.javaweb.app.entity.BookingEntity;
 import com.javaweb.app.entity.HomestayEntity;
 import com.javaweb.app.entity.User;
 import com.javaweb.app.exception.DateNotValidException;
-import com.javaweb.app.repository.BookingRepository;
-import com.javaweb.app.repository.HomestayRepository;
-import com.javaweb.app.repository.UserRepository;
+
 import com.javaweb.app.service.BookingService;
 import com.javaweb.app.service.HomestayService;
 import com.javaweb.app.utils.DateUtil;
@@ -43,6 +42,7 @@ public class BookingController {
             Boolean checkDate = DateUtil.isValid(checkInDateStr, checkOutDateStr);
             LocalDate checkInDate = DateUtil.strToDate(MapUtil.getObject(params, "checkInDate", String.class));
             LocalDate checkOutDate = DateUtil.strToDate(MapUtil.getObject(params, "checkOutDate", String.class));
+
             bookingService.validDateBooking(homestay.getId(), checkInDate, checkOutDate);
 
             Long stayDays = ChronoUnit.DAYS.between(checkInDate, checkOutDate);

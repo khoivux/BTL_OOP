@@ -22,7 +22,8 @@ public class HomestayMapper {
     private ModelMapper modelMapper;
     @Autowired
     public RoomMapper roomMapper;
-
+    @Autowired
+    public ProvinceMapper provinceMapper;
     public List<ServiceDTO> mapToServiceDTOs(List<ServiceEntity> entities) {
         if(entities == null) return null;
         List<ServiceDTO> dtos = new ArrayList<>();
@@ -55,7 +56,7 @@ public class HomestayMapper {
     }
     public HomestayResponseDTO mapToHomestayResponse(HomestayEntity homestayEntity) {
         HomestayResponseDTO homestayResponse = modelMapper.map(homestayEntity, HomestayResponseDTO.class);
-        homestayResponse.setProvince(homestayEntity.getProvince().getName());
+        homestayResponse.setProvince(provinceMapper.mapToProvinceDto(homestayEntity.getProvince()));
         homestayResponse.setFacilities(mapToHomestayFacilities(homestayEntity.getFacilities()));
         homestayResponse.setRooms(roomMapper.mapToRoomDTOS(homestayEntity.getRooms()));
         String imageBase64 = homestayEntity.getImage() != null ? Base64.getEncoder().encodeToString(homestayEntity.getImage()) : null;

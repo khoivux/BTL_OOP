@@ -9,7 +9,7 @@ public class HomestayResponseDTO {
     private Long id;
     private String name;
     private String address;
-    private String province;
+    private ProvinceDto province;
     private Long price;
     private Long rating;
     private String description;
@@ -19,12 +19,20 @@ public class HomestayResponseDTO {
     private List<BookingDTO> bookingList;
     private String image;
 
-    public String getProvince() {
+    public ProvinceDto getProvince() {
         return province;
     }
 
-    public void setProvince(String province) {
+    public void setProvince(ProvinceDto province) {
         this.province = province;
+    }
+
+    public List<BookingDTO> getBookingList() {
+        return bookingList;
+    }
+
+    public void setBookingList(List<BookingDTO> bookingList) {
+        this.bookingList = bookingList;
     }
 
     public Long getId() {
