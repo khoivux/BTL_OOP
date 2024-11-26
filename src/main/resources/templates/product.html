@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomeStay • HomesTayBac</title>
     <link rel="stylesheet" th:href="@{/css/product.css}">
+    <style>
+        .date-picker {
+            width: auto;
+            position: relative;
+            margin-bottom: 15px;
+        }
+    </style>
+
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css"
@@ -20,53 +28,7 @@
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
         integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
-    <style>
-        .custom-border {
-            border: 1px solid #eeeeee; /* Viền màu xanh */
-            border-radius: 10px; /* Bo tròn góc */
-            padding: 10px; /* Khoảng cách bên trong */
-            margin-bottom: 15px; /* Tạo khoảng cách phía dưới (hoặc dùng margin-right nếu theo chiều ngang) */
-            /*            transition: transform 0.3s, box-shadow 0.3s; *//* Hiệu ứng hover */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        /* Danh sách tiện nghi */
-        .list-unstyled {
-            padding-left: 0;
-            list-style: none;
-        }
 
-        .list-unstyled li {
-            display: flex;
-            align-items: center;
-            padding: 0.5rem 0;
-            font-size: 1rem;
-            color: #555;
-            border-bottom: 1px solid #ddd;
-        }
-
-        /* Biểu tượng dấu tích */
-        .list-unstyled li i {
-            color: #08ff42; /* Màu xanh cho dấu tích */
-            margin-right: 0.5rem;
-        }
-
-        /* Khoảng cách của danh sách */
-        .list-unstyled li:last-child {
-            border-bottom: none;
-        }
-        body {
-            margin: 0; /* Xóa khoảng trắng mặc định */
-            padding: 0;
-            font-family: Arial, sans-serif; /* Tùy chọn font */
-        }
-        .container {
-            max-width: 1200px; /* Chiều rộng tối đa của nội dung */
-            margin: 0 auto; /* Căn giữa nội dung theo chiều ngang */
-            padding: 20px; /* Thêm khoảng cách bên trong */
-            /*            background-color: #f9f9f9; *//* Tùy chọn màu nền */
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng */
-        }
-    </style>
 
 </head>
 
@@ -225,7 +187,9 @@
                 </div>
             </div>
             <input type="number"  id="homestayId" name="homestayId" th:value="${homestay.id}" hidden>
-            <button class="btn btn-primary" type="submit">Đặt ngay</button>
+            <div class="d-flex justify-content-end mb-1">
+                <button class="btn btn-primary" type="submit">Đặt ngay</button>
+            </div>
         </div>
     </div>
     </form>
@@ -238,7 +202,7 @@
         </ul>
     </div>
     <div>
-        <h4 class="my-4">Thông tin i6chi tiết:</h4>
+        <h4 class="my-4">Thông tin phòng:</h4>
         <table class=" table table-bordered ">
             <thead>
             <tr>

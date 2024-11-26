@@ -34,6 +34,9 @@ public class BookingEntity {
     @Column(name = "customer_Phone")
     private String customerPhone;
 
+    @Column(name = "total")
+    private String total;
+
     @ManyToOne
     @JoinColumn(name = "homestay_id")
     private  HomestayEntity homestay;
@@ -64,6 +67,38 @@ public class BookingEntity {
 
     public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public LocalDate getCheckInDate() {
+        return checkInDate;
+    }
+
+    public LocalDate getCheckOutDate() {
+        return checkOutDate;
+    }
+
+    public LocalDateTime getBookingTime() {
+        return bookingTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public HomestayEntity getHomestay() {
+        return homestay;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public List<ServiceEntity> getServices() {
+        return services;
     }
 
     public String getCustomerPhone() {
@@ -104,5 +139,13 @@ public class BookingEntity {
 
     public void setServices(List<ServiceEntity> services) {
         this.services = services;
+    }
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
     }
 }

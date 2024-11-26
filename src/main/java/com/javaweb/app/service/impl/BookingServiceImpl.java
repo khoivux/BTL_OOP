@@ -8,10 +8,14 @@ import com.javaweb.app.repository.UserRepository;
 import com.javaweb.app.service.BookingService;
 import com.javaweb.app.utils.DateUtil;
 import com.javaweb.app.utils.MapUtil;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -23,7 +27,10 @@ public class BookingServiceImpl implements BookingService {
     public HomestayRepository homestayRepository;
     @Autowired
     public UserRepository userRepository;
+    @Autowired
+    public ModelMapper modelMapper;
 
+    @Override
     public BookingDTO createBooking(Map<String, Object> params, Long userId) {
         BookingEntity bookingEntity = new BookingEntity();
         bookingEntity.setUser(userRepository.getById(userId));
@@ -37,5 +44,37 @@ public class BookingServiceImpl implements BookingService {
         bookingEntity.setBookingTime(LocalDateTime.now());
         bookingRepository.save(bookingEntity);
         return null;
+    }
+
+    @Override
+    public List<BookingDTO> findBookingByUserId(Long userId)
+    {
+        List<BookingDTO> bookingDTOS = new ArrayList<>();
+        List<BookingEntity> bookingEntitys = bookingRepository.findByUser_Id(userId);
+
+        for (BookingEntity bookingEntity : bookingEntitys)
+        {
+            bookingDTOS.add(modelMapper.map(bookingEntity, BookingDTO.class));
+        }
+        return bookingDTOS;
+    }
+
+    @Override
+    public BookingDTO findById(Long id)
+    {
+        BookingDTO bookingDTO = modelMapper.map(bookingRepository.getById(id), BookingDTO.class);
+        return bookingDTO;
+    }
+
+    @Override
+    public void deleteBookingById(Long id) {
+        bookingRepository.deleteById(id);
+    }
+
+    @Override
+    public void cancelBookingById(Long id) {
+        BookingEntity bookingEntity = bookingRepository.getById(id);
+        bookingEntity.setStatus("Đã hủy");
+        bookingRepository.save(bookingEntity);
     }
 }
