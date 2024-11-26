@@ -22,6 +22,10 @@ public class BookingEntity {
     @Column(name = "booking_time")
     private LocalDateTime bookingTime;
 
+    @Column(name = "checkin_time")
+    private Long checkInTime;
+
+
     @Column(name = "status")
     private String status;
 
@@ -136,5 +140,13 @@ public class BookingEntity {
 
     public void setServices(List<ServiceEntity> services) {
         this.services = services;
+    }
+
+    public Long getCheckInTime() {
+        return checkInTime;
+    }
+
+    public void setCheckInTime(Long checkInTime) {
+        this.checkInTime = checkInTime;
     }
 }

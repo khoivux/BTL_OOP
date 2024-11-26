@@ -1,10 +1,9 @@
 package com.javaweb.app.dto;
 
+
 import com.javaweb.app.entity.HomestayEntity;
 import com.javaweb.app.entity.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,14 +24,6 @@ public class BookingDTO {
     private Long checkInTime;
     public Long getId() {
         return id;
-    }
-
-    public Long getCheckInTime() {
-        return checkInTime;
-    }
-
-    public void setCheckInTime(Long checkInTime) {
-        this.checkInTime = checkInTime;
     }
 
     public void setId(Long id) {
@@ -65,22 +56,6 @@ public class BookingDTO {
 
     public String getStatus() {
         return status;
-    }
-
-    public Long getStayDuration() {
-        return stayDuration;
-    }
-
-    public void setStayDuration(Long stayDuration) {
-        this.stayDuration = stayDuration;
-    }
-
-    public Long getTotal() {
-        return total;
-    }
-
-    public void setTotal(Long total) {
-        this.total = total;
     }
 
     public void setStatus(String status) {
@@ -119,11 +94,35 @@ public class BookingDTO {
         this.homestay = homestay;
     }
 
+    public Long getStayDuration() {
+        return stayDuration;
+    }
+
+    public void setStayDuration(Long stayDuration) {
+        this.stayDuration = stayDuration;
+    }
+
+    public Long getTotal() {
+        return total;
+    }
+
+    public void setTotal(Long total) {
+        this.total = total;
+    }
+
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Long getCheckInTime() {
+        return checkInTime;
+    }
+
+    public void setCheckInTime(Long checkInTime) {
+        this.checkInTime = checkInTime;
     }
 }
