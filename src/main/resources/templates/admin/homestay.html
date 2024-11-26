@@ -163,7 +163,7 @@
                         <tr th:each="homestay : ${homestays}" th:if="${homestays != null}">
                             <td class="p-2" style="text-align: center" th:text="${homestay.id}"></td>
                             <td class="p-2" style="text-align: center" th:text="${homestay.name}"></td>
-                            <td class="p-2" style="text-align: center" th:text="${homestay.address}"></td>
+                            <td class="p-2" style="text-align: center" th:text="${homestay.address + ', ' + homestay.province.name}"></td>
                             <td class="p-2" style="text-align: center" th:text="${homestay.price + '/ngày'}"></td>
 
                             <td class = "p-2" style="text-align: center">

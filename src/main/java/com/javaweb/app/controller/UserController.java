@@ -102,5 +102,4 @@ public class UserController {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-    // git hotfix
 }

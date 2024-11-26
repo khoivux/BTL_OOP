@@ -2,6 +2,7 @@ package com.javaweb.app.controller;
 
 import com.javaweb.app.dto.HomestayResponseDTO;
 import com.javaweb.app.entity.User;
+import com.javaweb.app.exception.DateNotValidException;
 import com.javaweb.app.service.FacilitiesService;
 import com.javaweb.app.service.HomestayService;
 import com.javaweb.app.service.ServiceService;
@@ -73,15 +74,14 @@ public class WebController {
         model.addObject("checkOutDate", checkOutDate);
         model.addObject("params", params);
 
-        List<HomestayResponseDTO> homestays = new ArrayList<>();  // Khai báo biến homestays
+        List<HomestayResponseDTO> homestays = new ArrayList<>();
         try {
-            String checkDate = DateUtil.isValid(checkInDate, checkOutDate);  // Kiểm tra tính hợp lệ của ngày
-            homestays = homestayService.findByFilter(params, facilities, rooms, services);  // Lấy homestay theo bộ lọc
-        } catch (RuntimeException e) {
+            Boolean checkDate = DateUtil.isValid(checkInDate, checkOutDate);
+            homestays = homestayService.findByFilter(params, facilities, rooms, services);
+        } catch (DateNotValidException e) {
             homestays = homestayService.findAll();  // Nếu có lỗi, lấy tất cả homestay
-            model.addObject("errorMessage", e.getMessage());  // Thêm thông báo lỗi vào model
+            model.addObject("errorMessage", e.getMessage());
         }
-
         model.addObject("homestays", homestays);  // Thêm homestay vào model
         return model;
     }
@@ -107,11 +107,10 @@ public class WebController {
 
     @PostMapping("/homestay/{id}")
     public ModelAndView getProductById(@PathVariable Long id,
-                                       @RequestParam Map<String, String> params,
+                                       @RequestParam(required = false) Map<String, String> params,
                                        HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("product");
 
-        User user = (User) session.getAttribute("user");
         modelAndView.addObject("checkInDate", params.get("checkinDate"));
         modelAndView.addObject("checkOutDate", params.get("checkoutDate"));
 

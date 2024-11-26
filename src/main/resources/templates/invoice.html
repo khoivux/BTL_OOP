@@ -328,7 +328,7 @@
             <h3 class="mb-0">
                 <p class="mb-2" id="HomestayName" th:text="${homestay.name}"></p>
             </h3>
-            <p class="mb-2" id="HomestayAddress" th:text="${homestay.address}"></p>
+            <p class="mb-2" id="HomestayAddress" th:text="${homestay.address + ', ' + homestay.province.name}"></p>
             
         </div>
 
@@ -343,49 +343,59 @@
             <h4>Chi tiết đặt phòng</h4>
             <p><strong>Nhận phòng:</strong> <span id="check-in"  th:text="${booking.checkInDate}"></span></p>
             <p><strong>Trả phòng:</strong> <span id="check-out"  th:text="${booking.checkOutDate}"></span></p>
-            <p><strong>Tổng thời gian lưu trú:</strong> <span id="stay-duration"  th:text="${booking.stayDuration}"></span></p>
-            <p><strong>Giá thuê:</strong> <span id="price"  th:text="${homestay.price}"></span></p>
+            <p><strong>Giờ nhận phòng:</strong> <span id="check-in-time"  th:text="${booking.checkInTime} + ':00H'"></span></p>
+            <p><strong>Tổng thời gian lưu trú:</strong> <span id="stay-duration"  th:text="${booking.stayDuration} + ' ngày'"></span></p>
+            <p><strong>Giá thuê:</strong> <span id="price"  th:text="${homestay.price} + '.000 VND/Ngày'" ></span></p>
         </div>
-
 
         <div class="total-amount">
-            <p>Tổng tiền: <span id="total" th:text="${booking.total}"></span></p>
+            <p>Thành tiền: <span id="total" th:text="${booking.total} + '.000 VND'"></span></p>
         </div>
-
         <div class="text-end">
             <button class="btn-export">Thanh toán</button>
         </div>
     </div>
-    <div class="modal fade" id="qrCodeModal" tabindex="-1" aria-labelledby="qrCodeModalLabel" aria-hidden="true">
+
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="qrCodeModalLabel">Quét mã QR để thanh toán</h5>
+                    <h5 class="modal-title" id="paymentModalLabel">Chọn hình thức thanh toán</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="qr">
-                        <img src="static/img/thanhtoan.jpg.png" alt="QR Code">
-                        <h4>Phạm Ngọc Long</h4>
-                        <h6>QRD000103035625901</h6>
-                        <h6>PGD Khu công nghiệp Phố Nối A</h6>
-                    </div>
-                    <div class="services">
-                        <h5>Điều khoản</h5>
-                        <div>
-                            <input type="checkbox" name="regulations" value="">
-                            Tôi đồng ý nhận email marketing từ HomesTayBac.com, bao gồm khuyến mãi, đề xuất được cá nhân hóa, tặng thưởng, trải nghiệm du lịch và cập nhật về các sản phẩm và dịch vụ của HomesTayBac.com.
-                        </div>
+                    <div class="payment-options">
+                        <!-- VNPay -->
+                        <button type="button" class="btn btn-outline-primary w-100 mb-3 d-flex align-items-center justify-content-start" onclick="window.location.href='/payment/vnpay'">
+                            <img th:src="@{/img/vnpay.png}" alt="VNPay Logo" class="me-3" style="width: 40px; height: 40px;">
+                            Thanh toán qua VNPay
+                        </button>
+                        <!-- MoMo -->
+                        <button type="button" class="btn btn-outline-success w-100 mb-3 d-flex align-items-center justify-content-start" onclick="window.location.href='/payment/momo'">
+                            <img th:src="@{/img/momo.png}" alt="MoMo Logo" class="me-3" style="width: 40px; height: 40px;">
+                            Thanh toán qua MoMo
+                        </button>
+                        <!-- PayPal -->
+                        <button type="button" class="btn btn-outline-info w-100 mb-3 d-flex align-items-center justify-content-start" onclick="window.location.href='/payment/paypal'">
+                            <img th:src="@{/img/paypal.png}" alt="PayPal Logo" class="me-3" style="width: 40px; height: 40px;">
+                            Thanh toán qua PayPal
+                        </button>
+                        <!-- Banking -->
+                        <button type="button" class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-start" onclick="window.location.href='/payment/banking'">
+                            <img th:src="@{/img/banking.png}" alt="Banking Logo" class="me-3" style="width: 40px; height: 40px;">
+                            Thanh toán qua Online Banking
+                        </button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Thanh toán</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                </div>
+                <form action="/booking/save" method="POST">
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Xác nhận</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Lấy dữ liệu từ API
@@ -424,7 +434,7 @@
 
         // Gọi modal khi bấm nút "Thanh toán"
         document.querySelector(".btn-export").addEventListener("click", function() {
-            var qrCodeModal = new bootstrap.Modal(document.getElementById('qrCodeModal'));
+            var qrCodeModal = new bootstrap.Modal(document.getElementById('paymentModal'));
             qrCodeModal.show();
         });
 

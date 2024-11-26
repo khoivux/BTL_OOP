@@ -2,6 +2,7 @@ package com.javaweb.app.service.impl;
 
 import com.javaweb.app.dto.BookingDTO;
 import com.javaweb.app.entity.BookingEntity;
+import com.javaweb.app.exception.DateNotValidException;
 import com.javaweb.app.repository.BookingRepository;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.repository.UserRepository;
@@ -10,9 +11,11 @@ import com.javaweb.app.mapper.BookingMapper;
 import com.javaweb.app.utils.DateUtil;
 import com.javaweb.app.utils.MapUtil;
 import jakarta.servlet.http.HttpSession;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -37,17 +40,19 @@ public class BookingServiceImpl implements BookingService {
     public HomestayRepository homestayRepository;
     @Autowired
     public UserRepository userRepository;
-
+    @Autowired
+    public ModelMapper modelMapper;
     public BookingDTO createBooking(Map<String, Object> params,
                                     Long userId,
                                     HttpSession session) {
         BookingDTO bookingDTO = new BookingDTO();
         bookingDTO.setUser(userRepository.getById(userId));
+        bookingDTO.setCheckInTime(MapUtil.getObject(params, "checkInTime", Long.class));
         bookingDTO.setCustomerName(MapUtil.getObject(params, "customerName", String.class));
         bookingDTO.setCustomerEmail(MapUtil.getObject(params, "customerEmail", String.class));
         bookingDTO.setCustomerPhone(MapUtil.getObject(params, "customerPhone", String.class));
         bookingDTO.setHomestay(homestayRepository.getById(Objects.requireNonNull(MapUtil.getObject(params, "homestayId", Long.class))));
-        bookingDTO.setStatus("Đang thực hiện");
+        bookingDTO.setStatus("Chờ xác nhận");
         bookingDTO.setCheckInDate(DateUtil.strToDate(MapUtil.getObject(params, "checkInDate", String.class)));
         bookingDTO.setCheckOutDate(DateUtil.strToDate(MapUtil.getObject(params, "checkOutDate", String.class)));
         bookingDTO.setBookingTime(LocalDateTime.now());
@@ -59,34 +64,23 @@ public class BookingServiceImpl implements BookingService {
         return bookingDTO;
     }
 
-    @Override
-    public List<BookingEntity> getAllBookings() {
-        return bookingRepository.findAll();
+    public BookingDTO saveBooking(BookingDTO bookingDTO) {
+        bookingRepository.save(modelMapper.map(bookingDTO, BookingEntity.class));
+        return bookingDTO;
     }
-
-    @Override
-    public List<BookingEntity> getBookingsByUserId(Long userId) {
-        return bookingRepository.findByUser_Id(userId);
+    public void validDateBooking(Long homestayId, LocalDate checkInDate, LocalDate checkOutDate) {
+        Long conflictingBookings = bookingRepository.countConflictingBookings(homestayId, checkInDate, checkOutDate);
+        if (conflictingBookings > 0) {
+            throw new DateNotValidException("Homestay không sẵn có trong thời gian này!");
+        }
     }
-
-    @Override
     public List<BookingDTO> getPaymentHistory(Long userId) {
-        // Lấy danh sách các BookingEntity từ DB
-        int a=1;
-
         List<BookingEntity> bookings = bookingRepository.findByUser_Id(userId);
         if (bookings.isEmpty()) {
             return Collections.emptyList();
         }
-        int cnt=0;
-        // Chuyển đổi thành BookingDTO
         return bookings.stream()
-                .map(bookingMapper::mapToBookingDTO) // Dùng BookingMapper để chuyển đổi
+                .map(bookingMapper::mapToBookingDTO)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public void deleteBooking(Long id) {
-        bookingRepository.deleteById(id);
     }
 }
