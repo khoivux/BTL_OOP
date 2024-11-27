@@ -231,9 +231,9 @@
                 <tr>
                     <th style="width: 5%;">ID</th>
                     <th style="width: 20%;">Tên Homestay</th>
-                    <th style="width: 35%;">Địa chỉ Homestay</th>
+                    <th style="width: 30%;">Địa chỉ Homestay</th>
                     <th style="width: 15%;">Thời gian đặt</th>
-                    <th style="width: 8%;">Thành tiền (VNĐ)</th>
+                    <th style="width: 13%;">Thành tiền (VNĐ/Ngày)</th>
                     <th style="width: 7%;">Trạng thái</th>
                     <th style="width: 10%;">Thao tác</th> <!-- Thêm cột Thao tác -->
                 </tr>
@@ -242,10 +242,10 @@
                 <tr th:each="booking : ${bookings}" th:if="${bookings != null}">
                     <td class="p-2" style="text-align:center" th:text="${booking.id}"></td>
                     <td class="p-2" style="text-align:center" th:text="${booking.homestay.name}"></td>
-                    <td class="p-2" style="text-align:center" th:text="${booking.homestay.address}"></td>
+                    <td class="p-2" style="text-align:center" th:text="${booking.homestay.address + ', ' + booking.homestay.province.name}"></td>
                     <td class="p-2" style="text-align:center"
                         th:text="${#temporals.format(booking.bookingTime, 'dd/MM/yyyy HH:mm:ss')}"></td>
-                    <td class="p-2" style="text-align:center" th:text="${booking.total}"></td>
+                    <td class="p-2" style="text-align:center" th:text="${booking.total} + '.000'"></td>
                     <td class="p-2" style="text-align:center" th:text="${booking.status}"></td>
                     <td class="p-2" style="text-align:center">
                         <!-- Nút Chi tiết -->
