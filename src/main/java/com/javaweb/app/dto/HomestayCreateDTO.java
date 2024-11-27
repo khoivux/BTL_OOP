@@ -15,7 +15,6 @@ public class HomestayCreateDTO {
     private Long capacity;
     private List<RoomDTO> rooms;
     private List<Long> facilities;
-    private List<Long> services;
     @JsonIgnore
     private MultipartFile image;
 
@@ -90,13 +89,6 @@ public class HomestayCreateDTO {
         this.rooms = rooms;
     }
 
-    public List<Long> getServices() {
-        return services;
-    }
-
-    public void setServices(List<Long> services) {
-        this.services = services;
-    }
 
     public MultipartFile getImage() {
         return image;

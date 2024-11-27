@@ -10,17 +10,25 @@ import com.javaweb.app.service.BookingService;
 import com.javaweb.app.mapper.BookingMapper;
 import com.javaweb.app.utils.DateUtil;
 import com.javaweb.app.utils.MapUtil;
+
 import jakarta.servlet.http.HttpSession;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.time.temporal.ChronoUnit;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -42,6 +50,7 @@ public class BookingServiceImpl implements BookingService {
     public UserRepository userRepository;
     @Autowired
     public ModelMapper modelMapper;
+
     public BookingDTO createBooking(Map<String, Object> params,
                                     Long userId,
                                     HttpSession session) {
@@ -52,7 +61,7 @@ public class BookingServiceImpl implements BookingService {
         bookingDTO.setCustomerEmail(MapUtil.getObject(params, "customerEmail", String.class));
         bookingDTO.setCustomerPhone(MapUtil.getObject(params, "customerPhone", String.class));
         bookingDTO.setHomestay(homestayRepository.getById(Objects.requireNonNull(MapUtil.getObject(params, "homestayId", Long.class))));
-        bookingDTO.setStatus("Chờ xác nhận");
+        bookingDTO.setStatus("Đã thanh toán");
         bookingDTO.setCheckInDate(DateUtil.strToDate(MapUtil.getObject(params, "checkInDate", String.class)));
         bookingDTO.setCheckOutDate(DateUtil.strToDate(MapUtil.getObject(params, "checkOutDate", String.class)));
         bookingDTO.setBookingTime(LocalDateTime.now());
@@ -82,5 +91,37 @@ public class BookingServiceImpl implements BookingService {
         return bookings.stream()
                 .map(bookingMapper::mapToBookingDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookingDTO> findBookingByUserId(Long userId)
+    {
+        List<BookingDTO> bookingDTOS = new ArrayList<>();
+        List<BookingEntity> bookingEntitys = bookingRepository.findByUser_Id(userId);
+
+        for (BookingEntity bookingEntity : bookingEntitys)
+        {
+            bookingDTOS.add(modelMapper.map(bookingEntity, BookingDTO.class));
+        }
+        return bookingDTOS;
+    }
+
+    @Override
+    public BookingDTO findById(Long id)
+    {
+        BookingDTO bookingDTO = modelMapper.map(bookingRepository.getById(id), BookingDTO.class);
+        return bookingDTO;
+    }
+
+    @Override
+    public void deleteBookingById(Long id) {
+        bookingRepository.deleteById(id);
+    }
+
+    @Override
+    public void cancelBookingById(Long id) {
+        BookingEntity bookingEntity = bookingRepository.getById(id);
+        bookingEntity.setStatus("Đã hủy");
+        bookingRepository.save(bookingEntity);
     }
 }

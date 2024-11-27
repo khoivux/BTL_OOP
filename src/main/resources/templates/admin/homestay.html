@@ -152,10 +152,10 @@
                 <table class="table table-bordered" style="width: 150vh">
                     <thead class="thead-light">
                         <tr>
-                            <th style="width: 7%; text-align: center">ID</th>
+                            <th style="width: 5%; text-align: center">ID</th>
                             <th style="width: 20%; text-align: center">Tên</th>
-                            <th style="width: 45%; text-align: center">Địa chỉ</th>
-                            <th style="width: 13%; text-align: center">Giá</th>
+                            <th style="width: 40%; text-align: center">Địa chỉ</th>
+                            <th style="width: 20%; text-align: center">Giá</th>
                             <th style="width: 15%; text-align: center">Thao tác</th>
                         </tr>
                     </thead>
@@ -173,7 +173,10 @@
                                 </form>
                                 <!-- Xóa -->
                                 <form th:action="@{/admin/homestay-delete/{id}(id=${homestay.id})}" method="POST" style="display:inline;">
-                                    <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Bạn có chắc chắn muốn xóa Homestay này?');">
+                                        Xóa
+                                    </button>
                                 </form>
                             </td>
                         </tr>

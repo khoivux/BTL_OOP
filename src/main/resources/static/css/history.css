@@ -13,6 +13,7 @@ body {
 .primary-btn:hover{
     background: #67a32f;
 }
+
 header{
     display: flex;
     justify-content: space-between;
@@ -55,6 +56,7 @@ header .navlinks #listbars{
     color:#00b312;
     text-decoration:underline;
     font-weight: bold;
+
 }
 .d-none {
     display: none;
@@ -124,8 +126,8 @@ header .navlinks #listbars{
 footer{
     background: #282834;
     color: #b6b7b9;
-    padding-top: 100px;
-    height: 500px;
+
+
 }
 footer p{
     color: #b6b7b9;
@@ -157,3 +159,5 @@ footer .box a:hover{
     color: #b6b7b9ca;
     text-decoration: underline;
 }
+
+

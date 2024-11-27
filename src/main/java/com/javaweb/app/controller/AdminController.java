@@ -61,7 +61,7 @@ public class AdminController {
         if(userService.authAdmin(email, password) != null) {
             session.setAttribute("admin", true); // Đánh dấu là đã đăng nhập
             ModelAndView modelAndView = new ModelAndView("admin/homestay");
-            List<HomestayResponseDTO> list = homestayService.findByFilter(params, null, null, null);
+            List<HomestayResponseDTO> list = homestayService.findByFilter(params, null);
             modelAndView.addObject("homestays", list);
             return modelAndView;
         } else {
@@ -84,7 +84,7 @@ public class AdminController {
                                           @RequestParam(required = false) List<Long> homestayFacilities,
                                           HttpSession session) {
         if(session.getAttribute("admin") != null){
-            List<HomestayResponseDTO> list = homestayService.findByFilter(params, null, null, null);// Lấy từ homestay database
+            List<HomestayResponseDTO> list = homestayService.findByFilter(params, null);// Lấy từ homestay database
             ModelAndView model = new ModelAndView("admin/homestay"); // Thêm HTML
             model.addObject("homestays", list); // Thêm model
             return model;
