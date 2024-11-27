@@ -44,12 +44,6 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
                        "JOIN homestayfacilities fac ON hfac.facilities_id = fac.id \n");
         }
 
-        List<Long> rooms = homestaySearchRequestDTO.getRooms();
-        if(rooms != null && !rooms.isEmpty()) {
-            sql.append("JOIN homestay_room hr ON h.id = hr_id \n" +
-                    "JOIN room ON hr.room_id = room.id \n");
-        }
-
         String address = homestaySearchRequestDTO.getAddress();
         if(StringUtil.isValid(address)) {
             sql.append(("JOIN province pro ON h.province_id = pro.id \n"));
@@ -90,7 +84,6 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
             where.append("AND h.capacity >= " + capacity + "\n");
         }
 
-
         // Tìm theo giá phòng
         Long priceTo = homestaySearchRequestDTO.getPriceTo();
         Long priceFrom = homestaySearchRequestDTO.getPriceFrom();
@@ -121,14 +114,6 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
         if(homestayFacilities != null && !homestayFacilities.isEmpty()) {
             where.append("AND fac.id IN ");
             String listId = homestayFacilities.stream()
-                    .map(String::valueOf)
-                    .collect(Collectors.joining(", ", "(", ")")); // Chuyển list về dạng (a, b, c)
-            where.append(listId + "\n");
-        }
-        List<Long> rooms = homestaySearchRequestDTO.getRooms();
-        if(rooms != null && !rooms.isEmpty()) {
-            where.append("AND room.id IN ");
-            String listId = rooms.stream()
                     .map(String::valueOf)
                     .collect(Collectors.joining(", ", "(", ")")); // Chuyển list về dạng (a, b, c)
             where.append(listId + "\n");

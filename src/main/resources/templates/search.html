@@ -263,19 +263,6 @@
                     </label><br>
                 </div>
             </div>
-
-            <div class="filter-group">
-                <h3>Dịch vụ</h3>
-                <div th:each="service : ${services}">
-                    <label>
-                        <input name="services" type="checkbox"
-                               th:value="${service.id}"
-                               th:checked="${selectedServices.contains(service.id)}">
-                        <span th:text="${service.name}">Facility Name</span>
-                    </label><br>
-                </div>
-            </div>
-
             <button class="filter-button" type="button" onclick="submitForm()">Áp dụng bộ lọc</button>
         </div>
     </form>

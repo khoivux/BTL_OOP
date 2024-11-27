@@ -43,13 +43,6 @@ public class HomestayEntity {
     @OneToMany(mappedBy = "homestay",  cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<BookingEntity> bookingList = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "homestay_service", // Tên bảng trung gian
-            joinColumns = @JoinColumn(name = "homestay_id"), // Khóa ngoại trỏ tới HomestayEntity
-            inverseJoinColumns = @JoinColumn(name = "service_id") // Khóa ngoại trỏ tới ServiceEntity
-    )
-    private List<ServiceEntity> services;
 
     @ManyToMany
     @JoinTable(
@@ -136,13 +129,6 @@ public class HomestayEntity {
         this.bookingList = bookingList;
     }
 
-    public List<ServiceEntity> getServices() {
-        return services;
-    }
-
-    public void setServices(List<ServiceEntity> services) {
-        this.services = services;
-    }
 
     public List<FacilitiesEntity> getFacilities() {
         return facilities;

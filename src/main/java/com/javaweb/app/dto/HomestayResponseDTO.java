@@ -15,7 +15,6 @@ public class HomestayResponseDTO {
     private String description;
     private List<RoomDTO> rooms;
     private List<FacilitiesDTO> facilities;
-    private List<ServiceDTO> services;
     private List<BookingDTO> bookingList;
     private String image;
 
@@ -100,13 +99,6 @@ public class HomestayResponseDTO {
         this.facilities = facilities;
     }
 
-    public List<ServiceDTO> getServices() {
-        return services;
-    }
-
-    public void setServices(List<ServiceDTO> services) {
-        this.services = services;
-    }
 
     public String getImage() {
         return image;

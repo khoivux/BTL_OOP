@@ -25,6 +25,8 @@ public class BookingEntity {
     @Column(name = "checkin_time")
     private Long checkInTime;
 
+    @Column(name = "stay_duration")
+    private Long stayDuration;
 
     @Column(name = "status")
     private String status;
@@ -49,13 +51,6 @@ public class BookingEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
-    @JoinTable(
-            name = "booking_service", // Tên bảng trung gian
-            joinColumns = @JoinColumn(name = "booking_id"), // Khóa ngoại trỏ tới BookingEntity
-            inverseJoinColumns = @JoinColumn(name = "service_id") // Khóa ngoại trỏ tới ServiceEntity
-    )
-    private List<ServiceEntity> services;
 
     public Long getId() {
         return id;
@@ -153,11 +148,11 @@ public class BookingEntity {
         this.user = user;
     }
 
-    public List<ServiceEntity> getServices() {
-        return services;
+    public Long getStayDuration() {
+        return stayDuration;
     }
 
-    public void setServices(List<ServiceEntity> services) {
-        this.services = services;
+    public void setStayDuration(Long stayDuration) {
+        this.stayDuration = stayDuration;
     }
 }

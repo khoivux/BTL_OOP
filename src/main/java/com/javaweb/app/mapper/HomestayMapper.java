@@ -3,7 +3,6 @@ package com.javaweb.app.mapper;
 import com.javaweb.app.dto.*;
 import com.javaweb.app.entity.HomestayEntity;
 import com.javaweb.app.entity.FacilitiesEntity;
-import com.javaweb.app.entity.ServiceEntity;
 
 import com.javaweb.app.exception.FileNotValidException;
 import org.modelmapper.ModelMapper;
@@ -24,14 +23,6 @@ public class HomestayMapper {
     public RoomMapper roomMapper;
     @Autowired
     public ProvinceMapper provinceMapper;
-    public List<ServiceDTO> mapToServiceDTOs(List<ServiceEntity> entities) {
-        if(entities == null) return null;
-        List<ServiceDTO> dtos = new ArrayList<>();
-        for(ServiceEntity serviceEntity : entities) {
-            dtos.add(new ServiceDTO(serviceEntity.getId(), serviceEntity.getName(), serviceEntity.getPrice()));
-        }
-        return dtos;
-    }
 
     public List<FacilitiesDTO> mapToHomestayFacilities(List<FacilitiesEntity> entities) {
         if(entities == null) return null;

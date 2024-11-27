@@ -4,7 +4,6 @@ import com.javaweb.app.dto.HomestayCreateDTO;
 import com.javaweb.app.entity.FacilitiesEntity;
 import com.javaweb.app.entity.HomestayEntity;
 import com.javaweb.app.entity.ProvinceEntity;
-import com.javaweb.app.entity.ServiceEntity;
 import com.javaweb.app.mapper.HomestayMapper;
 import com.javaweb.app.mapper.HomestayRequestMapper;
 import com.javaweb.app.dto.HomestaySearchRequestDTO;
@@ -14,7 +13,6 @@ import com.javaweb.app.mapper.RoomMapper;
 import com.javaweb.app.repository.FacilityRepository;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.repository.ProvinceRepository;
-import com.javaweb.app.repository.ServiceRepository;
 import com.javaweb.app.service.HomestayService;
 import com.javaweb.app.utils.MapUtil;
 import com.javaweb.app.utils.StringUtil;
@@ -40,18 +38,15 @@ public class HomestayServiceImpl implements HomestayService {
     private ProvinceRepository provinceRepository;
     @Autowired
     private FacilityRepository facilityRepository;
-    @Autowired
-    private ServiceRepository serviceRepository;
+
     // CREATE
     @Override   // Thêm mới 1 Homestay mới
     public HomestayResponseDTO createHomestay(HomestayCreateDTO homestayCreateDTO) {
         List<FacilitiesEntity> facilitiesEntities = (homestayCreateDTO.getFacilities() == null) ? null : facilityRepository.findAllById(homestayCreateDTO.getFacilities());
-        List<ServiceEntity> serviceEntities = (homestayCreateDTO.getServices() == null) ? null : serviceRepository.findAllById(homestayCreateDTO.getServices());
         ProvinceEntity provinceEntity = provinceRepository.getById(homestayCreateDTO.getProvinceid());
 
         HomestayEntity homestayEntity = homestayMapper.mapToSavedHomestayEntity(homestayCreateDTO);
         homestayEntity.setRooms(roomMapper.mapToRoomEntities(homestayCreateDTO.getRooms(), homestayEntity));
-        homestayEntity.setServices(serviceEntities);
         homestayEntity.setFacilities(facilitiesEntities);
         homestayEntity.setProvince(provinceEntity);
         homestayRepository.save(homestayEntity);
@@ -81,10 +76,8 @@ public class HomestayServiceImpl implements HomestayService {
 
     @Override // Lấy tất cả Homestay được lọc theo Filter
     public List<HomestayResponseDTO> findByFilter(Map<String, Object> params,
-                                                  List<Long> homestayFacilities,
-                                                  List<Long> rooms,
-                                                  List<Long> services) {
-        HomestaySearchRequestDTO homestaySearchRequestDTO = homestayRequestMapper.mapToHomestayRequest(params, homestayFacilities, rooms, services);
+                                                  List<Long> homestayFacilities) {
+        HomestaySearchRequestDTO homestaySearchRequestDTO = homestayRequestMapper.mapToHomestayRequest(params, homestayFacilities);
         List<HomestayEntity> homestayEntities = homestayRepository.findByFilter(homestaySearchRequestDTO);
         List<HomestayResponseDTO> result = new ArrayList<>();
         for (HomestayEntity homestayEntity : homestayEntities) {

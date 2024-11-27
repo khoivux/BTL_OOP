@@ -5,7 +5,6 @@ import com.javaweb.app.entity.User;
 import com.javaweb.app.exception.DateNotValidException;
 import com.javaweb.app.service.FacilitiesService;
 import com.javaweb.app.service.HomestayService;
-import com.javaweb.app.service.ServiceService;
 import com.javaweb.app.utils.DateUtil;
 import com.javaweb.app.utils.MapUtil;
 import jakarta.servlet.http.HttpSession;
@@ -27,8 +26,6 @@ public class WebController {
     public HomestayService homestayService;
     @Autowired
     public FacilitiesService facilitiesService;
-    @Autowired
-    public ServiceService serviceService;
 
 
     @GetMapping(value = "/")
@@ -51,8 +48,6 @@ public class WebController {
     @GetMapping(value = "/search")
     public ModelAndView searchPage(@RequestParam Map<String, Object> params,
                                    @RequestParam(required = false) List<Long> facilities,
-                                   @RequestParam(required = false) List<Long> rooms,
-                                   @RequestParam(required = false) List<Long> services,
                                    HttpSession session) {
 
         User user = (User) session.getAttribute("user");
@@ -60,10 +55,6 @@ public class WebController {
         ModelAndView model = new ModelAndView("search");
         // Lấy các field đã chọn
         model.addObject("selectedFacilities", facilities != null ? facilities : new ArrayList<>());
-        model.addObject("selectedRooms", rooms != null ? rooms : new ArrayList<>());
-        model.addObject("selectedServices", services != null ? services : new ArrayList<>());
-
-        model.addObject("services", serviceService.findAll());
         model.addObject("facilities", facilitiesService.findAll());
 
         String checkInDate = MapUtil.getObject(params, "checkinDate", String.class);
@@ -77,7 +68,7 @@ public class WebController {
         List<HomestayResponseDTO> homestays = new ArrayList<>();
         try {
             Boolean checkDate = DateUtil.isValid(checkInDate, checkOutDate);
-            homestays = homestayService.findByFilter(params, facilities, rooms, services);
+            homestays = homestayService.findByFilter(params, facilities);
         } catch (DateNotValidException e) {
             homestays = homestayService.findAll();  // Nếu có lỗi, lấy tất cả homestay
             model.addObject("errorMessage", e.getMessage());
