@@ -3,6 +3,11 @@ package com.javaweb.app.dto;
 
 import com.javaweb.app.entity.HomestayEntity;
 import com.javaweb.app.entity.User;
+import jakarta.persistence.Column;
+
+
+import com.javaweb.app.entity.HomestayEntity;
+import com.javaweb.app.entity.User;
 
 
 import java.time.LocalDate;
@@ -22,6 +27,7 @@ public class BookingDTO {
     private Long total;
     private User user;
     private Long checkInTime;
+
     public Long getId() {
         return id;
     }

@@ -38,6 +38,9 @@ public class BookingEntity {
     @Column(name = "customer_Phone")
     private String customerPhone;
 
+    @Column(name = "total")
+    private String total;
+
     @ManyToOne
     @JoinColumn(name = "homestay_id")
     private  HomestayEntity homestay;
@@ -124,6 +127,14 @@ public class BookingEntity {
 
     public void setCustomerPhone(String customerPhone) {
         this.customerPhone = customerPhone;
+    }
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
     }
 
     public HomestayEntity getHomestay() {

@@ -173,7 +173,10 @@
                                 </form>
                                 <!-- Xóa -->
                                 <form th:action="@{/admin/homestay-delete/{id}(id=${homestay.id})}" method="POST" style="display:inline;">
-                                    <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Bạn có chắc chắn muốn xóa Homestay này?');">
+                                        Xóa
+                                    </button>
                                 </form>
                             </td>
                         </tr>
