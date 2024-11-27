@@ -140,13 +140,15 @@
                         </div>
                     </select>
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="image">Image:</label>
-                    <input type="file" id="image" name="image" accept="image/*" required><br>
-                </div>
+
                 <div class="form-group col-md-12">
                     <label for="address">Mô tả Homestay</label>
                     <input type="text" class="form-control" required placeholder="Nhập mô tả Homestay" name="description">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="image">Chọn ảnh:</label>
+                    <input type="file" id="image" name="image" accept="image/*" required><br>
+                    <img id="previewImage" src="" alt="Preview" style="max-width: 50%; margin-top: 10px; display: none;">
                 </div>
                 <div class="form-group col-md-12">
                     <label>Tiện nghi Homestay</label>
@@ -191,7 +193,18 @@
 </div>
 
 <script>
-
+    document.getElementById("image").addEventListener("change", function (event) {
+        const file = event.target.files[0]; // Lấy file được chọn
+        if (file) {
+            const reader = new FileReader(); // Tạo FileReader để đọc tệp
+            reader.onload = function (e) {
+                const previewImage = document.getElementById("previewImage");
+                previewImage.src = e.target.result; // Gán nguồn ảnh vào thẻ img
+                previewImage.style.display = "block"; // Hiển thị thẻ img
+            };
+            reader.readAsDataURL(file); // Đọc file dưới dạng URL
+        }
+    });
 function submitFormData(event) {
     event.preventDefault();
     const formData = new FormData(document.getElementById("listForm"));

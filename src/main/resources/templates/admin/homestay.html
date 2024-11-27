@@ -95,9 +95,9 @@
     <!-- Thymeleaf Script để hiển thị Toast khi có message -->
     <script th:inline="javascript">
         /*<![CDATA[*/
-        var message = [[${message}]];  // Đổi từ errorMessage thành message
+        var message = [[${message}]];  // Lấy thông báo từ session
         if (message) {
-        showToast(message);  // Hiển thị Toast với message
+        showToast(message);  // Hiển thị Toast với thông báo
         }
         /*]]>*/
     </script>

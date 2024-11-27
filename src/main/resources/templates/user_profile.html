@@ -19,6 +19,44 @@
 </head>
 <body>
 <header>
+    <div id="toast" class="toast">
+        <div class="toast-title">Thông Báo</div>
+        <div class="toast-body">
+            <p id="toast-message"></p>
+            <button class="toast-close" onclick="closeToast()">×</button>
+        </div>
+    </div>
+    <script>
+        // JavaScript để hiển thị Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = message;
+
+            // Thêm lớp 'show' để hiển thị Toast
+            toast.classList.add('show');
+
+            // Ẩn Toast sau 5 giây
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 5000); // 5000ms = 5 giây
+        }
+
+        // Đóng Toast khi click vào nút "×"
+        function closeToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('show');
+        }
+    </script>
+
+    <!-- Thymeleaf Script để hiển thị Toast khi có message -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var message = [[${message}]];  // Đổi từ errorMessage thành message
+        if (message) {
+        showToast(message);  // Hiển thị Toast với message
+        }
+        /*]]>*/
+    </script>
     <div class="logo">
         <a href=""><img th:src="@{/img/logo.jpeg}"></a> <!--back về home-->
     </div>

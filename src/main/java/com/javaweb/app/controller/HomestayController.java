@@ -43,11 +43,11 @@ public class HomestayController {
     }
     // UPDATE
     @PostMapping("/admin/homestay-update")
-    public ResponseEntity<HomestayDto> updateHomestay(@ModelAttribute HomestayCreateDTO homestayCreateDTO,
+    public  RedirectView updateHomestay(@ModelAttribute HomestayCreateDTO homestayCreateDTO,
                                                       HttpSession session) {
-        int cnt = 0;
-       // HomestayDto homestayDto = homestayService.updateHomestay(updateHomestayDto.getId(), updateHomestayDto);
-        return ResponseEntity.ok(null);
+        homestayService.updateHomestay(homestayCreateDTO);
+        String api = "admin/homestay-edit/" + homestayCreateDTO.getId().toString();
+        return new RedirectView(api);
     }
 
     // DELETE
@@ -56,9 +56,11 @@ public class HomestayController {
                                            HttpSession session) {
         try {
             homestayService.deleteHomestay(id);
+            session.setAttribute("message", "Xóa homestay thành công!");
             return ResponseEntity.ok("Xóa homestay thành công!");
         }
         catch (RuntimeException e) {
+            session.setAttribute("message", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
@@ -75,10 +77,4 @@ public class HomestayController {
         userService.deleteUser(id);
         return new RedirectView("/admin/user");
     }
-    // xoa lich su booking
-//    @PostMapping("/admin/user-paymenthistory-delete/{id}")// Xóa booking theo id
-//    public RedirectView deleteBookingById(@PathVariable Long id) {
-//        bookingService.deleteBooking(id);
-//        return new RedirectView("/admin/user-paymenthistory/{id}");
-//    }
 }
