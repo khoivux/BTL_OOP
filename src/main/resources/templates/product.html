@@ -172,37 +172,40 @@
             <span id="listbars" class="fa fa-bars" onclick="menutoggle()"></span>
         </div>
     </header>
-    <script>
-        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        console.log(isLoggedIn);
-        const updateUserAction = () => {
-            const userName = localStorage.getItem('name');
+<script>
 
-            const userActionDiv = document.getElementById("user-action");
-            console.log(userActionDiv);
-            if (localStorage.getItem('isLoggedIn') === 'true') {
-                userActionDiv.innerHTML =
-                `
-                <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
-                    <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
-                    <ul show-ul class="d-none" id="userlist">
-                        <li><a href="#">Thông tin tài khoản</a></li>    <!--url trang profile-->
-                        <li><a href="#">Lịch sử đặt phòng</a></li>      <!--url trang history-->
-                        <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
-                    </ul>
-                </div>
-                `;
-            } else {
-                userActionDiv.innerHTML = `<a href="/user"><button class="primary-btn">Đăng nhập</button></a>`;
-            }
-        }
+    let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    console.log(isLoggedIn);
+    const updateUserAction = () => {
+        const userName = localStorage.getItem('name');
 
-        function logout() {
-            localStorage.setItem('isLoggedIn', false);
-            updateUserAction();
+        const userActionDiv = document.getElementById("user-action");
+        console.log(userActionDiv);
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            userActionDiv.innerHTML =
+            `
+            <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
+                <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
+                <ul show-ul class="d-none" id="userlist">
+                    <li><a href="/user/user_profile">Thông tin tài khoản</a></li>    <!--url trang profile-->
+
+                    <li><a href="/booking/history">Lịch sử đặt phòng</a></li>      <!--url trang history-->
+
+                    <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
+                </ul>
+            </div>
+            `;
+        } else {
+            userActionDiv.innerHTML = `<a href="/user"><button class="primary-btn">Đăng nhập</button></a>`;
         }
+    }
+
+    function logout() {
+        localStorage.setItem('isLoggedIn', false);
         updateUserAction();
-    </script>
+    }
+    updateUserAction();
+</script>
 
 
     <script>
