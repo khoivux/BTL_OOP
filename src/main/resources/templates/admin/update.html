@@ -129,21 +129,33 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label class="price">Giá phòng Homestay</label>
-                        <input type="text" class="form-control" placeholder="Nhập giá phòng Homestay" name="price" th:value="${homestay.price}" >
+                        <input type="number" class="form-control" placeholder="Nhập giá phòng Homestay" name="price" th:value="${homestay.price}" >
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label class="capacity">Số người tối đa</label>
+                        <input type="number" class="form-control" required placeholder="Nhập số người tối đa" name="capacity" th:value="${homestay.capacity}">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="provinceid">Tỉnh/Thành phố</label>
+                        <select name="provinceid" id="provinceid" required class="form-control">
+                            <!-- Tùy chọn mặc định là tỉnh/thành phố hiện tại -->
+                            <option th:value="${homestay.province.id}" th:text="${homestay.province.name}"></option>
+
+                            <!-- Các tùy chọn khác -->
+                            <option th:each="province : ${provinces}"
+                                    th:value="${province.id}"
+                                    th:text="${province.name}"
+                                    th:if="${province.id != homestay.province.id}">
+                            </option>
+                        </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label class="address">Địa chỉ</label>
                         <input type="text" class="form-control" placeholder="Nhập địa chỉ Homestay" name="address" th:value="${homestay.address}">
                     </div>
-                    <div class="form-group col-md-12 ">
-                        <label for="provinceid">Tỉnh/Thành phố</label>
-                        <select name="provinceid" id="provinceid" required class="form-control">
-                            <option th:value="${homestay.province.id}" th:text="${homestay.province.name}"></option>
-                            <div th:each="province : ${provinces}">
-                                <option th:value="${province.id}" th:text="${province.name}"
-                                        th:if="${province.id != homestay.province.id}"></option>
-                            </div>
-                        </select>
+                    <div class="form-group col-md-12">
+                        <label>Mô tả Homestay</label>
+                        <input type="text" class="form-control" required placeholder="Nhập mô tả Homestay" name="description" th:value="${homestay.description}">
                     </div>
                     <div class="form-group col-md-12">
                         <label>Tiện nghi Homestay</label>
@@ -156,19 +168,15 @@
                             </label><br>
                         </div>
                     </div>
-                    <div class="form-group col-md-12">
-                        <label>Mô tả Homestay</label>
-                        <input type="text" class="form-control" required placeholder="Nhập mô tả Homestay" name="description" th:value="${homestay.description}">
+                    <div class="form-group col-md-6">
+                        <label>Ảnh Homestay</label>
+                        <input type="file" class="form-control-file" th:name="'image'" />
+                        <div>
+                            <!-- Hiển thị ảnh hiện tại của Homestay -->
+                            <img th:src="@{${homestay.image}}" alt="Ảnh Homestay" style="max-width: 200px;" />
+                            <img id="previewImage" src="" alt="Preview" style="max-width: 50%; margin-top: 10px; display: none;">
+                        </div>
                     </div>
-<!--                    <div class="form-group col-md-6">-->
-<!--                        <label>Ảnh Homestay</label>-->
-<!--                        <input type="file" class="form-control-file" th:name="'image'" />-->
-<!--                        <div>-->
-<!--                            &lt;!&ndash; Hiển thị ảnh hiện tại của Homestay &ndash;&gt;-->
-<!--                            <img th:src="@{${homestay.image}}" alt="Ảnh Homestay" style="max-width: 200px;" />-->
-<!--                            <img id="previewImage" src="" alt="Preview" style="max-width: 50%; margin-top: 10px; display: none;">-->
-<!--                        </div>-->
-<!--                    </div>-->
                 </div>
                 <table class="table table-bordered">
                     <thead class="thead-light">
@@ -240,30 +248,45 @@
 
             // Lấy dữ liệu form bao gồm tệp và thông tin văn bản
             const formData = new FormData(document.getElementById("listForm"));
-            for (let [key, value] of formData.entries()) {
-                if (value instanceof File) {
-                    console.log(key + ': ' + value.name);  // In tên tệp
-                } else {
-                    console.log(key + ': ' + value);
-                }
-            }
+            const id = formData.get("id");
+
             // Gửi yêu cầu POST đến API
             fetch("/admin/homestay-update", {
                 method: "POST",
                 body: formData  // Gửi formData bao gồm tệp và dữ liệu văn bản
             })
-                .then(response => response.json())  // Xử lý phản hồi JSON từ API
-                .then(data => {
-                console.log("Success:", data);
-                // Xử lý sau khi cập nhật thành công (ví dụ: thông báo hoặc chuyển hướng)
-                alert("Cập nhật Homestay thành công!");
-                // Nếu bạn muốn chuyển hướng sau khi cập nhật
-                window.location.href = "/admin/homestay-list";  // Ví dụ: quay lại danh sách homestay
+                .then(response => {
+                if (response.ok) {
+                    return response.text();  // Nhận thông báo trả về từ server (dạng text)
+                } else {
+                    return response.text().then(errorMessage => {
+                        // Ném lỗi để xử lý ở catch
+                        throw new Error(errorMessage || 'Đã có lỗi xảy ra');
+                    });
+                }
+            })
+                .then(message => {
+                // Hiển thị thông báo Toast thành công
+                showToast(message, "success");
+                window.location.href = "/admin/homestay-edit/" + id;// Thành công
             })
                 .catch(error => {
-                console.error("Error:", error);
-                alert("Có lỗi xảy ra. Vui lòng thử lại.");
+                console.error("Error:", error.message);
+                // Hiển thị thông báo lỗi
+                showToast(error.message || "Có lỗi xảy ra khi thêm homestay", "error");  // Lỗi
             });
+//                .then(response => response.json())  // Xử lý phản hồi JSON từ API
+//                .then(data => {
+//                console.log("Success:", data);
+//                // Xử lý sau khi cập nhật thành công (ví dụ: thông báo hoặc chuyển hướng)
+//                show("Cập nhật Homestay thành công!");
+//                // Nếu bạn muốn chuyển hướng sau khi cập nhật
+//                window.location.href = "/admin/homestay-edit/" + id;  // Ví dụ: quay lại danh sách homestay
+//            })
+//                .catch(error => {
+//                console.error("Error:", error);
+//                alert("Có lỗi xảy ra. Vui lòng thử lại.");
+//            });
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

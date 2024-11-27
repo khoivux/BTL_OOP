@@ -37,17 +37,20 @@ public class HomestayController {
             HomestayResponseDTO homestayResponseDTO = homestayService.createHomestay(homestayCreateDTO);
             return ResponseEntity.ok("Thêm mới homestay thành công!");
         }
-        catch (FileNotValidException e) {
+        catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
     // UPDATE
     @PostMapping("/admin/homestay-update")
-    public  RedirectView updateHomestay(@ModelAttribute HomestayCreateDTO homestayCreateDTO,
+    public  ResponseEntity<String> updateHomestay(@ModelAttribute HomestayCreateDTO homestayCreateDTO,
                                                       HttpSession session) {
-        homestayService.updateHomestay(homestayCreateDTO);
-        String api = "admin/homestay-edit/" + homestayCreateDTO.getId().toString();
-        return new RedirectView(api);
+        try {
+            homestayService.updateHomestay(homestayCreateDTO);
+            return ResponseEntity.ok("Cập nhật homestay thành công!");
+        } catch(RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     // DELETE

@@ -20,8 +20,6 @@ public class HomestayEntity {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "rating", nullable = false)
-    private Long rating;
 
     @Column(name = "description")
     private String description;
@@ -89,14 +87,6 @@ public class HomestayEntity {
         this.address = address;
     }
 
-    public Long getRating() {
-        return rating;
-    }
-
-    public void setRating(Long rating) {
-        this.rating = rating;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -112,6 +102,7 @@ public class HomestayEntity {
     public void setPrice(Long price) {
         this.price = price;
     }
+
     public Long getCapacity() {
         return capacity;
     }
@@ -126,14 +117,6 @@ public class HomestayEntity {
 
     public void setProvince(ProvinceEntity province) {
         this.province = province;
-    }
-
-    public List<BookingEntity> getBookingList() {
-        return bookingList;
-    }
-
-    public void setBookingList(List<BookingEntity> bookingList) {
-        this.bookingList = bookingList;
     }
 
     public List<ServiceEntity> getServices() {

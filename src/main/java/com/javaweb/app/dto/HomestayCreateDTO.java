@@ -11,7 +11,6 @@ public class HomestayCreateDTO {
     private Long price;
     private String address;
     private Long provinceid;
-    private Long rating;
     private String description;
     private Long capacity;
     private List<RoomDTO> rooms;
@@ -56,18 +55,6 @@ public class HomestayCreateDTO {
         return provinceid;
     }
 
-    public void setProvinceid(Long provinceid) {
-        this.provinceid = provinceid;
-    }
-
-    public Long getRating() {
-        return rating;
-    }
-
-    public void setRating(Long rating) {
-        this.rating = rating;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -83,6 +70,9 @@ public class HomestayCreateDTO {
         this.capacity = capacity;
     }
 
+    public void setProvinceid(Long provinceid) {
+        this.provinceid = provinceid;
+    }
 
     public List<Long> getFacilities() {
         return facilities;

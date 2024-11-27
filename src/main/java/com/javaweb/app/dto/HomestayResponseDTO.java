@@ -11,7 +11,7 @@ public class HomestayResponseDTO {
     private String address;
     private ProvinceDto province;
     private Long price;
-    private Long rating;
+    private Long capacity;
     private String description;
     private List<RoomDTO> rooms;
     private List<FacilitiesDTO> facilities;
@@ -71,12 +71,12 @@ public class HomestayResponseDTO {
         return facilities;
     }
 
-    public Long getRating() {
-        return rating;
+    public Long getCapacity() {
+        return capacity;
     }
 
-    public void setRating(Long rating) {
-        this.rating = rating;
+    public void setCapacity(Long capacity) {
+        this.capacity = capacity;
     }
 
     public String getDescription() {

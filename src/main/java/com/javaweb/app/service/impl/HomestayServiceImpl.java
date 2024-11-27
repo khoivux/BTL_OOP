@@ -2,6 +2,7 @@ package com.javaweb.app.service.impl;
 
 import com.javaweb.app.dto.HomestayCreateDTO;
 import com.javaweb.app.entity.*;
+import com.javaweb.app.exception.FileNotValidException;
 import com.javaweb.app.mapper.HomestayMapper;
 import com.javaweb.app.mapper.HomestayRequestMapper;
 import com.javaweb.app.dto.HomestaySearchRequestDTO;
@@ -82,6 +83,20 @@ public class HomestayServiceImpl implements HomestayService {
         homestayEntity.setFacilities(facilitiesEntities);
         homestayEntity.setProvince(provinceEntity);
         homestayEntity.setDescription(updatedHomestayDto.getDescription());
+
+        if(updatedHomestayDto.getImage() != null && !updatedHomestayDto.getImage().isEmpty()) {
+            String fileName = updatedHomestayDto.getImage().getOriginalFilename();
+            String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+            if ("jpg".equals(fileExtension) || "png".equals(fileExtension) || "jpeg".equals(fileExtension)) {
+                try {
+                    homestayEntity.setImage(updatedHomestayDto.getImage().getBytes());
+                } catch (IOException e) {
+                    throw new FileNotValidException("Lỗi khi xử lý file ảnh!");
+                }
+            } else {
+                throw new FileNotValidException("File không hợp lệ! Chỉ chấp nhận file .jpg, .png hoặc .jpeg");
+            }
+        }
         homestayRepository.save(homestayEntity);
     }
 
