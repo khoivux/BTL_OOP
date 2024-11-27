@@ -194,7 +194,7 @@
         <h3 class="mb-0">
             <p class="mb-2" id="HomestayName" th:text="${booking.homestay.name}"></p>
         </h3>
-        <p class="mb-2" id="HomestayAddress" th:text="${booking.homestay.address}"></p>
+        <p class="mb-2" id="HomestayAddress" th:text="${booking.homestay.address + ', ' + booking.homestay.province.name}"></p>
 
     </div>
 
