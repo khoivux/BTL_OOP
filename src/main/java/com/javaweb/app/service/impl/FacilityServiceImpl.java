@@ -22,7 +22,6 @@ public class FacilityServiceImpl implements FacilitiesService {
         List<FacilitiesEntity> entities = facilityRepository.findAll();
         return homestayMapper.mapToHomestayFacilities(entities);
     }
-
     @Override
     public List<FacilitiesDTO> findListByIds(List<Long> ids) {
         List<FacilitiesEntity> facilitiesEntities = facilityRepository.findByIdIn(ids);

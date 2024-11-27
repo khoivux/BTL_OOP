@@ -138,9 +138,10 @@
                     <div class="form-group col-md-12 ">
                         <label for="provinceid">Tỉnh/Thành phố</label>
                         <select name="provinceid" id="provinceid" required class="form-control">
-                            <option th:value="${homestay.province}" th:text="${homestay.province}"></option>
-                            <div th:each="provincee : ${provinces}">
-                                <option th:value="${provincee.id}" th:text="${provincee.name}"></option>
+                            <option th:value="${homestay.province.id}" th:text="${homestay.province.name}"></option>
+                            <div th:each="province : ${provinces}">
+                                <option th:value="${province.id}" th:text="${province.name}"
+                                        th:if="${province.id != homestay.province.id}"></option>
                             </div>
                         </select>
                     </div>
@@ -149,7 +150,8 @@
                         <div th:each="facility : ${facilities}">
                             <label>
                                 <input name="facilities" type="checkbox"
-                                       th:value="${facility.id}">
+                                       th:value="${facility.id}"
+                                       th:checked="${#lists.contains(homestay.facilities, facility)}">
                                 <span th:text="${facility.name}">Facility Name</span>
                             </label><br>
                         </div>
@@ -215,7 +217,13 @@
 
             // Lấy dữ liệu form bao gồm tệp và thông tin văn bản
             const formData = new FormData(document.getElementById("listForm"));
-
+            for (let [key, value] of formData.entries()) {
+                if (value instanceof File) {
+                    console.log(key + ': ' + value.name);  // In tên tệp
+                } else {
+                    console.log(key + ': ' + value);
+                }
+            }
             // Gửi yêu cầu POST đến API
             fetch("/admin/homestay-update", {
                 method: "POST",

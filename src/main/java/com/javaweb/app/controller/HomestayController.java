@@ -45,7 +45,7 @@ public class HomestayController {
     @PostMapping("/admin/homestay-update")
     public ResponseEntity<HomestayDto> updateHomestay(@ModelAttribute HomestayCreateDTO homestayCreateDTO,
                                                       HttpSession session) {
-
+        int cnt = 0;
        // HomestayDto homestayDto = homestayService.updateHomestay(updateHomestayDto.getId(), updateHomestayDto);
         return ResponseEntity.ok(null);
     }
