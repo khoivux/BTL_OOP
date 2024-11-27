@@ -13,8 +13,6 @@ import java.time.LocalDate;
 
 import java.util.Map;
 
-import com.javaweb.app.entity.BookingEntity;
-
 import java.util.List;
 
 public interface BookingService {

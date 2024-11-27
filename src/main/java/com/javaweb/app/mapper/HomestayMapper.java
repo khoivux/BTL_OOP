@@ -57,7 +57,6 @@ public class HomestayMapper {
 
     public HomestayEntity mapToSavedHomestayEntity(HomestayCreateDTO homestayCreateDTO) {
         HomestayEntity homestayEntity = modelMapper.map(homestayCreateDTO, HomestayEntity.class);
-        homestayEntity.setRating(5L);
         if (homestayCreateDTO.getImage() != null && !homestayCreateDTO.getImage().isEmpty()) {
             String fileName = homestayCreateDTO.getImage().getOriginalFilename();
             String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();

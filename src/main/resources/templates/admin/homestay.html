@@ -95,9 +95,9 @@
     <!-- Thymeleaf Script để hiển thị Toast khi có message -->
     <script th:inline="javascript">
         /*<![CDATA[*/
-        var message = [[${message}]];  // Đổi từ errorMessage thành message
+        var message = [[${message}]];  // Lấy thông báo từ session
         if (message) {
-        showToast(message);  // Hiển thị Toast với message
+        showToast(message);  // Hiển thị Toast với thông báo
         }
         /*]]>*/
     </script>
@@ -152,10 +152,10 @@
                 <table class="table table-bordered" style="width: 150vh">
                     <thead class="thead-light">
                         <tr>
-                            <th style="width: 7%; text-align: center">ID</th>
+                            <th style="width: 5%; text-align: center">ID</th>
                             <th style="width: 20%; text-align: center">Tên</th>
-                            <th style="width: 45%; text-align: center">Địa chỉ</th>
-                            <th style="width: 13%; text-align: center">Giá</th>
+                            <th style="width: 40%; text-align: center">Địa chỉ</th>
+                            <th style="width: 20%; text-align: center">Giá</th>
                             <th style="width: 15%; text-align: center">Thao tác</th>
                         </tr>
                     </thead>
@@ -164,7 +164,7 @@
                             <td class="p-2" style="text-align: center" th:text="${homestay.id}"></td>
                             <td class="p-2" style="text-align: center" th:text="${homestay.name}"></td>
                             <td class="p-2" style="text-align: center" th:text="${homestay.address + ', ' + homestay.province.name}"></td>
-                            <td class="p-2" style="text-align: center" th:text="${homestay.price + '/ngày'}"></td>
+                            <td class="p-2" style="text-align: center" th:text="${homestay.price + '.000 VND/Ngày'}"></td>
 
                             <td class = "p-2" style="text-align: center">
                                 <!-- Sửa -->
@@ -185,7 +185,6 @@
             </div>
         </div>
     </div>
-        
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>

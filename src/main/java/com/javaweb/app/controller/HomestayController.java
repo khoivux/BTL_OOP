@@ -37,17 +37,20 @@ public class HomestayController {
             HomestayResponseDTO homestayResponseDTO = homestayService.createHomestay(homestayCreateDTO);
             return ResponseEntity.ok("Thêm mới homestay thành công!");
         }
-        catch (FileNotValidException e) {
+        catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
     // UPDATE
     @PostMapping("/admin/homestay-update")
-    public ResponseEntity<HomestayDto> updateHomestay(@ModelAttribute HomestayCreateDTO homestayCreateDTO,
+    public  ResponseEntity<String> updateHomestay(@ModelAttribute HomestayCreateDTO homestayCreateDTO,
                                                       HttpSession session) {
-
-       // HomestayDto homestayDto = homestayService.updateHomestay(updateHomestayDto.getId(), updateHomestayDto);
-        return ResponseEntity.ok(null);
+        try {
+            homestayService.updateHomestay(homestayCreateDTO);
+            return ResponseEntity.ok("Cập nhật homestay thành công!");
+        } catch(RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     // DELETE
@@ -56,9 +59,11 @@ public class HomestayController {
                                            HttpSession session) {
         try {
             homestayService.deleteHomestay(id);
+            session.setAttribute("message", "Xóa homestay thành công!");
             return ResponseEntity.ok("Xóa homestay thành công!");
         }
         catch (RuntimeException e) {
+            session.setAttribute("message", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
@@ -75,10 +80,4 @@ public class HomestayController {
         userService.deleteUser(id);
         return new RedirectView("/admin/user");
     }
-    // xoa lich su booking
-//    @PostMapping("/admin/user-paymenthistory-delete/{id}")// Xóa booking theo id
-//    public RedirectView deleteBookingById(@PathVariable Long id) {
-//        bookingService.deleteBooking(id);
-//        return new RedirectView("/admin/user-paymenthistory/{id}");
-//    }
 }

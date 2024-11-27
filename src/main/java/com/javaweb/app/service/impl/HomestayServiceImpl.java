@@ -1,6 +1,7 @@
 package com.javaweb.app.service.impl;
 
 import com.javaweb.app.dto.HomestayCreateDTO;
+import com.javaweb.app.exception.FileNotValidException;
 import com.javaweb.app.entity.FacilitiesEntity;
 import com.javaweb.app.entity.HomestayEntity;
 import com.javaweb.app.entity.ProvinceEntity;
@@ -8,19 +9,19 @@ import com.javaweb.app.mapper.HomestayMapper;
 import com.javaweb.app.mapper.HomestayRequestMapper;
 import com.javaweb.app.dto.HomestaySearchRequestDTO;
 import com.javaweb.app.dto.HomestayResponseDTO;
-import com.javaweb.app.dto.HomestayDto;
 import com.javaweb.app.mapper.RoomMapper;
 import com.javaweb.app.repository.FacilityRepository;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.repository.ProvinceRepository;
 import com.javaweb.app.service.HomestayService;
+import com.javaweb.app.service.RoomService;
 import com.javaweb.app.utils.MapUtil;
 import com.javaweb.app.utils.StringUtil;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -38,6 +39,8 @@ public class HomestayServiceImpl implements HomestayService {
     private ProvinceRepository provinceRepository;
     @Autowired
     private FacilityRepository facilityRepository;
+    @Autowired
+    private RoomService roomService;
 
     // CREATE
     @Override   // Thêm mới 1 Homestay mới
@@ -52,6 +55,44 @@ public class HomestayServiceImpl implements HomestayService {
         homestayRepository.save(homestayEntity);
         return homestayMapper.mapToHomestayResponse(homestayEntity);
     }
+    @Override // Lấy 1 Homestay theo id
+    public HomestayResponseDTO findHomestayById(Long id) {
+        HomestayEntity homestayEntity = homestayRepository.getById(id);
+        return homestayMapper.mapToHomestayResponse(homestayEntity);
+    }
+
+    // UPDATE
+    @Override // Cập nhật thông tin một Homestay ở DB
+    public void updateHomestay(HomestayCreateDTO updatedHomestayDto) {
+        List<FacilitiesEntity> facilitiesEntities = (updatedHomestayDto.getFacilities() == null) ? null : facilityRepository.findAllById(updatedHomestayDto.getFacilities());
+        HomestayEntity homestayEntity = homestayRepository.findById(updatedHomestayDto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Không thể tìm thấy homestay có id: " + updatedHomestayDto.getId()));
+        ProvinceEntity provinceEntity = provinceRepository.getById(updatedHomestayDto.getProvinceid());
+
+        roomService.updateRooms(updatedHomestayDto.getRooms(), homestayEntity.getRooms());
+
+        homestayEntity.setName(updatedHomestayDto.getName());
+        homestayEntity.setAddress(updatedHomestayDto.getAddress());
+        homestayEntity.setPrice(updatedHomestayDto.getPrice());
+        homestayEntity.setFacilities(facilitiesEntities);
+        homestayEntity.setProvince(provinceEntity);
+        homestayEntity.setDescription(updatedHomestayDto.getDescription());
+
+        if(updatedHomestayDto.getImage() != null && !updatedHomestayDto.getImage().isEmpty()) {
+            String fileName = updatedHomestayDto.getImage().getOriginalFilename();
+            String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+            if ("jpg".equals(fileExtension) || "png".equals(fileExtension) || "jpeg".equals(fileExtension)) {
+                try {
+                    homestayEntity.setImage(updatedHomestayDto.getImage().getBytes());
+                } catch (IOException e) {
+                    throw new FileNotValidException("Lỗi khi xử lý file ảnh!");
+                }
+            } else {
+                throw new FileNotValidException("File không hợp lệ! Chỉ chấp nhận file .jpg, .png hoặc .jpeg");
+            }
+        }
+        homestayRepository.save(homestayEntity);
+    }
 
     // READ
     @Override // Lấy tất cả Homestay có trong DB
@@ -62,16 +103,6 @@ public class HomestayServiceImpl implements HomestayService {
             homestayResponsDTOS.add(homestayMapper.mapToHomestayResponse(homestayEntity));
         }
         return homestayResponsDTOS;
-    }
-
-    @Override
-    public List<HomestayDto> findHomestayByIdIn(List<Long> ids) {
-        List<HomestayEntity> homestayEntities = homestayRepository.findByIdIn(ids);
-        List<HomestayDto> homestayDtos = new ArrayList<>();
-        for (HomestayEntity homestayEntity : homestayEntities) {
-            homestayDtos.add(homestayMapper.mapToHomestayDto(homestayEntity));
-        }
-        return homestayDtos;
     }
 
     @Override // Lấy tất cả Homestay được lọc theo Filter
@@ -92,31 +123,7 @@ public class HomestayServiceImpl implements HomestayService {
         return result;
     }
 
-    @Override // Lấy 1 Homestay theo id
-    public HomestayResponseDTO findHomestayById(Long id) {
-        HomestayEntity homestayEntity = homestayRepository.getById(id);
-        return homestayMapper.mapToHomestayResponse(homestayEntity);
-    }
 
-    // UPDATE
-    @Override // Cập nhật thông tin một Homestay ở DB
-    public HomestayDto updateHomestay(Long id, HomestayDto updatedHomestayDto) {
-        HomestayEntity homestayEntity = homestayRepository.getById(id); //Optional
-        homestayEntity.setName(updatedHomestayDto.getName());
-        homestayEntity.setAddress(updatedHomestayDto.getAddress());
-        homestayEntity.setRating(updatedHomestayDto.getRating());
-        homestayEntity.setProvince(provinceRepository.getById(updatedHomestayDto.getProvinceid()));
-        homestayEntity.setDescription(updatedHomestayDto.getDescription());
-        homestayRepository.save(homestayEntity);
-        return homestayMapper.mapToHomestayDto(homestayEntity);
-    }
-
-    // DELETE
-    @Override
-    @Transactional // Xóa nhiều Homestay theo danh sách id
-    public void deleteHomestays(List<Long> ids) {
-        homestayRepository.deleteByIdIn(ids);
-    }
 
     @Override // Xóa 1 homestay theo id
     public void deleteHomestay(Long id) {

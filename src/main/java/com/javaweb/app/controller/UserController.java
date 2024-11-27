@@ -97,7 +97,7 @@ public class UserController {
             userService.updateProfile(user.getId(), fullName, email, phoneNumber, address);
             // update session
             session.setAttribute("user", userService.userRepository.getById(user.getId()));
-            return new ResponseEntity<>("Success update profile!", HttpStatus.OK);
+            return new ResponseEntity<>("Cập nhật thông tin thành công!", HttpStatus.OK);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
