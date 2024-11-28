@@ -58,6 +58,7 @@ public class BookingController {
             modelAndView.addObject("facilities", homestay.getFacilities());
             modelAndView.addObject("stayDays", stayDays);
             modelAndView.addObject("rent_price", stayDays * homestay.getPrice());
+
             return modelAndView;
         }
         catch (DateNotValidException e) {
@@ -78,6 +79,7 @@ public class BookingController {
         ModelAndView modelAndView = new ModelAndView("invoice");
         modelAndView.addObject("booking", bookingDTO);
         modelAndView.addObject("homestay", bookingDTO.getHomestay());
+        modelAndView.addObject("deposit", ((Long)bookingDTO.getTotal() / 2));
         return modelAndView;
     }
 

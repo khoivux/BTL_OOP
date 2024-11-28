@@ -237,7 +237,8 @@
                     <i class="fa fa-calendar"></i>
                 </div>
                 <div class="search-input">
-                    <input type="text" id="capacity" name="capacity" placeholder="Số lượng"
+                    <label for="checkout-date">Số lượng người</label>
+                    <input type="text" id="capacity" name="capacity" placeholder="Số lượng người"
                            th:value="${params['capacity'] != null ? params['capacity'] : ''}">
                     <i class="fa fa-search"></i>
                 </div>
@@ -245,9 +246,8 @@
             </div>
 
             <h2>Bộ lọc theo:</h2>
-
             <div class="price-range-container">
-                <h3>Khoảng Giá</h3>
+                <h3>Khoảng Giá (VNĐ/Ngày)</h3>
                 <input type="text" class="price-input" name="priceFrom" placeholder="₫ TỪ"
                        th:value="${params['priceFrom'] != null ? params['priceFrom'] : ''}">
                 <span> - </span>
@@ -277,7 +277,6 @@
             window.location.href = `/search?${params}`;
         }
     </script>
-
 
     <!-- Kết quả tìm kiếm -->
     <div class="search-results">
@@ -313,6 +312,9 @@
         </script>
 
         <div id="results">
+            <div>
+                <p class="alert alert-warning" th:if="${homestays == null or #lists.isEmpty(homestays)}">Không tìm thấy kết quả phù hợp</p>
+            </div>
             <!-- Kết quả tìm kiếm sẽ hiển thị ở đây -->
             <div class="row" th:if="${homestays != null}">
                 <div class="item" th:each="homestay : ${homestays}">
@@ -326,6 +328,12 @@
                         </div>
                         <p th:text="${homestay.address}"></p>
                         <h3 th:text="'Giá: ' + ${homestay.price} + 'k'">Giá</h3>
+                        <div>
+                            <span th:each="room, stat : ${homestay.rooms}">
+                                <span class="small-text" th:text="${room.numbers} + ' ' + ${room.type}"></span>
+                                <span th:if="${!stat.last}">•</span>
+                            </span>
+                        </div>
                         <p th:text="${homestay.description}"></p>
                         <form method="POST" th:action="@{/homestay/{id}(id=${homestay.id})}">
                             <div>
@@ -337,7 +345,6 @@
                     </div>
                 </div>
             </div>
-            <p class="alert alert-warning" th:if="${homestays == null}">Không tìm thấy kết quả phù hợp</p>
         </div>
     </div>
 </div>
