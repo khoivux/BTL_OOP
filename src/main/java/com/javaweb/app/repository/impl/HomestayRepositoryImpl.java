@@ -59,7 +59,7 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
             for (Field item : fields) {
                 item.setAccessible(true);
                 String fieldName = item.getName();
-                if (!fieldName.startsWith("price") && !fieldName.endsWith("Date") &&!fieldName.startsWith("addre")) {
+                if (!fieldName.startsWith("price") && !fieldName.endsWith("Date") && !fieldName.startsWith("addre") && !fieldName.startsWith("capa")) {
                     Object value = item.get(homestaySearchRequestDTO);
                     if (value != null && value != "") {
                         if (item.getType().getName().equals("java.lang.Long") || item.getType().getName().equals("java.lang.Integer")) {

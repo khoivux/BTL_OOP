@@ -23,7 +23,6 @@ public class HomestayRequestMapper {
                 .address(MapUtil.getObject(params, "address", String.class))
                 .priceFrom(MapUtil.getObject(params, "priceFrom", Long.class))
                 .priceTo(MapUtil.getObject(params, "priceTo", Long.class))
-                .rating(MapUtil.getObject(params, "rating", Long.class))
                 .provinceId(MapUtil.getObject(params, "provinceId", Long.class))
                 .checkInDate(DateUtil.strToDate(MapUtil.getObject(params, "checkinDate", String.class)))
                 .checkOutDate(DateUtil.strToDate(MapUtil.getObject(params, "checkoutDate", String.class)))

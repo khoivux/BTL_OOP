@@ -165,6 +165,15 @@
             border-top: 1px solid #ddd;
             padding-top: 10px;
         }
+        .deposit-amount {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #7fc142ed;
+            text-align: right;
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
         .btn-export {
             background-color: #7fc142ed;
             color: #fff;
@@ -347,11 +356,14 @@
             <p><strong>Trả phòng:</strong> <span id="check-out"  th:text="${booking.checkOutDate}"></span></p>
             <p><strong>Giờ nhận phòng:</strong> <span id="check-in-time"  th:text="${booking.checkInTime} + ':00H'"></span></p>
             <p><strong>Tổng thời gian lưu trú:</strong> <span id="stay-duration"  th:text="${booking.stayDuration} + ' ngày'"></span></p>
-            <p><strong>Giá thuê:</strong> <span id="price"  th:text="${homestay.price} + '.000 VND/Ngày'" ></span></p>
+            <p><strong>Giá thuê:</strong> <span id="price"  th:text="${homestay.price} + '.000 VNĐ/Ngày'" ></span></p>
         </div>
 
         <div class="total-amount">
-            <p>Thành tiền: <span id="total" th:text="${booking.total} + '.000 VND'"></span></p>
+            <p>Thành tiền: <span id="total" th:text="${booking.total} + '.000 VNĐ'"></span></p>
+        </div>
+        <div class="deposit-amount">
+            <p>Tiền cọc(50%): <span id="deposit" th:text="${deposit} + '.000 VNĐ'"></span></p>
         </div>
         <div class="text-end">
             <button class="btn-export">Thanh toán</button>

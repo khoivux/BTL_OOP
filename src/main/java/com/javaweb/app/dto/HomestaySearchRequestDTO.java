@@ -11,12 +11,10 @@ public class HomestaySearchRequestDTO {
     private Long priceFrom;
     private Long priceTo;
     private Long provinceId;
-    private Long rating;
     private Long capacity;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private List<Long> facilities = new ArrayList<>();
-    private List<Long> rooms = new ArrayList<>();
 
     public HomestaySearchRequestDTO() {
     }
@@ -27,12 +25,11 @@ public class HomestaySearchRequestDTO {
         this.priceFrom = builder.priceFrom;
         this.priceTo = builder.priceTo;
         this.provinceId = builder.provinceId;
-        this.rating = builder.rating;
         this.checkInDate = builder.checkInDate;
         this.checkOutDate = builder.checkOutDate;
         this.facilities = builder.facilities;
         this.id = builder.id;
-        this.rooms = builder.rooms;
+        this.capacity = builder.capacity;
     }
 
     public Long getCapacity() {
@@ -59,10 +56,6 @@ public class HomestaySearchRequestDTO {
         return provinceId;
     }
 
-    public Long getRating() {
-        return rating;
-    }
-
     public LocalDate getCheckInDate() {
         return checkInDate;
     }
@@ -82,10 +75,6 @@ public class HomestaySearchRequestDTO {
         return facilities;
     }
 
-    public List<Long> getRooms() {
-        return rooms;
-    }
-
 
     public static class Builder {
         private Long id;
@@ -94,12 +83,10 @@ public class HomestaySearchRequestDTO {
         private Long priceFrom;
         private Long priceTo;
         private Long provinceId;
-        private Long rating;
         private Long capacity;
         private LocalDate checkInDate;
         private LocalDate checkOutDate;
         private List<Long> facilities = new ArrayList<>();
-        private List<Long> rooms = new ArrayList<>();
 
         public Builder name(String name) {
             this.name = name;
@@ -126,11 +113,6 @@ public class HomestaySearchRequestDTO {
             return this;
         }
 
-        public Builder rating(Long rating) {
-            this.rating = rating;
-            return this;
-        }
-
         public Builder checkInDate(LocalDate checkInDate) {
             this.checkInDate = checkInDate;
             return this;
@@ -144,10 +126,7 @@ public class HomestaySearchRequestDTO {
             this.facilities = facilities;
             return this;
         }
-        public Builder rooms(List<Long> rooms) {
-            this.rooms = rooms;
-            return this;
-        }
+
         public Builder id(Long id) {
             this.id = id;
             return this;
