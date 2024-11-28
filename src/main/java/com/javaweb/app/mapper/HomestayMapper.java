@@ -3,8 +3,8 @@ package com.javaweb.app.mapper;
 import com.javaweb.app.dto.*;
 import com.javaweb.app.entity.HomestayEntity;
 import com.javaweb.app.entity.FacilitiesEntity;
-import com.javaweb.app.entity.ServiceEntity;
 
+import com.javaweb.app.exception.FileNotValidException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,15 +21,8 @@ public class HomestayMapper {
     private ModelMapper modelMapper;
     @Autowired
     public RoomMapper roomMapper;
-
-    public List<ServiceDTO> mapToServiceDTOs(List<ServiceEntity> entities) {
-        if(entities == null) return null;
-        List<ServiceDTO> dtos = new ArrayList<>();
-        for(ServiceEntity serviceEntity : entities) {
-            dtos.add(new ServiceDTO(serviceEntity.getId(), serviceEntity.getName(), serviceEntity.getPrice()));
-        }
-        return dtos;
-    }
+    @Autowired
+    public ProvinceMapper provinceMapper;
 
     public List<FacilitiesDTO> mapToHomestayFacilities(List<FacilitiesEntity> entities) {
         if(entities == null) return null;
@@ -54,7 +47,7 @@ public class HomestayMapper {
     }
     public HomestayResponseDTO mapToHomestayResponse(HomestayEntity homestayEntity) {
         HomestayResponseDTO homestayResponse = modelMapper.map(homestayEntity, HomestayResponseDTO.class);
-        homestayResponse.setProvince(homestayEntity.getProvince().getName());
+        homestayResponse.setProvince(provinceMapper.mapToProvinceDto(homestayEntity.getProvince()));
         homestayResponse.setFacilities(mapToHomestayFacilities(homestayEntity.getFacilities()));
         homestayResponse.setRooms(roomMapper.mapToRoomDTOS(homestayEntity.getRooms()));
         String imageBase64 = homestayEntity.getImage() != null ? Base64.getEncoder().encodeToString(homestayEntity.getImage()) : null;
@@ -64,7 +57,6 @@ public class HomestayMapper {
 
     public HomestayEntity mapToSavedHomestayEntity(HomestayCreateDTO homestayCreateDTO) {
         HomestayEntity homestayEntity = modelMapper.map(homestayCreateDTO, HomestayEntity.class);
-        homestayEntity.setRating(5L);
         if (homestayCreateDTO.getImage() != null && !homestayCreateDTO.getImage().isEmpty()) {
             String fileName = homestayCreateDTO.getImage().getOriginalFilename();
             String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
@@ -72,10 +64,10 @@ public class HomestayMapper {
                 try {
                     homestayEntity.setImage(homestayCreateDTO.getImage().getBytes());
                 } catch (IOException e) {
-                    throw new RuntimeException("Lỗi khi xử lý file ảnh!");
+                    throw new FileNotValidException("Lỗi khi xử lý file ảnh!");
                 }
             } else {
-                throw new RuntimeException("File không hợp lệ! Chỉ chấp nhận file .jpg, .png hoặc .jpeg");
+                throw new FileNotValidException("File không hợp lệ! Chỉ chấp nhận file .jpg, .png hoặc .jpeg");
             }
         }
         return homestayEntity;

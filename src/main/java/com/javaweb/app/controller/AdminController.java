@@ -54,13 +54,14 @@ AdminController {
     }
 
     @PostMapping("/manage")
-    public ModelAndView handleLogin(@RequestParam("email") String email,
+    public ModelAndView handleLogin(@RequestParam(required = false) Map<String, Object> params,
+                                    @RequestParam("email") String email,
                                     @RequestParam("password") String password,
                                     HttpSession session){
         if(userService.authAdmin(email, password) != null) {
             session.setAttribute("admin", true); // Đánh dấu là đã đăng nhập
             ModelAndView modelAndView = new ModelAndView("admin/homestay");
-            List<HomestayResponseDTO> list = homestayService.findAll();
+            List<HomestayResponseDTO> list = homestayService.findByFilter(params, null);
             modelAndView.addObject("homestays", list);
             return modelAndView;
         } else {
@@ -83,7 +84,7 @@ AdminController {
                                           @RequestParam(required = false) List<Long> homestayFacilities,
                                           HttpSession session) {
         if(session.getAttribute("admin") != null){
-            List<HomestayResponseDTO> list = homestayService.findAll();// Lấy từ homestay database
+            List<HomestayResponseDTO> list = homestayService.findByFilter(params, null);// Lấy từ homestay database
             ModelAndView model = new ModelAndView("admin/homestay"); // Thêm HTML
             model.addObject("homestays", list); // Thêm model
             return model;
@@ -100,8 +101,6 @@ AdminController {
             ModelAndView modelAndView = new ModelAndView("admin/add");
             modelAndView.addObject("facilities", facilitiesService.findAll());
             modelAndView.addObject("provinces", provinceService.findAll());
-
-           // modelAndView.addObject("rooms",)
             return modelAndView;
         }
         return new ModelAndView("admin/loginAdmin");

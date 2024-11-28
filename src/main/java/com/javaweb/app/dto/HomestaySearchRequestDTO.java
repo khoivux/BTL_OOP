@@ -17,7 +17,7 @@ public class HomestaySearchRequestDTO {
     private LocalDate checkOutDate;
     private List<Long> facilities = new ArrayList<>();
     private List<Long> rooms = new ArrayList<>();
-    private List<Long> services = new ArrayList<>();
+
     public HomestaySearchRequestDTO() {
     }
 
@@ -33,7 +33,6 @@ public class HomestaySearchRequestDTO {
         this.facilities = builder.facilities;
         this.id = builder.id;
         this.rooms = builder.rooms;
-        this.services = builder.services;
     }
 
     public Long getCapacity() {
@@ -87,9 +86,6 @@ public class HomestaySearchRequestDTO {
         return rooms;
     }
 
-    public List<Long> getServices() {
-        return services;
-    }
 
     public static class Builder {
         private Long id;
@@ -104,7 +100,6 @@ public class HomestaySearchRequestDTO {
         private LocalDate checkOutDate;
         private List<Long> facilities = new ArrayList<>();
         private List<Long> rooms = new ArrayList<>();
-        private List<Long> services = new ArrayList<>();
 
         public Builder name(String name) {
             this.name = name;
@@ -151,10 +146,6 @@ public class HomestaySearchRequestDTO {
         }
         public Builder rooms(List<Long> rooms) {
             this.rooms = rooms;
-            return this;
-        }
-        public Builder services(List<Long> services) {
-            this.services = services;
             return this;
         }
         public Builder id(Long id) {

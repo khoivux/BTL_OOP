@@ -19,6 +19,44 @@
 </head>
 <body>
 <header>
+    <div id="toast" class="toast">
+        <div class="toast-title">Thông Báo</div>
+        <div class="toast-body">
+            <p id="toast-message"></p>
+            <button class="toast-close" onclick="closeToast()">×</button>
+        </div>
+    </div>
+    <script>
+        // JavaScript để hiển thị Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = message;
+
+            // Thêm lớp 'show' để hiển thị Toast
+            toast.classList.add('show');
+
+            // Ẩn Toast sau 5 giây
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 5000); // 5000ms = 5 giây
+        }
+
+        // Đóng Toast khi click vào nút "×"
+        function closeToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('show');
+        }
+    </script>
+
+    <!-- Thymeleaf Script để hiển thị Toast khi có message -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var message = [[${message}]];  // Đổi từ errorMessage thành message
+        if (message) {
+        showToast(message);  // Hiển thị Toast với message
+        }
+        /*]]>*/
+    </script>
     <div class="logo">
         <a href=""><img th:src="@{/img/logo.jpeg}"></a> <!--back về home-->
     </div>
@@ -35,6 +73,7 @@
     </div>
 </header>
 <script>
+
     let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     console.log(isLoggedIn);
     const updateUserAction = () => {
@@ -44,16 +83,18 @@
         console.log(userActionDiv);
         if (localStorage.getItem('isLoggedIn') === 'true') {
             userActionDiv.innerHTML =
-                `
-                <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
-                    <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
-                    <ul show-ul class="d-none" id="userlist">
-                        <li><a href="/user/user_profile">Thông tin tài khoản</a></li>    <!--url trang profile-->
-                        <li><a href="#">Lịch sử đặt phòng</a></li>      <!--url trang history-->
-                        <li><a href="/" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
-                    </ul>
-                </div>
-                `;
+            `
+            <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
+                <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
+                <ul show-ul class="d-none" id="userlist">
+                    <li><a href="/user/user_profile">Thông tin tài khoản</a></li>    <!--url trang profile-->
+
+                    <li><a href="/booking/history">Lịch sử đặt phòng</a></li>      <!--url trang history-->
+
+                    <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
+                </ul>
+            </div>
+            `;
         } else {
             userActionDiv.innerHTML = `<a href="/user"><button class="primary-btn">Đăng nhập</button></a>`;
         }
@@ -108,9 +149,7 @@
             <div class="profile-sidebar">
                 <nav class="nav flex-column">
                     <a class="nav-link active" href="#">Thông tin cá nhân</a>
-                    <a class="nav-link" href="#">Cài đặt bảo mật</a>
-                    <a class="nav-link" href="#">Lịch sử giao dịch</a>
-                    <a class="nav-link" href="#">Cài đặt quyền riêng tư</a>
+                    <a class="nav-link" href="/booking/history">Lịch sử giao dịch</a>
                 </nav>
             </div>
         </div>
@@ -148,7 +187,7 @@
                         <!-- Ngày sinh -->
                         <div class="col-md-6 mb-3">
                             <div><strong>Ngày sinh</strong></div>
-                            <input class="input-field form-control" type="date" value="1990-01-01">
+                            <input class="input-field form-control" type="date" th:value="${user.date}">
                         </div>
 
                         <!-- Giới tính -->

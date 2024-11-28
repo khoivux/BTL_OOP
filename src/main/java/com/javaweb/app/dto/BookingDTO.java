@@ -4,6 +4,11 @@ import com.javaweb.app.entity.BookingEntity;
 
 import com.javaweb.app.entity.HomestayEntity;
 import com.javaweb.app.entity.User;
+import jakarta.persistence.Column;
+
+
+import com.javaweb.app.entity.HomestayEntity;
+import com.javaweb.app.entity.User;
 
 
 import java.time.LocalDate;
@@ -24,6 +29,7 @@ public class BookingDTO {
     private Long stayDuration;
     private Long total;
     private User user;
+    private Long checkInTime;
 
 
     public Long getId() {
@@ -136,8 +142,12 @@ public class BookingDTO {
         this.user = user;
     }
 
-    public String getHomestayName() {
-        return homestayName;
+    public Long getCheckInTime() {
+        return checkInTime;
+    }
+
+    public void setCheckInTime(Long checkInTime) {
+        this.checkInTime = checkInTime;
     }
 
 }

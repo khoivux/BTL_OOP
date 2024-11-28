@@ -3,6 +3,7 @@ package com.javaweb.app.mapper;
 import com.javaweb.app.dto.RoomDTO;
 import com.javaweb.app.entity.HomestayEntity;
 import com.javaweb.app.entity.RoomEntity;
+import com.javaweb.app.exception.FileNotValidException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,10 +45,10 @@ public class RoomMapper {
                     try {
                         roomEntity.setImage(roomDTO.getImage().getBytes());
                     } catch (IOException e) {
-                        throw new RuntimeException("Lỗi khi xử lý file ảnh!");
+                        throw new FileNotValidException("Lỗi khi xử lý file ảnh!");
                     }
                 } else {
-                    throw new RuntimeException("File không phải ảnh hợp lệ! Chỉ chấp nhận file .jpg, .png hoặc .jpeg");
+                    throw new FileNotValidException("File không phải ảnh hợp lệ! Chỉ chấp nhận file .jpg, .png hoặc .jpeg");
                 }
             }
             roomEntity.setHomestay(homestayEntity);

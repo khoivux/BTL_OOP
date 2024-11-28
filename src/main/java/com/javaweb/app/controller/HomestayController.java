@@ -4,6 +4,7 @@ package com.javaweb.app.controller;
 import com.javaweb.app.dto.HomestayCreateDTO;
 import com.javaweb.app.dto.HomestayResponseDTO;
 import com.javaweb.app.dto.HomestayDto;
+import com.javaweb.app.exception.FileNotValidException;
 import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.service.BookingService;
 import com.javaweb.app.service.HomestayService;
@@ -42,21 +43,29 @@ public class HomestayController {
     }
     // UPDATE
     @PostMapping("/admin/homestay-update")
-    public ResponseEntity<HomestayDto> updateHomestay(@ModelAttribute HomestayCreateDTO homestayCreateDTO,
+    public  ResponseEntity<String> updateHomestay(@ModelAttribute HomestayCreateDTO homestayCreateDTO,
                                                       HttpSession session) {
-
-       // HomestayDto homestayDto = homestayService.updateHomestay(updateHomestayDto.getId(), updateHomestayDto);
-        return ResponseEntity.ok(null);
+        try {
+            homestayService.updateHomestay(homestayCreateDTO);
+            return ResponseEntity.ok("Cập nhật homestay thành công!");
+        } catch(RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     // DELETE
     @PostMapping("/admin/homestay-delete/{id}") // Xóa homestay theo id
-    public RedirectView deleteHomestayById(@PathVariable Long id,
-                                           RedirectAttributes redirectAttributes,
+    public ResponseEntity<String> deleteHomestayById(@PathVariable Long id,
                                            HttpSession session) {
-        homestayService.deleteHomestay(id);
-        redirectAttributes.addFlashAttribute("message", "Homestay đã được xóa.");
-        return new RedirectView("/admin/homestay-list");
+        try {
+            homestayService.deleteHomestay(id);
+            session.setAttribute("message", "Xóa homestay thành công!");
+            return ResponseEntity.ok("Xóa homestay thành công!");
+        }
+        catch (RuntimeException e) {
+            session.setAttribute("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     // READ
@@ -70,11 +79,5 @@ public class HomestayController {
     public RedirectView deleteUserById(@PathVariable Long id) {
         userService.deleteUser(id);
         return new RedirectView("/admin/user");
-    }
-    // xoa lich su booking
-    @PostMapping("/admin/user-paymenthistory-delete/{id}")// Xóa booking theo id
-    public RedirectView deleteBookingById(@PathVariable Long id) {
-        bookingService.deleteBooking(id);
-        return new RedirectView("/admin/user-paymenthistory/{id}");
     }
 }

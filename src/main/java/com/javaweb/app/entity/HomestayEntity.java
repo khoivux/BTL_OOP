@@ -20,8 +20,6 @@ public class HomestayEntity {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "rating", nullable = false)
-    private Long rating;
 
     @Column(name = "description")
     private String description;
@@ -43,13 +41,6 @@ public class HomestayEntity {
     @OneToMany(mappedBy = "homestay",  cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<BookingEntity> bookingList = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "homestay_service", // Tên bảng trung gian
-            joinColumns = @JoinColumn(name = "homestay_id"), // Khóa ngoại trỏ tới HomestayEntity
-            inverseJoinColumns = @JoinColumn(name = "service_id") // Khóa ngoại trỏ tới ServiceEntity
-    )
-    private List<ServiceEntity> services;
 
     @ManyToMany
     @JoinTable(
@@ -89,14 +80,6 @@ public class HomestayEntity {
         this.address = address;
     }
 
-    public Long getRating() {
-        return rating;
-    }
-
-    public void setRating(Long rating) {
-        this.rating = rating;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -112,6 +95,7 @@ public class HomestayEntity {
     public void setPrice(Long price) {
         this.price = price;
     }
+
     public Long getCapacity() {
         return capacity;
     }
@@ -128,6 +112,7 @@ public class HomestayEntity {
         this.province = province;
     }
 
+
     public List<BookingEntity> getBookingList() {
         return bookingList;
     }
@@ -136,13 +121,6 @@ public class HomestayEntity {
         this.bookingList = bookingList;
     }
 
-    public List<ServiceEntity> getServices() {
-        return services;
-    }
-
-    public void setServices(List<ServiceEntity> services) {
-        this.services = services;
-    }
 
     public List<FacilitiesEntity> getFacilities() {
         return facilities;

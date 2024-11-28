@@ -46,22 +46,6 @@ public class RoomEntity {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public HomestayEntity getHomestay() {
-        return homestay;
-    }
-
-    public void setHomestay(HomestayEntity homestay) {
-        this.homestay = homestay;
-    }
-
     public String getType() {
         return type;
     }
@@ -78,6 +62,14 @@ public class RoomEntity {
         this.numbers = numbers;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public byte[] getImage() {
         return image;
     }
@@ -86,4 +78,11 @@ public class RoomEntity {
         this.image = image;
     }
 
+    public HomestayEntity getHomestay() {
+        return homestay;
+    }
+
+    public void setHomestay(HomestayEntity homestay) {
+        this.homestay = homestay;
+    }
 }

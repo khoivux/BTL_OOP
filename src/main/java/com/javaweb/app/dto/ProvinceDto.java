@@ -8,6 +8,9 @@ public class ProvinceDto {
     private Long id;
     private String name;
 
+    public ProvinceDto() {
+    }
+
     public ProvinceDto(Long id, String name) {
         this.id = id;
         this.name = name;

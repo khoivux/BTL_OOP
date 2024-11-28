@@ -22,6 +22,12 @@ public class BookingEntity {
     @Column(name = "booking_time")
     private LocalDateTime bookingTime;
 
+    @Column(name = "checkin_time")
+    private Long checkInTime;
+
+    @Column(name = "stay_duration")
+    private Long stayDuration;
+
     @Column(name = "status")
     private String status;
 
@@ -34,6 +40,9 @@ public class BookingEntity {
     @Column(name = "customer_Phone")
     private String customerPhone;
 
+    @Column(name = "total")
+    private String total;
+
     @ManyToOne
     @JoinColumn(name = "homestay_id")
     private  HomestayEntity homestay;
@@ -42,13 +51,6 @@ public class BookingEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
-    @JoinTable(
-            name = "booking_service", // Tên bảng trung gian
-            joinColumns = @JoinColumn(name = "booking_id"), // Khóa ngoại trỏ tới BookingEntity
-            inverseJoinColumns = @JoinColumn(name = "service_id") // Khóa ngoại trỏ tới ServiceEntity
-    )
-    private List<ServiceEntity> services;
 
     public Long getId() {
         return id;
@@ -80,6 +82,14 @@ public class BookingEntity {
 
     public void setBookingTime(LocalDateTime bookingTime) {
         this.bookingTime = bookingTime;
+    }
+
+    public Long getCheckInTime() {
+        return checkInTime;
+    }
+
+    public void setCheckInTime(Long checkInTime) {
+        this.checkInTime = checkInTime;
     }
 
     public String getStatus() {
@@ -114,6 +124,14 @@ public class BookingEntity {
         this.customerPhone = customerPhone;
     }
 
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
+
     public HomestayEntity getHomestay() {
         return homestay;
     }
@@ -130,11 +148,11 @@ public class BookingEntity {
         this.user = user;
     }
 
-    public List<ServiceEntity> getServices() {
-        return services;
+    public Long getStayDuration() {
+        return stayDuration;
     }
 
-    public void setServices(List<ServiceEntity> services) {
-        this.services = services;
+    public void setStayDuration(Long stayDuration) {
+        this.stayDuration = stayDuration;
     }
 }

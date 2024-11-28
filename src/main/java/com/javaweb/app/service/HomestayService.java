@@ -11,20 +11,13 @@ import java.util.Map;
 
 public interface HomestayService {
     List<HomestayResponseDTO> findAll();
-
     HomestayResponseDTO createHomestay(HomestayCreateDTO homestayCreateDTO);
 
-    @Transactional
-    void deleteHomestays(List<Long> ids);
+    // Lấy tất cả Homestay được lọc theo Filter
+    List<HomestayResponseDTO> findByFilter(Map<String, Object> params,
+                                           List<Long> homestayFacilities);
 
     void deleteHomestay(Long id);
-
     HomestayResponseDTO findHomestayById(Long id);
-
-    HomestayDto updateHomestay(Long id, HomestayDto updatedHomestayDto);
-
-
-    List<HomestayDto> findHomestayByIdIn(List<Long> ids);
-
-    List<HomestayResponseDTO> findByFilter(Map<String, Object> params, List<Long> homestayFacilities, List<Long> rooms, List<Long> services);
+    void updateHomestay(HomestayCreateDTO updatedHomestayDto);
 }

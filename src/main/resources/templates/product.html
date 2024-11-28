@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomeStay • HomesTayBac</title>
     <link rel="stylesheet" th:href="@{/css/product.css}">
+    <style>
+        .date-picker {
+            width: auto;
+            position: relative;
+            margin-bottom: 15px;
+        }
+    </style>
+
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css"
@@ -19,22 +27,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
         integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-
     <style>
-        .custom-border {
-            border: 1px solid #eeeeee; /* Viền màu xanh */
-            border-radius: 10px; /* Bo tròn góc */
-            padding: 10px; /* Khoảng cách bên trong */
-            margin-bottom: 15px; /* Tạo khoảng cách phía dưới (hoặc dùng margin-right nếu theo chiều ngang) */
-            /*            transition: transform 0.3s, box-shadow 0.3s; *//* Hiệu ứng hover */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        /* Danh sách tiện nghi */
-        .list-unstyled {
-            padding-left: 0;
-            list-style: none;
-        }
-
         .list-unstyled li {
             display: flex;
             align-items: center;
@@ -66,11 +59,102 @@
             /*            background-color: #f9f9f9; *//* Tùy chọn màu nền */
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng */
         }
+        .toast {
+            position: fixed;
+            top: 20px; /* Hiển thị ở trên cùng */
+            left: 50%;
+            transform: translateX(-50%); /* Đẩy sang giữa */
+            padding: 10px;
+            background-color: #ffffff; /* Màu nền trắng cho thông báo */
+            color: #333; /* Màu chữ */
+            border-radius: 5px;
+            opacity: 0; /* Ban đầu ẩn */
+            visibility: hidden; /* Không hiển thị */
+            transition: opacity 0.5s, visibility 0.5s, transform 0.3s ease-in-out; /* Hiệu ứng mờ dần và mở rộng */
+            z-index: 1050; /* Đảm bảo nó ở trên các phần tử khác */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Đổ bóng nhẹ cho toast */
+            border: 1px solid #28a745; /* Viền màu xanh lá cây */
+            transform: translateX(-50%) scale(0.9); /* Bắt đầu nhỏ hơn và sẽ phóng to */
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) scale(1); /* Phóng to */
+        }
+
+        /* Tiêu đề Toast */
+        .toast-title {
+            background-color: #7FC142; /* Nền xanh lá cây cho tiêu đề */
+            color: white; /* Chữ màu trắng */
+            padding: 5px 5px;
+            /*            border-radius: 5px 5px 0 0; *//* Cạnh trên tròn */
+            font-weight: bold;
+        }
+
+        .toast-body {
+            padding: 10px;
+        }
+
+        /* CSS cho nút đóng Toast */
+        .toast-close {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: #696969;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .toast-close:hover {
+            color: #dc3545; /* Màu đỏ khi hover */
+        }
     </style>
 
 </head>
 
 <body>
+<div id="toast" class="toast">
+    <div class="toast-title">Thông Báo</div>
+    <div class="toast-body">
+        <p id="toast-message"></p>
+        <button class="toast-close" onclick="closeToast()">×</button>
+    </div>
+</div>
+
+<script>
+    // JavaScript để hiển thị Toast
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toast-message').textContent = message;
+
+        // Thêm lớp 'show' để hiển thị Toast
+        toast.classList.add('show');
+
+        // Ẩn Toast sau 5 giây
+        setTimeout(function() {
+            toast.classList.remove('show');
+        }, 5000); // 5000ms = 5 giây
+    }
+
+    // Đóng Toast khi click vào nút "×"
+    function closeToast() {
+        const toast = document.getElementById('toast');
+        toast.classList.remove('show');
+    }
+</script>
+
+<!-- Thymeleaf Script để hiển thị Toast khi có errorMessage -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var errorMessage = [[${errorMessage}]];
+    if (errorMessage) {
+    showToast(errorMessage);
+    }
+    /*]]>*/
+</script>
     <header>
         <div class="logo">
             <a href="/"><img alt="" th:src="@{/img/logo.jpeg}"></a> <!--back về home-->
@@ -88,37 +172,40 @@
             <span id="listbars" class="fa fa-bars" onclick="menutoggle()"></span>
         </div>
     </header>
-    <script>
-        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        console.log(isLoggedIn);
-        const updateUserAction = () => {
-            const userName = localStorage.getItem('name');
+<script>
 
-            const userActionDiv = document.getElementById("user-action");
-            console.log(userActionDiv);
-            if (localStorage.getItem('isLoggedIn') === 'true') {
-                userActionDiv.innerHTML =
-                `
-                <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
-                    <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
-                    <ul show-ul class="d-none" id="userlist">
-                        <li><a href="#">Thông tin tài khoản</a></li>    <!--url trang profile-->
-                        <li><a href="#">Lịch sử đặt phòng</a></li>      <!--url trang history-->
-                        <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
-                    </ul>
-                </div>
-                `;
-            } else {
-                userActionDiv.innerHTML = `<a href="/user"><button class="primary-btn">Đăng nhập</button></a>`;
-            }
-        }
+    let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    console.log(isLoggedIn);
+    const updateUserAction = () => {
+        const userName = localStorage.getItem('name');
 
-        function logout() {
-            localStorage.setItem('isLoggedIn', false);
-            updateUserAction();
+        const userActionDiv = document.getElementById("user-action");
+        console.log(userActionDiv);
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            userActionDiv.innerHTML =
+            `
+            <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
+                <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
+                <ul show-ul class="d-none" id="userlist">
+                    <li><a href="/user/user_profile">Thông tin tài khoản</a></li>    <!--url trang profile-->
+
+                    <li><a href="/booking/history">Lịch sử đặt phòng</a></li>      <!--url trang history-->
+
+                    <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
+                </ul>
+            </div>
+            `;
+        } else {
+            userActionDiv.innerHTML = `<a href="/user"><button class="primary-btn">Đăng nhập</button></a>`;
         }
+    }
+
+    function logout() {
+        localStorage.setItem('isLoggedIn', false);
         updateUserAction();
-    </script>
+    }
+    updateUserAction();
+</script>
 
 
     <script>
@@ -225,7 +312,9 @@
                 </div>
             </div>
             <input type="number"  id="homestayId" name="homestayId" th:value="${homestay.id}" hidden>
-            <button class="btn btn-primary" type="submit">Đặt ngay</button>
+            <div class="d-flex justify-content-end mb-1">
+                <button class="btn btn-primary" type="submit">Đặt ngay</button>
+            </div>
         </div>
     </div>
     </form>
@@ -238,7 +327,7 @@
         </ul>
     </div>
     <div>
-        <h4 class="my-4">Thông tin i6chi tiết:</h4>
+        <h4 class="my-4">Thông tin phòng:</h4>
         <table class=" table table-bordered ">
             <thead>
             <tr>

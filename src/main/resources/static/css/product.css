@@ -12,11 +12,12 @@
     width: 300px;
     font-family: Arial, sans-serif;
 }
+
 .date-picker {
-    width: 278px;
     position: relative;
     margin-bottom: 15px;
 }
+
 
 .date-picker input {
     width: 100%;

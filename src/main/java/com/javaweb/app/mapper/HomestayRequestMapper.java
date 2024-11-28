@@ -15,9 +15,8 @@ import java.util.Map;
 public class HomestayRequestMapper {
     // Chuyển từ Param sang HomestaySearchRequest
     public HomestaySearchRequestDTO mapToHomestayRequest(Map<String, Object> params,
-                                                         List<Long> facilitiess,
-                                                         List<Long> rooms,
-                                                         List<Long> services) {
+                                                         List<Long> facilitiess
+                                                     ) {
         return new HomestaySearchRequestDTO.Builder()
                 .id(MapUtil.getObject(params, "id", Long.class))
                 .name(MapUtil.getObject(params, "name", String.class))
@@ -30,8 +29,6 @@ public class HomestayRequestMapper {
                 .checkOutDate(DateUtil.strToDate(MapUtil.getObject(params, "checkoutDate", String.class)))
                 .capacity(MapUtil.getObject(params, "capacity", Long.class))
                 .facilities(facilitiess)
-                .rooms(rooms)
-                .services(services)
                 .build();
     }
 }

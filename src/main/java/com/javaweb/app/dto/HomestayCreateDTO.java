@@ -11,12 +11,10 @@ public class HomestayCreateDTO {
     private Long price;
     private String address;
     private Long provinceid;
-    private Long rating;
     private String description;
     private Long capacity;
     private List<RoomDTO> rooms;
     private List<Long> facilities;
-    private List<Long> services;
     @JsonIgnore
     private MultipartFile image;
 
@@ -56,18 +54,6 @@ public class HomestayCreateDTO {
         return provinceid;
     }
 
-    public void setProvinceid(Long provinceid) {
-        this.provinceid = provinceid;
-    }
-
-    public Long getRating() {
-        return rating;
-    }
-
-    public void setRating(Long rating) {
-        this.rating = rating;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -83,6 +69,9 @@ public class HomestayCreateDTO {
         this.capacity = capacity;
     }
 
+    public void setProvinceid(Long provinceid) {
+        this.provinceid = provinceid;
+    }
 
     public List<Long> getFacilities() {
         return facilities;
@@ -100,13 +89,6 @@ public class HomestayCreateDTO {
         this.rooms = rooms;
     }
 
-    public List<Long> getServices() {
-        return services;
-    }
-
-    public void setServices(List<Long> services) {
-        this.services = services;
-    }
 
     public MultipartFile getImage() {
         return image;

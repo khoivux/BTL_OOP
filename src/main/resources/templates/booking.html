@@ -321,6 +321,7 @@
         </div>
     </header>
     <script>
+
         let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         console.log(isLoggedIn);
         const updateUserAction = () => {
@@ -334,8 +335,10 @@
                 <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
                     <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
                     <ul show-ul class="d-none" id="userlist">
-                        <li><a href="#">Thông tin tài khoản</a></li>    <!--url trang profile-->
-                        <li><a href="#">Lịch sử đặt phòng</a></li>      <!--url trang history-->
+                        <li><a href="/user/user_profile">Thông tin tài khoản</a></li>    <!--url trang profile-->
+
+                        <li><a href="/booking/history">Lịch sử đặt phòng</a></li>      <!--url trang history-->
+
                         <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
                     </ul>
                 </div>
@@ -411,21 +414,6 @@
                         <h5 th:text="'Giá thuê: ' + ${rent_price}"></h5>
                         <a href="/search" class="text-primary">Đổi lựa chọn của bạn</a>
                     </div>
-                    <div class="services info-box">
-                        <h5>Dịch vụ</h5>
-                        <div>
-                            <input type="checkbox" name="services" value="Cầu hôn"> Cầu hôn
-                        </div>
-                        <div>
-                            <input type="checkbox" name="services" value="Thể thao"> Thể thao
-                        </div>
-                        <div>
-                            <input type="checkbox" name="services" value="Ăn uống"> Ăn uống
-                        </div>
-                        <div>
-                            <input type="checkbox" name="services" value="Đi lại"> Đi lại
-                        </div>
-                    </div>
                     <div class="facilities info-box">
                         <h5 class="mt-4">Tiện nghi:</h5>
                         <ul class="list-unstyled">
@@ -470,15 +458,8 @@
                         </div>
                         <div class="check-in-time">
                             <h6>Thời gian nhận phòng</h6>
-                            <select class="form-select" >
+                            <select class="form-select" name="checkInTime">
                                 <option value="" disabled="" selected="">Vui lòng chọn</option>
-                                <option value="0">00:00 – 01:00 </option>
-                                <option value="1">01:00 – 02:00 </option>
-                                <option value="2">02:00 – 03:00 </option>
-                                <option value="3">03:00 – 04:00 </option>
-                                <option value="4">04:00 – 05:00 </option>
-                                <option value="5">05:00 – 06:00 </option>
-                                <option value="6">06:00 – 07:00 </option>
                                 <option value="7">07:00 – 08:00 </option>
                                 <option value="8">08:00 – 09:00 </option>
                                 <option value="9">09:00 – 10:00 </option>
@@ -491,6 +472,7 @@
                                 <option value="16">16:00 – 17:00 </option>
                                 <option value="17">17:00 – 18:00 </option>
                                 <option value="18">18:00 – 19:00 </option>
+                                <option value="18">19:00 – 20:00 </option>
                             </select>
                         </div>
                         <div class="regulations">

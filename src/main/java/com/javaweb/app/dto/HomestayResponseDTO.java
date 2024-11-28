@@ -9,22 +9,29 @@ public class HomestayResponseDTO {
     private Long id;
     private String name;
     private String address;
-    private String province;
+    private ProvinceDto province;
     private Long price;
-    private Long rating;
+    private Long capacity;
     private String description;
     private List<RoomDTO> rooms;
     private List<FacilitiesDTO> facilities;
-    private List<ServiceDTO> services;
     private List<BookingDTO> bookingList;
     private String image;
 
-    public String getProvince() {
+    public ProvinceDto getProvince() {
         return province;
     }
 
-    public void setProvince(String province) {
+    public void setProvince(ProvinceDto province) {
         this.province = province;
+    }
+
+    public List<BookingDTO> getBookingList() {
+        return bookingList;
+    }
+
+    public void setBookingList(List<BookingDTO> bookingList) {
+        this.bookingList = bookingList;
     }
 
     public Long getId() {
@@ -63,12 +70,12 @@ public class HomestayResponseDTO {
         return facilities;
     }
 
-    public Long getRating() {
-        return rating;
+    public Long getCapacity() {
+        return capacity;
     }
 
-    public void setRating(Long rating) {
-        this.rating = rating;
+    public void setCapacity(Long capacity) {
+        this.capacity = capacity;
     }
 
     public String getDescription() {
@@ -92,13 +99,6 @@ public class HomestayResponseDTO {
         this.facilities = facilities;
     }
 
-    public List<ServiceDTO> getServices() {
-        return services;
-    }
-
-    public void setServices(List<ServiceDTO> services) {
-        this.services = services;
-    }
 
     public String getImage() {
         return image;
