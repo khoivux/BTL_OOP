@@ -159,8 +159,10 @@
             <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
                 <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
                 <ul show-ul class="d-none" id="userlist">
-                    <li><a href="#">Thông tin tài khoản</a></li>    <!--url trang profile-->
-                    <li><a href="#">Lịch sử đặt phòng</a></li>      <!--url trang history-->
+                    <li><a href="/user/user_profile">Thông tin tài khoản</a></li>    <!--url trang profile-->
+
+                    <li><a href="/booking/history">Lịch sử đặt phòng</a></li>      <!--url trang history-->
+
                     <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
                 </ul>
             </div>
@@ -263,19 +265,6 @@
                     </label><br>
                 </div>
             </div>
-
-            <div class="filter-group">
-                <h3>Dịch vụ</h3>
-                <div th:each="service : ${services}">
-                    <label>
-                        <input name="services" type="checkbox"
-                               th:value="${service.id}"
-                               th:checked="${selectedServices.contains(service.id)}">
-                        <span th:text="${service.name}">Facility Name</span>
-                    </label><br>
-                </div>
-            </div>
-
             <button class="filter-button" type="button" onclick="submitForm()">Áp dụng bộ lọc</button>
         </div>
     </form>
@@ -336,7 +325,7 @@
                         <div class="star-rating">
                             <!-- Mã hiển thị đánh giá sao nếu có -->
                         </div>
-                        <p th:text="${homestay.address}"></p>
+                        <p th:text="${homestay.address} + ', ' + ${homestay.province.name}"></p>
                         <h3 th:text="'Giá: ' + ${homestay.price} + 'k'">Giá</h3>
                         <div>
                             <span th:each="room, stat : ${homestay.rooms}">

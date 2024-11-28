@@ -114,7 +114,6 @@ public class BookingServiceImpl implements BookingService {
         bookingRepository.deleteById(id);
     }
 
-
     public List<BookingDTO> getBookingsByUser_Id(Long userId) {
         List<BookingEntity> bookings = bookingRepository.findByUser_Id(userId);
         // Chuyển đổi BookingEntity thành BookingDTO

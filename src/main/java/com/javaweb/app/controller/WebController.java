@@ -96,22 +96,6 @@ public class WebController {
         return model;
     }
 
-    @PostMapping("/homestay/{id}")
-    public ModelAndView getProductById(@PathVariable Long id,
-                                       @RequestParam(required = false) Map<String, String> params,
-                                       HttpSession session) {
-        ModelAndView modelAndView = new ModelAndView("product");
-
-        modelAndView.addObject("checkInDate", params.get("checkinDate"));
-        modelAndView.addObject("checkOutDate", params.get("checkoutDate"));
-
-        HomestayResponseDTO homestayResponseDTO = homestayService.findHomestayById(id);
-        modelAndView.addObject("homestay", homestayResponseDTO);
-        modelAndView.addObject("facilities", homestayResponseDTO.getFacilities());
-        modelAndView.addObject("rooms", homestayResponseDTO.getRooms());
-        return modelAndView;
-    }
-
     @GetMapping(value = "/history")
     public ModelAndView historyPage() {
         ModelAndView model = new ModelAndView("history");

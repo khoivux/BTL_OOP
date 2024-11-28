@@ -121,4 +121,10 @@ public class BookingController {
         bookingService.saveBooking(bookingDTO);
         return new RedirectView("/booking/history");
     }
+    @PostMapping("/delete/{id}")
+    public RedirectView deleteBooking(@PathVariable Long id,
+                                      HttpSession session) {
+        bookingService.deleteBookingById(id);
+        return new RedirectView("/admin/user-paymenthistory/" + id);
+    }
 }

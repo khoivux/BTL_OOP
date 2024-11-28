@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 
 public class BookingDTO {
     private Long id;
-    private String homestayName;
     private Long homestayPrice;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
@@ -41,9 +40,6 @@ public class BookingDTO {
     }
 
 
-    public void setHomestayName(String homestayName) {
-        this.homestayName = homestayName;
-    }
 
     public Long getHomestayPrice() {
         return homestayPrice;

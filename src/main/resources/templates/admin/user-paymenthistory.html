@@ -6,7 +6,6 @@
     <title>Quản trị • HomesTayBac</title>
     <link rel="stylesheet" th:href="@{/admin.css}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
 <header>
@@ -40,63 +39,39 @@
             <table class="table table-bordered" style="width: 150vh">
                 <thead class="thead-light">
                 <tr>
-                    <th style="width: 8%;text-align:center;">ID</th>
-                    <th style="width: 20%;text-align:center">Booking Time</th>
-                    <th style="width: 25%;text-align:center">Checkin Date</th>
-                    <th style="width: 25%;text-align:center">Checkout Date</th>
-                    <th style="width: 10%;text-align:center">Status</th>
+                    <th style="width: 15%;text-align:center">Thời gian đặt</th>
+                    <th style="width: 12%;text-align:center">Ngày nhận phòng</th>
+                    <th style="width: 12%;text-align:center">Ngày trả phòng</th>
+                    <th style="width: 22%;text-align:center">Homestay</th>
+                    <th style="width: 13%;text-align:center">Tổng tiền(VNĐ)</th>
+                    <th style="width: 16%;text-align:center">Trạng thái</th>
+                    <th style="width: 10%;text-align:center">Thao tác</th>
                 </tr>
                 </thead>
                 <tbody>
 
                 <tr th:each="history : ${paymentHistories}" th:attr="data-id=${history.id}">
-
-                    <td class="p-2" style="text-align:center" th:text="${history.id}"></td>
-                    <td class="p-2" style="text-align:center" th:text="${history.BookingTime}"></td>
+                    <td class="p-2" style="text-align:center"
+                        th:text="${#temporals.format(history.bookingTime, 'dd/MM/yyyy HH:mm:ss')}"></td>
                     <td class="p-2" style="text-align:center" th:text="${history.checkInDate}"></td>
                     <td class="p-2" style="text-align:center" th:text="${history.checkOutDate}"></td>
+                    <td class="p-2" style="text-align:center" th:text="${history.homestay.name}"></td>
+                    <td class="p-2" style="text-align:center" th:text="${history.total} + '.000'"></td>
                     <td class="p-2" style="text-align:center">
                         <select name="status" class="form-control" th:onchange="updateStatus([[${history.id}]])">
                             <option th:value="'Đã hủy'" th:text="'Đã hủy'" th:selected="${history.status == 'Đã hủy'}">Đã hủy</option>
-                            <option th:value="'Chờ xác nhận'" th:text="'Chờ xác nhận'" th:selected="${history.status == 'Chờ xác nhận'}">Chờ xác nhận</option>
-                            <option th:value="'Xác nhận'" th:text="'Xác nhận'" th:selected="${history.status == 'Xác nhận'}">Xác nhận</option>
+                            <option th:value="'Đã cọc'" th:text="'Chờ xác nhận'" th:selected="${history.status == 'Đã cọc'}">Đã cọc</option>
                             <option th:value="'Đã thanh toán'" th:text="'Đã thanh toán'" th:selected="${history.status == 'Đã thanh toán'}">Đã thanh toán</option>
                         </select>
-                        
                     </td>
 
                     <td class="p-2" >
-                        <!-- <form th:action="@{/admin/paymenthistory-details/{id}(id=${history.id})}" method="GET" style="display:inline"> -->
-                        <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#detailsModal" th:onclick="'fetchBookingDetails(' + ${history.id} + ')'">Chi tiết</button>
-                        <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="detailsModalLabel">Chi tiết giao dịch</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p><strong>ID:</strong> <span id="modal-id" th:text="${history.id}"></span></p>
-                                        <p><strong>Tên khách hàng:</strong> <span id="modal-customer-name" ></span></p>
-                                        <p><strong>Email:</strong> <span id="modal-customer-email"></span></p>
-                                        <p><strong>Số điện thoại:</strong> <span id="modal-customer-phone"></span></p>
-                                        <p><strong>Tên homestay:</strong> <span id="modal-homestay-name"></span></p>
-                                        <p><strong>Check-in Date:</strong> <span id="modal-checkin"></span></p>
-                                        <p><strong>Check-out Date:</strong> <span id="modal-checkout"></span></p>
-                                        <p><strong>Giá:</strong> <span id="modal-price"></span></p>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--</form>
-                        <button type="button" class="btn btn-primary btn-sm" th:onclick="updateStatus([[${history.id}]])">Cập nhật</button>
-                        -->
+                        <form th:action="@{/booking/delete/{id}(id=${history.id})}" method="POST">
+                            <button type="submit" class="btn btn-primary btn-sm"
+                                    onclick="return confirm('Bạn có chắc chắn muốn xóa giao dịch này?');">
+                                Xóa
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 </tbody>
@@ -104,42 +79,6 @@
         </div>
     </div>
 </div>
-<script>
-    function fetchBookingDetails(bookingId) {
-    fetch(`/admin/booking/${bookingId}`)
-        .then(response => {
-            if (!response.ok) throw new Error("Booking not found");
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById("modal-id").textContent = data.id;
-            document.getElementById("modal-customer-name").textContent = data.userFullName;
-            document.getElementById("modal-customer-email").textContent = data.userEmail;
-            document.getElementById("modal-customer-phone").textContent = data.userPhone;
-            document.getElementById("modal-homestay-name").textContent = data.homestayName;
-            document.getElementById("modal-checkin").textContent = data.checkInDate;
-            document.getElementById("modal-checkout").textContent = data.checkOutDate;
-            document.getElementById("modal-price").textContent = `${data.price} VND`;
-
-            // Hiển thị modal
-            $('#bookingModal').modal('show');
-        })
-        .catch(error => console.error("Error fetching booking details:", error));
-}
-
-// Gọi hàm khi nhấn nút "Chi tiết"
-document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".view-details-btn").forEach(button => {
-        button.addEventListener("click", event => {
-            const bookingId = event.target.dataset.bookingId;
-            fetchBookingDetails(bookingId);
-        });
-    });
-});
-
-</script>
-
-
 <script>
     function updateStatus(id) {
         // Lấy giá trị trạng thái từ dropdown

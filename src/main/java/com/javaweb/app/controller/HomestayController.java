@@ -14,10 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.Map;
+
 @RestController
+@RequestMapping("/homestay")
 public class HomestayController {
     @Autowired
     public HomestayService homestayService;
@@ -27,57 +31,19 @@ public class HomestayController {
     public UserService userService;
     @Autowired
     public BookingService bookingService;
+    @PostMapping("/{id}")
+    public ModelAndView getProductById(@PathVariable Long id,
+                                       @RequestParam(required = false) Map<String, String> params,
+                                       HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView("product");
 
-    // CREATE
-    @PostMapping("/admin/homestay-add")
-    public ResponseEntity<String> addHomestay(@ModelAttribute HomestayCreateDTO homestayCreateDTO,
-                                    RedirectAttributes redirectAttributes,
-                                    HttpSession session) {
-        try {
-            HomestayResponseDTO homestayResponseDTO = homestayService.createHomestay(homestayCreateDTO);
-            return ResponseEntity.ok("Thêm mới homestay thành công!");
-        }
-        catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
-    // UPDATE
-    @PostMapping("/admin/homestay-update")
-    public  ResponseEntity<String> updateHomestay(@ModelAttribute HomestayCreateDTO homestayCreateDTO,
-                                                      HttpSession session) {
-        try {
-            homestayService.updateHomestay(homestayCreateDTO);
-            return ResponseEntity.ok("Cập nhật homestay thành công!");
-        } catch(RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
+        modelAndView.addObject("checkInDate", params.get("checkinDate"));
+        modelAndView.addObject("checkOutDate", params.get("checkoutDate"));
 
-    // DELETE
-    @PostMapping("/admin/homestay-delete/{id}") // Xóa homestay theo id
-    public ResponseEntity<String> deleteHomestayById(@PathVariable Long id,
-                                           HttpSession session) {
-        try {
-            homestayService.deleteHomestay(id);
-            session.setAttribute("message", "Xóa homestay thành công!");
-            return ResponseEntity.ok("Xóa homestay thành công!");
-        }
-        catch (RuntimeException e) {
-            session.setAttribute("message", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
-
-    // READ
-    @GetMapping("/admin/homestay/{id}")
-    public HomestayResponseDTO getById(@PathVariable Long id,
-                                       HttpSession session){
-        return homestayService.findHomestayById(id);
-    }
-    // Xoa User
-    @PostMapping("/admin/user-delete/{id}") // Xóa user theo id
-    public RedirectView deleteUserById(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return new RedirectView("/admin/user");
+        HomestayResponseDTO homestayResponseDTO = homestayService.findHomestayById(id);
+        modelAndView.addObject("homestay", homestayResponseDTO);
+        modelAndView.addObject("facilities", homestayResponseDTO.getFacilities());
+        modelAndView.addObject("rooms", homestayResponseDTO.getRooms());
+        return modelAndView;
     }
 }

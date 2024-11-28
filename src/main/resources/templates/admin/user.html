@@ -57,7 +57,7 @@
                         </form>
                         <!-- Xóa -->
                         <form th:action="@{/admin/user-delete/{id}(id=${user.id})}" method="POST" style="display:inline;">
-                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa Khách hàng này?');">Xóa</button>
                         </form>
                     </td>
                 </tr>
