@@ -2,32 +2,37 @@ package com.javaweb.app.controller;
 
 import com.javaweb.app.dto.BookingDTO;
 
-import com.javaweb.app.dto.HomestayDto;
 
 import com.javaweb.app.dto.HomestayResponseDTO;
 import com.javaweb.app.entity.User;
 import com.javaweb.app.exception.DateNotValidException;
 import com.javaweb.app.service.BookingService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
+
+import com.javaweb.app.dto.HomestayResponseDTO;
+import com.javaweb.app.entity.User;
+
 import com.javaweb.app.service.HomestayService;
 import com.javaweb.app.utils.DateUtil;
 import com.javaweb.app.utils.MapUtil;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.ModelAndView;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
+
 @RestController
 @RequestMapping("/booking")
+
 public class BookingController {
     @Autowired
     public BookingService bookingService;

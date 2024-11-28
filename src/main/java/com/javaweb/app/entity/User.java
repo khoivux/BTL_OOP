@@ -99,6 +99,8 @@ public class User {
         return role;
     }
 
+    public String getUserPhone() { return phoneNumber; }
+
     public void setRole(String role) {
         this.role = role;
     }
@@ -146,4 +148,5 @@ public class User {
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
+
 }

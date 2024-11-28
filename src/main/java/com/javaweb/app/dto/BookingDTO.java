@@ -1,5 +1,6 @@
 package com.javaweb.app.dto;
 
+import com.javaweb.app.entity.BookingEntity;
 
 import com.javaweb.app.entity.HomestayEntity;
 import com.javaweb.app.entity.User;
@@ -15,6 +16,8 @@ import java.time.LocalDateTime;
 
 public class BookingDTO {
     private Long id;
+    private String homestayName;
+    private Long homestayPrice;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private LocalDateTime bookingTime;
@@ -28,6 +31,7 @@ public class BookingDTO {
     private User user;
     private Long checkInTime;
 
+
     public Long getId() {
         return id;
     }
@@ -35,6 +39,20 @@ public class BookingDTO {
     public void setId(Long id) {
         this.id = id;
     }
+
+
+    public void setHomestayName(String homestayName) {
+        this.homestayName = homestayName;
+    }
+
+    public Long getHomestayPrice() {
+        return homestayPrice;
+    }
+
+    public void setHomestayPrice(Long homestayPrice) {
+        this.homestayPrice = homestayPrice;
+    }
+
 
     public LocalDate getCheckInDate() {
         return checkInDate;
@@ -131,4 +149,5 @@ public class BookingDTO {
     public void setCheckInTime(Long checkInTime) {
         this.checkInTime = checkInTime;
     }
+
 }

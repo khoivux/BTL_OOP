@@ -8,15 +8,14 @@ import com.javaweb.app.repository.HomestayRepository;
 import com.javaweb.app.repository.UserRepository;
 import com.javaweb.app.service.BookingService;
 import com.javaweb.app.mapper.BookingMapper;
+import org.modelmapper.ModelMapper;
 import com.javaweb.app.utils.DateUtil;
 import com.javaweb.app.utils.MapUtil;
 
 import jakarta.servlet.http.HttpSession;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.time.temporal.ChronoUnit;
 
@@ -73,6 +71,11 @@ public class BookingServiceImpl implements BookingService {
         return bookingDTO;
     }
 
+    @Override
+    public List<BookingEntity> getBookingsByUserId(Long userId) {
+        return bookingRepository.findByUser_Id(userId);
+    }
+
     public BookingDTO saveBooking(BookingDTO bookingDTO) {
         bookingRepository.save(modelMapper.map(bookingDTO, BookingEntity.class));
         return bookingDTO;
@@ -107,6 +110,28 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public void deleteBookingById(Long id) {
+        bookingRepository.deleteById(id);
+    }
+
+
+    public List<BookingDTO> getBookingsByUser_Id(Long userId) {
+        List<BookingEntity> bookings = bookingRepository.findByUser_Id(userId);
+        // Chuyển đổi BookingEntity thành BookingDTO
+        return bookings.stream()
+                .map(booking -> bookingMapper.mapToBookingDTO(booking)) // Giả sử bạn có mapper
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Long getUserIdByBookingId(Long bookingId) {
+        BookingEntity booking = bookingRepository.findById(bookingId).orElse(null);
+        if (booking != null) {
+            return booking.getUser().getUserID();
+        }
+        return null;
+    }
+    @Override
     public BookingDTO findById(Long id)
     {
         BookingDTO bookingDTO = modelMapper.map(bookingRepository.getById(id), BookingDTO.class);
@@ -114,11 +139,14 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public void deleteBookingById(Long id) {
-        bookingRepository.deleteById(id);
+    public void updateBookingStatus(Long id, String status) {
+        BookingEntity booking = bookingRepository.findById(id).orElse(null);
+        if (booking != null) {
+            booking.setStatus(status);
+            bookingRepository.save(booking);
+        }
     }
 
-    @Override
     public void cancelBookingById(Long id) {
         BookingEntity bookingEntity = bookingRepository.getById(id);
         bookingEntity.setStatus("Đã hủy");
