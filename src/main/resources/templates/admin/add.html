@@ -6,21 +6,104 @@
     <title>Trang Quản Trị</title>
     <link rel="stylesheet" th:href="@{/admin.css}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* CSS cho Toast */
+        .toast {
+            position: fixed;
+            top: 20px; /* Hiển thị ở trên cùng */
+            left: 50%;
+            transform: translateX(-50%); /* Đẩy sang giữa */
+            padding: 10px;
+            background-color: #ffffff; /* Màu nền trắng cho thông báo */
+            color: #333; /* Màu chữ */
+            border-radius: 5px;
+            opacity: 0; /* Ban đầu ẩn */
+            visibility: hidden; /* Không hiển thị */
+            transition: opacity 0.5s, visibility 0.5s, transform 0.3s ease-in-out; /* Hiệu ứng mờ dần và mở rộng */
+            z-index: 1050; /* Đảm bảo nó ở trên các phần tử khác */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Đổ bóng nhẹ cho toast */
+            border: 1px solid #28a745; /* Viền màu xanh lá cây */
+            transform: translateX(-50%) scale(0.9); /* Bắt đầu nhỏ hơn và sẽ phóng to */
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) scale(1); /* Phóng to */
+        }
+
+        /* Tiêu đề Toast */
+        .toast-title {
+            background-color: #7FC142; /* Nền xanh lá cây cho tiêu đề */
+            color: white; /* Chữ màu trắng */
+            padding: 5px 5px;
+            /*            border-radius: 5px 5px 0 0; *//* Cạnh trên tròn */
+            font-weight: bold;
+        }
+
+        .toast-body {
+            padding: 10px;
+        }
+
+        /* CSS cho nút đóng Toast */
+        .toast-close {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: #696969;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .toast-close:hover {
+            color: #dc3545; /* Màu đỏ khi hover */
+        }
+    </style>
 </head>
 <body>
 <header>
+    <div id="toast" class="toast">
+        <div class="toast-title">Thông Báo</div>
+        <div class="toast-body">
+            <p id="toast-message"></p>
+            <button class="toast-close" onclick="closeToast()">×</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript để hiển thị Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = message;
+
+            // Thêm lớp 'show' để hiển thị Toast
+            toast.classList.add('show');
+
+            // Ẩn Toast sau 5 giây
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 5000); // 5000ms = 5 giây
+        }
+
+        // Đóng Toast khi click vào nút "×"
+        function closeToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('show');
+        }
+    </script>
     <div class="d-flex justify-content-between align-items-center bg-success p-3">
         <h2 class="text-white">Trang quản trị</h2>
         <div>
             <span class="text-white">Xin chào, admin</span>
-            <div class = "d-flex justify-content-end"><a href = "#" class = "text-light">đăng xuất</a></div>  <!--đăng xuất-->
+            <div class = "d-flex justify-content-end"><a th:href = "@{/admin/logout}" class = "text-light">đăng xuất</a></div>   <!--đăng xuất-->
         </div>
     </div>
 </header>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>                                      <!--về trang chủ-->
-        <li class="breadcrumb-item active" aria-current="page"><a href="/admin">Trang quản trị</a></li>
         <li class="breadcrumb-item active" aria-current="page">Quản lý Homestay</li>
     </ol>
 </nav>
@@ -107,18 +190,6 @@
     </div>
 </div>
 
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="10000"> <!-- Thay đổi ở đây -->
-        <div class="toast-header">
-            <strong class="me-auto text-success">Thành công</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            Homestay đã được thêm thành công!
-        </div>
-    </div>
-</div>
-
 <script>
 
 function submitFormData(event) {
@@ -136,11 +207,7 @@ function submitFormData(event) {
         console.log('ID' + index);
         // Thêm các giá trị vào FormData
     });
-//    roomRows.forEach((room, index) => {
-//        formData.append(`rooms[${index}].type`, room.type);  // Kiểu phòng
-//        formData.append(`rooms[${index}].description`, room.description);  // Mô tả phòng
-//        formData.append(`rooms[${index}].numbers`, room.numbers);  // Số lượng phòng (sửa lại nếu có vấn đề)
-//    });
+
     for (let [key, value] of formData.entries()) {
         if (value instanceof File) {
             console.log(key + ': ' + value.name);  // In tên tệp
@@ -153,12 +220,24 @@ function submitFormData(event) {
         method: "POST",
         body: formData
     })
-        .then(response => response.json())
-        .then(data => {
-        console.log("Success:", data);
+        .then(response => {
+        if (response.ok) {
+            return response.text();  // Nhận thông báo trả về từ server (dạng text)
+        } else {
+            return response.text().then(errorMessage => {
+                // Ném lỗi để xử lý ở catch
+                throw new Error(errorMessage || 'Đã có lỗi xảy ra');
+            });
+        }
+    })
+        .then(message => {
+        // Hiển thị thông báo Toast thành công
+        showToast(message, "success");  // Thành công
     })
         .catch(error => {
-        console.error("Error:", error);
+        console.error("Error:", error.message);
+        // Hiển thị thông báo lỗi
+        showToast(error.message || "Có lỗi xảy ra khi thêm homestay", "error");  // Lỗi
     });
 }
 </script>

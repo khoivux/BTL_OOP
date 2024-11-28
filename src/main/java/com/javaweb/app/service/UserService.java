@@ -77,5 +77,16 @@ public class UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
-
+    // update profile
+    public void updateProfile(Long id, String fullName, String email, String phoneNumber, String address) {
+        User user = userRepository.getById(id);
+        if(user == null) {
+            throw new RuntimeException("Tài khoản không tồn tại");
+        }
+        user.setFullName(fullName);
+        user.setEmail(email);
+        user.setPhoneNumber(phoneNumber);
+        user.setAddress(address);
+        userRepository.save(user);
+    }
 }

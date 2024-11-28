@@ -1,12 +1,8 @@
 package com.javaweb.app.controller;
 
 import com.javaweb.app.dto.BookingDTO;
-import com.javaweb.app.exception.ResourceNotFoundException;
 import com.javaweb.app.service.BookingService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import com.javaweb.app.dto.HomestayDto;
 
 import com.javaweb.app.dto.HomestayResponseDTO;
 import com.javaweb.app.dto.UserDTO;
@@ -69,7 +65,7 @@ AdminController {
             return modelAndView;
         } else {
             ModelAndView modelAndView = new ModelAndView("admin/loginAdmin");
-            modelAndView.addObject("error", "Invalid username or password");
+            modelAndView.addObject("error", "Sai tài khoản hoặc mật khẩu");
             return modelAndView;
         }
     }
@@ -118,6 +114,8 @@ AdminController {
         if(session.getAttribute("admin") != null){
             ModelAndView modelAndView = new ModelAndView("admin/update");
             HomestayResponseDTO homestayDto = homestayService.findHomestayById(id);
+            modelAndView.addObject("facilities", facilitiesService.findAll());
+            modelAndView.addObject("provinces", provinceService.findAll());
             modelAndView.addObject("homestay", homestayDto);
             return modelAndView;
         }
@@ -139,16 +137,28 @@ AdminController {
         model.addObject("paymentHistories", bookings);
         return model;
     }
-    @GetMapping("/booking/{bookingId}")
-    @ResponseBody
-    public ResponseEntity<BookingDTO> getBookingDetails(@PathVariable Long bookingId) {
-        BookingDTO booking = bookingService.getBookingDetails(bookingId);
-        if (booking == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(booking);
-    }
+//    @GetMapping("/booking/{bookingId}")
+//    @ResponseBody
+//    public ResponseEntity<BookingDTO> getBookingDetails(@PathVariable Long bookingId) {
+//        BookingDTO booking = bookingService.getBookingDetails(bookingId);
+//        if (booking == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        return ResponseEntity.ok(booking);
+//    }
 
+    @PostMapping("/user-paymenthistory/{id}")
+    public ResponseEntity<String> updateBookingStatus(@PathVariable("id") Long id, @RequestBody Map<String, String> body) {
+        try {
+            // Lấy trạng thái từ body
+            String status = body.get("status");
+            // Gọi service để cập nhật trạng thái
+            bookingService.updateBookingStatus(id, status);
+            return ResponseEntity.ok("Cập nhật trạng thái thành công!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Cập nhật trạng thái thất bại!");
+        }
+    }
 
     /*
 

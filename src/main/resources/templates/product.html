@@ -54,6 +54,18 @@
         .list-unstyled li:last-child {
             border-bottom: none;
         }
+        body {
+            margin: 0; /* Xóa khoảng trắng mặc định */
+            padding: 0;
+            font-family: Arial, sans-serif; /* Tùy chọn font */
+        }
+        .container {
+            max-width: 1200px; /* Chiều rộng tối đa của nội dung */
+            margin: 0 auto; /* Căn giữa nội dung theo chiều ngang */
+            padding: 20px; /* Thêm khoảng cách bên trong */
+            /*            background-color: #f9f9f9; *//* Tùy chọn màu nền */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng */
+        }
     </style>
 
 </head>
@@ -76,10 +88,78 @@
             <span id="listbars" class="fa fa-bars" onclick="menutoggle()"></span>
         </div>
     </header>
+    <script>
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        console.log(isLoggedIn);
+        const updateUserAction = () => {
+            const userName = localStorage.getItem('name');
+
+            const userActionDiv = document.getElementById("user-action");
+            console.log(userActionDiv);
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                userActionDiv.innerHTML =
+                `
+                <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
+                    <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
+                    <ul show-ul class="d-none" id="userlist">
+                        <li><a href="#">Thông tin tài khoản</a></li>    <!--url trang profile-->
+                        <li><a href="#">Lịch sử đặt phòng</a></li>      <!--url trang history-->
+                        <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
+                    </ul>
+                </div>
+                `;
+            } else {
+                userActionDiv.innerHTML = `<a href="/user"><button class="primary-btn">Đăng nhập</button></a>`;
+            }
+        }
+
+        function logout() {
+            localStorage.setItem('isLoggedIn', false);
+            updateUserAction();
+        }
+        updateUserAction();
+    </script>
+
+
+    <script>
+        var Menulist = document.getElementsByClassName("navlinks");
+        // menulist.style.maxHeight = "0px";
+        function menutoggle() {
+            if (menulist.style.maxHeight == "0px") {
+                menulist.style.maxHeight = "60vh";
+            } else {
+                menulist.style.maxHeight = "0px";
+            }
+        }
+
+        let shown = false;
+        const showInfor = document.querySelector('[show-info]');
+        console.log(showInfor);
+        const showUl = showInfor.querySelector(`[show-ul]`);
+        console.log(showUl);
+        function showInfo() {
+
+            if(shown){
+                showUl.classList.remove('d-block');
+                showUl.classList.add("d-none");
+                // const userName = showInfor.querySelector(`.user`);
+                shown = false;
+            }
+            else{
+                showUl.classList.remove('d-none');
+                showUl.classList.add("d-block");
+                const userName = showInfor.querySelector(`.user`);
+                // console.log(userName);
+                // userName.classList.add("d-none");
+                shown = true;
+            }
+
+        }
+    </script>
 
 
 <main class="container my-5">
-    <form action="/" method="GET">
+    <form th:action="@{/booking/form}" method="POST">
     <div class="row">
         <div class="col-lg-7 custom-border" >
             <!--Hình ảnh sản phẩm-->
@@ -134,17 +214,18 @@
             <div class="search-box">
                 <div class="date-picker">
                     <label for="checkin-date">Ngày nhận phòng</label>
-                    <input type="date" id="checkin-date" required name="checkinDate"
+                    <input type="date" id="checkin-date" required name="checkInDate"
                            th:value="${checkInDate != null ? checkInDate : ''}">
                 </div>
 
                 <div class="date-picker">
                     <label for="checkout-date">Ngày trả phòng</label>
-                    <input type="date" id="checkout-date" required name="checkoutDate"
+                    <input type="date" id="checkout-date" required name="checkOutDate"
                            th:value="${checkOutDate != null ? checkOutDate : ''}">
                 </div>
             </div>
-            <a th:href="@{/book}" class="btn btn-primary">Đặt ngay</a>
+            <input type="number"  id="homestayId" name="homestayId" th:value="${homestay.id}" hidden>
+            <button class="btn btn-primary" type="submit">Đặt ngay</button>
         </div>
     </div>
     </form>
@@ -227,75 +308,7 @@
         </div>
     </section>
 </main>
-    <script>
 
-        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        console.log(isLoggedIn);
-        const updateUserAction = () => {
-            const userName = localStorage.getItem('name');
-
-            const userActionDiv = document.getElementById("user-action");
-            console.log(userActionDiv);
-            if (localStorage.getItem('isLoggedIn') === 'true') {
-                userActionDiv.innerHTML =
-                `
-                <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
-                    <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
-                    <ul show-ul class="d-none" id="userlist">
-                        <li><a href="#">Thông tin tài khoản</a></li>    <!--url trang profile-->
-                        <li><a href="#">Lịch sử đặt phòng</a></li>      <!--url trang history-->
-                        <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
-                    </ul>
-                </div>
-                `;
-            } else {
-                userActionDiv.innerHTML = `<a href="/user"><button class="primary-btn">Đăng nhập</button></a>`;
-            }
-        }
-
-        function logout() {
-            localStorage.setItem('isLoggedIn', false);
-            updateUserAction();
-        }
-        updateUserAction();
-    </script>
-
-
-    <script>
-        var Menulist = document.getElementsByClassName("navlinks");
-        // menulist.style.maxHeight = "0px";
-        function menutoggle() {
-            if (menulist.style.maxHeight == "0px") {
-                menulist.style.maxHeight = "60vh";
-            } else {
-                menulist.style.maxHeight = "0px";
-            }
-        }
-
-        let shown = false;
-        const showInfor = document.querySelector('[show-info]');
-        console.log(showInfor);
-        const showUl = showInfor.querySelector(`[show-ul]`);
-        console.log(showUl);
-        function showInfo() {
-
-            if(shown){
-                showUl.classList.remove('d-block');
-                showUl.classList.add("d-none");
-                // const userName = showInfor.querySelector(`.user`);
-                shown = false;
-            }
-            else{
-                showUl.classList.remove('d-none');
-                showUl.classList.add("d-block");
-                const userName = showInfor.querySelector(`.user`);
-                // console.log(userName);
-                // userName.classList.add("d-none");
-                shown = true;
-            }
-
-        }
-    </script>
     <footer>
         <div class="container-footer">
             <div class="box">

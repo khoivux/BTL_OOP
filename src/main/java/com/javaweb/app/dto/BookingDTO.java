@@ -1,41 +1,30 @@
 package com.javaweb.app.dto;
 
-
 import com.javaweb.app.entity.BookingEntity;
+
+import com.javaweb.app.entity.HomestayEntity;
+import com.javaweb.app.entity.User;
+
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class BookingDTO {
     private Long id;
-    private String userPhone;
-    private String userEmail;
     private String homestayName;
     private Long homestayPrice;
-    private String userFullName;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private LocalDateTime bookingTime;
     private String status;
-    private Long homestay_id, user_id;
-    public BookingDTO() {
-    }
-    public BookingDTO(Long id,String userPhone,String UserEmail,String homestayName,Long homestayPrice, String userFullName, LocalDate checkInDate, LocalDate checkOutDate, LocalDateTime bookingTime, String status) {
-        this.id = id;
-        this.userPhone = userPhone;
-        this.userEmail = UserEmail;
-        this.homestayName = homestayName;
-        this.homestayPrice = homestayPrice;
-        this.userFullName = userFullName;
-        this.checkInDate = checkInDate;
-        this.checkOutDate = checkOutDate;
-        this.bookingTime = bookingTime;
-        this.status = status;
-    }
+    private String customerName;
+    private String customerEmail;
+    private String customerPhone;
+    private HomestayEntity homestay;
+    private Long stayDuration;
+    private Long total;
+    private User user;
 
-    public BookingDTO(BookingEntity booking) {
-    }
-// Getters và Setters
 
     public Long getId() {
         return id;
@@ -45,12 +34,6 @@ public class BookingDTO {
         this.id = id;
     }
 
-    public String getUserEmail() {return userEmail;}
-
-    public void setUserEmail(String userEmail) {this.userEmail = userEmail;}
-
-    public String getUserPhone() {return userPhone;}
-    public void setUserPhone(String userPhone) {this.userPhone = userPhone;}
 
     public void setHomestayName(String homestayName) {
         this.homestayName = homestayName;
@@ -64,10 +47,6 @@ public class BookingDTO {
         this.homestayPrice = homestayPrice;
     }
 
-
-    public void setUserName(String userFullName) {
-        this.userFullName = userFullName;
-    }
 
     public LocalDate getCheckInDate() {
         return checkInDate;
@@ -101,29 +80,64 @@ public class BookingDTO {
         this.status = status;
     }
 
-    public Long getHomestay_id() {
-        return homestay_id;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setHomestay_id(Long homestay_id) {
-        this.homestay_id = homestay_id;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public String getCustomerEmail() {
+        return customerEmail;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
     }
 
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
+
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
+    }
+
+    public HomestayEntity getHomestay() {
+        return homestay;
+    }
+
+    public void setHomestay(HomestayEntity homestay) {
+        this.homestay = homestay;
+    }
+
+    public Long getStayDuration() {
+        return stayDuration;
+    }
+
+    public void setStayDuration(Long stayDuration) {
+        this.stayDuration = stayDuration;
+    }
+
+    public Long getTotal() {
+        return total;
+    }
+
+    public void setTotal(Long total) {
+        this.total = total;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String getHomestayName() {
         return homestayName;
     }
 
-    public String getUserFullName() {
-        return userFullName;
-    }
-    public void setUserFullName(String userFullName) {this.userFullName = userFullName;}
 }
