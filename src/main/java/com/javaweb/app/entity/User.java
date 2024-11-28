@@ -64,4 +64,6 @@ public class User {
     public String getUserRole() {
         return role;
     }
+
+    public String getUserPhone() { return phoneNumber; }
 }

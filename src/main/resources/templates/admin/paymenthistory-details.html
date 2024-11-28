@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản trị • HomesTayBac</title>
+    <link rel="stylesheet" th:href="@{/admin.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header>
+    <div class="d-flex justify-content-between align-items-center bg-success p-3">
+        <h2 class="text-white">Trang quản trị</h2>
+        <div>
+            <span class="text-white">Xin chào, admin</span>
+            <div class = "d-flex justify-content-end"><a href = "#" class = "text-light">đăng xuất</a></div>    <!--đăng xuất-->
+        </div>
+    </div>
+</header>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>                                      <!--về trang chủ-->
+        <li class="breadcrumb-item active" aria-current="page"><a href="/admin">Trang quản trị</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Quản lý khách hàng</li>
+    </ol>
+</nav>
+
+<div class="container-fluid row m-0">
+    <div class="managecol p-0 col-2">
+        <div>Quản lý</div>
+        <ul class = "manage px-3">
+            <li> <a th:href="@{/admin/homestay-list}">Quản lý Homestay</a></li>  <!-- Không cần liên kết -->
+            <li> <a th:href="@{/admin/user}">Quản lý khách hàng</a></li>
+        </ul>
+    </div>
+    <div class="action col-9.5">
+        <h3>Chi tiết lịch sử giao dịch</h3>
+        <div>
+            <table class="table table-bordered" style="width: 150vh">
+                <thead class="thead-light">
+                <tr>
+                    <th style="width: 5%;text-align:center;">ID</th>
+                    <th style="width: 30%;text-align:center">User Name</th>
+                    <th style="width: 15%;text-align:center">Checkin Date</th>
+                    <th style="width: 15%;text-align:center">Checkout Date</th>
+                    <th style="width: 35%;text-align:center">Homestay Name</th>
+                    <th style="width: 10%;text-align:center">Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="booking : ${bookings}" th:if="${bookings != null}">
+                    <td class="p-2" style="text-align:center" th:text="${booking.id}"></td>
+                    <td class="p-2" style="text-align:center" th:text="${booking.userFullName}"></td>
+                    <td class="p-2" style="text-align:center" th:text="${booking.checkInDate}"></td>
+                    <td class="p-2" style="text-align:center" th:text="${booking.checkOutDate}"></td>
+                    <td class="p-2" style="text-align:center" th:text="${booking.homestayName}"></td>
+                    <td class="p-2" style="text-align:center" th:text="${booking.homestayPrice}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

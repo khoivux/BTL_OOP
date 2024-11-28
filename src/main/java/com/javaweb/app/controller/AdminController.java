@@ -1,7 +1,10 @@
 package com.javaweb.app.controller;
 
 import com.javaweb.app.dto.BookingDTO;
+import com.javaweb.app.exception.ResourceNotFoundException;
 import com.javaweb.app.service.BookingService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import com.javaweb.app.dto.HomestayDto;
 
@@ -26,7 +29,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin")
-public class AdminController {
+public class
+AdminController {
     @Autowired
     public HomestayServiceImpl homestayServiceImpl;
     @Autowired
@@ -89,6 +93,8 @@ public class AdminController {
             return model;
         }
         return new ModelAndView("admin/loginAdmin");
+
+
     }
 
 
@@ -133,4 +139,41 @@ public class AdminController {
         model.addObject("paymentHistories", bookings);
         return model;
     }
+    @GetMapping("/booking/{bookingId}")
+    @ResponseBody
+    public ResponseEntity<BookingDTO> getBookingDetails(@PathVariable Long bookingId) {
+        BookingDTO booking = bookingService.getBookingDetails(bookingId);
+        if (booking == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(booking);
+    }
+
+
+    /*
+
+    @GetMapping("/user-paymenthistory/{id}")
+    public ResponseEntity<BookingDTO> getBookingDetails(@PathVariable("id") Long bookingId) {
+        try {
+            // Gọi phương thức trong service để lấy thông tin Booking
+            BookingDTO bookingDTO = bookingService.getBookingById(bookingId);
+
+            // Trả về thông tin dưới dạng JSON
+            return ResponseEntity.ok(bookingDTO);
+        } catch (ResourceNotFoundException e) {
+            // Trả về lỗi 404 nếu không tìm thấy booking
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(null); // Hoặc trả về một DTO lỗi chi tiết hơn
+        }
+    }
+    /*
+    @GetMapping("/paymenthistory-details/{id}")
+    public ModelAndView showPaymentHistoryDetails(@PathVariable Long id) {
+        BookingDTO bookings = bookingService.getBookingById(id);
+        ModelAndView model = new ModelAndView("admin/paymenthistory-details");
+        model.addObject("bookings", bookings);
+        return model;
+    }
+    */
+
 }
