@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Đặt Phòng Homestay</title>
+    <link rel="stylesheet" th:href="@{/booking.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        .custom-btn {
+            width: 100px;
+            text-align: center;
+            background-color: #7fc142ed; /* Màu nền */
+            color: white; /* Màu chữ */
+            border: none; /* Xóa viền */
+            border-radius: 5px;
+        }
+        .custom-btn:hover {
+            background-color: #67a32f; /* Màu khi hover */
+        }
+
+        body{
+            font-family: 'Open Sans', sans-serif;
+        }
+        h1,h2{
+            font-family: sans-serif;
+            font-weight: 400;
+        }
+        a{
+
+            text-decoration: none;
+        }
+        .img{
+            object-fit: cover;
+        }
+        li{
+            list-style: none;
+        }
+        .flex{
+            display: flex;
+        }
+        .flex_space{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .primary-btn{
+            padding: 15px 40px;
+            background: #7fc142ed;
+            font-weight: bold;
+            color: white;
+        }
+        .primary-btn:hover{
+            background: #67a32f;
+        }
+        .secondary-btn{
+            padding: 15px 40px;
+            background: none;
+            font-weight: bold;
+            color:white;
+        }
+        .secondary-btn:hover{
+            border: soild black;
+        }
+
+        .container{
+            max-width: 85%;
+            margin: auto;
+        }
+
+        header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            background-color: #90b99042;
+            padding: 10px 20px;
+        }
+
+        header img{
+            max-width: 200px;
+            max-height: 9vh;
+        }
+        header ul{
+            display: flex;
+            align-items: center;
+        }
+        header ul li{
+            display: inline-block;
+            text-transform: uppercase;
+        }
+        header ul li a{
+            color: #000;
+            margin: 0 10px;
+            transition: 0.5s;
+        }
+        header ul li a:hover{
+            color: #7fc142;
+        }
+        header i{
+            margin: 0 20px;
+        }
+        header button{
+            padding: 13px 40px;
+        }
+        header .navlinks #listbars{
+            display: none;
+        }
+        .user{
+            color:#00b312;
+            text-decoration:underline;
+            font-weight: bold;
+        }
+        .d-none {
+            display: none;
+        }
+        .d-block {
+        a{
+            color: white;
+        }
+        display: block;
+            position: absolute;
+            top: 110%;
+            right: 20px;
+            width: 20%;
+            height: fit-content;
+            border-radius: 10px;
+            background : #01ac56e4;
+            overflow : hidden;
+            transition: max-height 0.5s;
+            text-align: center;
+            z-index: 9;
+        li{
+            margin:10px;
+        }
+        }
+        @media only screen and (max-width: 850px){
+            .d-none{
+                display: block;
+            }
+            .d-block{
+                display:block;
+            }
+            header .user{
+                color:white
+            }
+            header ul{
+                display: block;
+                position: absolute;
+                top: 10vh;
+                right:10px;
+                width: fit-content;
+                height: fit-content;
+                background : #009f7f;
+                overflow : hidden;
+                transition: max-height 0.5s;
+                text-align: center;
+                z-index: 9;
+            }
+            header ul li{
+                display:block;
+                margin:10px;
+            }
+            header ul li a{
+                color: white;
+            }
+            header i{
+                color:white;
+            }
+            header .navlinks #listbars{
+                color:black;
+                display: block;
+                cursor: pointer;
+                line-height: 10vh;
+                font-size: 25px;
+            }
+        }
+        .general-info {
+            background-color: #b1fb6b93;
+            padding: 20px;
+        }
+        .info-box, .summary-box {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+
+        .regulations{
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+        .payment button{
+            padding: 15px 40px;
+            background: #7fc142ed;
+            font-weight: bold;
+            color: white;
+            border : 1px;
+        }
+        /* Modal Background */
+        .modal {
+            display: none; /* Ẩn modal mặc định */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Màu nền tối */
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Close Button */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Modal Image */
+        .modal-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* Modal Caption */
+        .modal-caption {
+            margin: 10px 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        footer{
+            background: #282834;
+            color: #b6b7b9;
+            padding-top: 30px;
+        }
+        footer p{
+            color: #b6b7b9;
+            font-size: 15px;
+        }
+        footer .icon i{
+            margin: 20px 20px 20px 0;
+            color: #b6b7b9;
+        }
+        footer i{
+            color: #7fc142;
+            margin: 20px 0;
+            margin-right: 20px;
+        }
+        footer img{
+            width: 300px;
+        }
+        footer .box h2{
+            color: #7fc142;
+            margin-bottom: 20px;
+        }
+        footer .box a{
+            color: #b6b7b9;
+            margin-bottom: 10px;
+            text-decoration: none;
+        }
+
+        footer .box a:hover{
+            color: #b6b7b9ca;
+            text-decoration: underline;
+        }
+
+        body {
+            margin: 0; /* Xóa khoảng trắng mặc định */
+            padding: 0;
+            font-family: Arial, sans-serif; /* Tùy chọn font */
+        }
+        .container {
+            max-width: 1200px; /* Chiều rộng tối đa của nội dung */
+            margin: 0 auto; /* Căn giữa nội dung theo chiều ngang */
+            padding: 20px; /* Thêm khoảng cách bên trong */
+            /*            background-color: #f9f9f9; *//* Tùy chọn màu nền */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="/"><img alt="" th:src="@{/img/logo.jpeg}"></a> <!--back về home-->
+        </div>
+
+        <div class="navlinks">
+            <ul id="menulist">
+                <li><a href="" class="link-underline link-underline-opacity-0">Trang chủ</a></li> <!--url đến home-->
+                <li><a href="#Dịch Vụ" class="link-underline link-underline-opacity-0">Dịch vụ</a></li> <!--url xuống dịch vụ-->
+                <li><a href="#homestay" class="link-underline link-underline-opacity-0">Homestay</a></li> <!--url xuống danh sách homestay-->
+                <li><a href="#Liên Hệ" class="link-underline link-underline-opacity-0">Liên hệ</a></li> <!--url xuống liên hệ-->
+                <li><a href="#Feedback" class="link-underline link-underline-opacity-0">Phản hồi</a></li> <!--url đến trang phản hồi-->
+                <li id="user-action"></li>
+            </ul>
+            <span id="listbars" class="fa fa-bars" onclick="menutoggle()"></span>
+        </div>
+    </header>
+    <script>
+
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        console.log(isLoggedIn);
+        const updateUserAction = () => {
+            const userName = localStorage.getItem('name');
+
+            const userActionDiv = document.getElementById("user-action");
+            console.log(userActionDiv);
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                userActionDiv.innerHTML =
+                `
+                <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
+                    <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
+                    <ul show-ul class="d-none" id="userlist">
+                        <li><a href="/user/user_profile">Thông tin tài khoản</a></li>    <!--url trang profile-->
+
+                        <li><a href="/booking/history">Lịch sử đặt phòng</a></li>      <!--url trang history-->
+
+                        <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
+                    </ul>
+                </div>
+                `;
+            } else {
+                userActionDiv.innerHTML = `<a href="/user"><button class="primary-btn">Đăng nhập</button></a>`;
+            }
+        }
+
+        function logout() {
+            localStorage.setItem('isLoggedIn', false);
+            updateUserAction();
+        }
+        updateUserAction();
+    </script>
+    <script>
+        var Menulist = document.getElementsByClassName("navlinks");
+        // menulist.style.maxHeight = "0px";
+        function menutoggle() {
+            if (menulist.style.maxHeight == "0px") {
+                menulist.style.maxHeight = "60vh";
+            } else {
+                menulist.style.maxHeight = "0px";
+            }
+        }
+
+        let shown = false;
+        const showInfor = document.querySelector('[show-info]');
+        console.log(showInfor);
+        const showUl = showInfor.querySelector(`[show-ul]`);
+        console.log(showUl);
+        function showInfo() {
+
+            if(shown){
+                showUl.classList.remove('d-block');
+                showUl.classList.add("d-none");
+                // const userName = showInfor.querySelector(`.user`);
+                shown = false;
+            }
+            else{
+                showUl.classList.remove('d-none');
+                showUl.classList.add("d-block");
+                const userName = showInfor.querySelector(`.user`);
+                // console.log(userName);
+                // userName.classList.add("d-none");
+                shown = true;
+            }
+
+        }
+        function usertoggle() {
+            const userlist = document.getElementById("userlist");
+            userlist.classList.toggle("d-none");
+            userlist.classList.toggle("d-block");
+        }
+    </script>
+
+    <form  id = "Details" action="/booking/invoice" method="POST">  <!--nhập thông tin-->
+        <div class="container mt-4">
+            <!-- Header -->
+            <div class="general-info text-center">
+                <h3 th:text="${homestay.name}"></h3>
+                <p th:text="${homestay.address}"></p>
+            </div>
+
+            <div class="row">
+                <!-- Booking Details -->
+                <div class="col-md-4">
+                    <div class="details info-box">
+                        <h3>Chi tiết đặt homestay của bạn</h3>
+                        <p th:text="'Nhận phòng: ' + ${checkInDate}"></p>
+                        <p th:text="'Trả phòng: ' + ${checkOutDate}"></p>
+                        <p th:text="'Tổng thời gian lưu trú: ' + ${stayDays} + ' ngày'"></p>
+                        <h5 th:text="'Giá thuê: ' + ${rent_price} + '.000 VNĐ/Ngày'"></h5>
+                        <a href="/search" class="text-primary">Đổi lựa chọn của bạn</a>
+                    </div>
+                    <div class="facilities info-box">
+                        <h5 class="mt-4">Tiện nghi:</h5>
+                        <ul class="list-unstyled">
+                            <!-- Lặp qua danh sách facilities -->
+                            <li th:each="facility : ${facilities}" th:text="'• ' + ${facility.name}">
+                                <i class="fas fa-check-circle"></i>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="info-box">
+                        <div class="book-cus info-box">
+                            <h5>Thông tin người đặt phòng</h5>
+                            <div class="mb-3">
+                                <label class="form-label">Họ và tên</label>
+                                <input type="text" class="form-control" name="userName" th:value="${user.fullName}" placeholder="Ví dụ: Nguyễn Thế Lâm" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="userEmail" th:value="${user.email}" placeholder="email@example.com" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Số điện thoại</label>
+                                <input type="text" class="form-control" name="userPhone" th:value="${user.phoneNumber}" placeholder="+84" readonly>
+                            </div>
+                        </div>
+                        <div class="check-in-cus info-box">
+                            <h5>Thông tin người nhận phòng</h5>
+                            <div class="mb-3">
+                                <label  class="form-label">Họ và tên</label>
+                                <input type="text" class="form-control" name="customerName" placeholder="Ví dụ: Mai Xuân Nhân">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="customerEmail" placeholder="email@example.com">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Số điện thoại</label>
+                                <input type="text" class="form-control" name="customerPhone" placeholder="+84">
+                            </div>
+                        </div>
+                        <div class="check-in-time">
+                            <h6>Thời gian nhận phòng</h6>
+                            <select class="form-select" name="checkInTime">
+                                <option value="" disabled="" selected="">Vui lòng chọn</option>
+                                <option value="7">07:00 – 08:00 </option>
+                                <option value="8">08:00 – 09:00 </option>
+                                <option value="9">09:00 – 10:00 </option>
+                                <option value="10">10:00 – 11:00 </option>
+                                <option value="11">11:00 – 12:00 </option>
+                                <option value="12">12:00 – 13:00 </option>
+                                <option value="13">13:00 – 14:00 </option>
+                                <option value="14">14:00 – 15:00 </option>
+                                <option value="15">15:00 – 16:00 </option>
+                                <option value="16">16:00 – 17:00 </option>
+                                <option value="17">17:00 – 18:00 </option>
+                                <option value="18">18:00 – 19:00 </option>
+                                <option value="18">19:00 – 20:00 </option>
+                            </select>
+                        </div>
+                        <div class="regulations">
+                            <h5>Quy định chung</h5>
+                            <ul>
+                                <li>- Không hút thuốc</li>
+                                <li>- Thời gian yên lặng từ 22:00 đến 07:00</li>
+                                <li>- Không cho phép thú cưng</li>
+                            </ul>
+                        </div>
+                        <input type="date" id="checkin-date"  name="checkInDate" hidden
+                               th:value="${checkInDate != null ? checkInDate : ''}">
+                        <input type="date" id="checkout-date"  name="checkOutDate" hidden
+                               th:value="${checkOutDate != null ? checkOutDate : ''}">
+                        <input type="number"  id="homestayId" name="homestayId" th:value="${homestay.id}" hidden>
+                        <div class="d-flex justify-content-end mt-5">
+                            <button type="submit" class="btn btn-primary">Thanh toán</button>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- User Information Form -->
+        </div>
+    </form> 
+  
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("modal");
+        const openModalBtn = document.getElementById("openModalBtn");
+        const closeModal = document.querySelector(".close"); // Chọn phần tử close chính xác
+    
+        // Mở modal khi nhấn vào nút
+        openModalBtn.onclick = function () {
+            modal.style.display = "flex";
+        };
+    
+        // Đóng modal khi nhấn vào dấu 'X'
+        if (closeModal) {
+            closeModal.onclick = function () {
+                modal.style.display = "none";
+            };
+        }
+    
+        // Đóng modal khi nhấn ra ngoài modal
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+    });
+</script>
+
+    
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col box">
+                    <img src="/static/img/background2.jpg" alt="">
+                    <div class="icon">
+                        <i class="fa fa-facebook-f"></i>
+                        <i class="fa fa-instagram"></i>
+                        <i class="fa fa-twitter"></i>
+                        <i class="fa fa-youtube"></i>
+                    </div>
+                </div>
+                <div class="col box">
+                    <h2>GIỚI THIỆU</h2>
+                    <a href="#">Trang chủ</a><br>
+                    <a href="#">Dịch vụ</a><br>
+                    <a href="#">Tin tức</a><br>
+                    <a href="#">Liên hệ</a><br>
+                </div>
+                <div class="col box">
+                    <h2>LIÊN KẾT</h2>
+                    <a href="#">Điều khoản sử dụng</a><br>
+                    <a href="#">Chính sách bảo mật</a><br>
+                    <a href="#">Chính sách hoàn tiền</a><br>
+                    <a href="#">FAQs</a>
+                </div>
+                <div class="col-md-2 box">
+                    <h2>LIÊN HỆ</h2>
+                    <div class = "flex">
+                        <i class="fa fa-location-dot"></i>
+                        <p>30 Tran Phu, Ha Dong, Ha Noi, Viet Nam</p>
+                    </div>
+                    <div class = "flex">
+                        <i class="fa fa-phone"></i>
+                        <p>0987352163</p>
+                    </div>
+                    <div class = "flex">
+                        <i class="fa fa-envelope"></i>
+                        <p>nhan54v@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+1

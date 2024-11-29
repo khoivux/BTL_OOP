@@ -6,21 +6,113 @@
     <title>Quản trị • HomesTayBac</title>
     <link rel="stylesheet" th:href="@{/admin.css}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* CSS cho Toast */
+        .toast {
+            position: fixed;
+            top: 20px; /* Hiển thị ở trên cùng */
+            left: 50%;
+            transform: translateX(-50%); /* Đẩy sang giữa */
+            padding: 10px;
+            background-color: #ffffff; /* Màu nền trắng cho thông báo */
+            color: #333; /* Màu chữ */
+            border-radius: 5px;
+            opacity: 0; /* Ban đầu ẩn */
+            visibility: hidden; /* Không hiển thị */
+            transition: opacity 0.5s, visibility 0.5s, transform 0.3s ease-in-out; /* Hiệu ứng mờ dần và mở rộng */
+            z-index: 1050; /* Đảm bảo nó ở trên các phần tử khác */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Đổ bóng nhẹ cho toast */
+            border: 1px solid #28a745; /* Viền màu xanh lá cây */
+            transform: translateX(-50%) scale(0.9); /* Bắt đầu nhỏ hơn và sẽ phóng to */
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) scale(1); /* Phóng to */
+        }
+
+        /* Tiêu đề Toast */
+        .toast-title {
+            background-color: #7FC142; /* Nền xanh lá cây cho tiêu đề */
+            color: white; /* Chữ màu trắng */
+            padding: 5px 5px;
+            /*            border-radius: 5px 5px 0 0; *//* Cạnh trên tròn */
+            font-weight: bold;
+        }
+
+        .toast-body {
+            padding: 10px;
+        }
+
+        /* CSS cho nút đóng Toast */
+        .toast-close {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: #696969;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .toast-close:hover {
+            color: #dc3545; /* Màu đỏ khi hover */
+        }
+    </style>
 </head>
 <body>
+    <div id="toast" class="toast">
+        <div class="toast-title">Thông Báo</div>
+        <div class="toast-body">
+            <p id="toast-message"></p>
+            <button class="toast-close" onclick="closeToast()">×</button>
+        </div>
+    </div>
+    <script>
+        // JavaScript để hiển thị Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = message;
+
+            // Thêm lớp 'show' để hiển thị Toast
+            toast.classList.add('show');
+
+            // Ẩn Toast sau 5 giây
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 5000); // 5000ms = 5 giây
+        }
+
+        // Đóng Toast khi click vào nút "×"
+        function closeToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('show');
+        }
+    </script>
+
+    <!-- Thymeleaf Script để hiển thị Toast khi có message -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var message = [[${message}]];  // Lấy thông báo từ session
+        if (message) {
+        showToast(message);  // Hiển thị Toast với thông báo
+        }
+        /*]]>*/
+    </script>
     <header>
         <div class="d-flex justify-content-between align-items-center bg-success p-3">
             <h2 class="text-white">Trang quản trị</h2>
             <div>
                 <span class="text-white">Xin chào, admin</span>
-                <div class = "d-flex justify-content-end"><a href = "#" class = "text-light">đăng xuất</a></div>    <!--đăng xuất-->
+                <div class = "d-flex justify-content-end"><a th:href = "@{/admin/logout}" class = "text-light">đăng xuất</a></div>    <!--đăng xuất-->
             </div>
         </div>
     </header>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>                                      <!--về trang chủ-->
-            <li class="breadcrumb-item active" aria-current="page"><a href="/admin">Trang quản trị</a></li>
             <li class="breadcrumb-item active" aria-current="page">Quản lý Homestay</li>
         </ol>
     </nav>
@@ -60,28 +152,31 @@
                 <table class="table table-bordered" style="width: 150vh">
                     <thead class="thead-light">
                         <tr>
-                            <th style="width: 7%">ID</th>
-                            <th style="width: 20%">Tên</th>
-                            <th style="width: 45%">địa chỉ</th>
-                            <th style="width: 13%">Giá</th>
-                            <th style="width: 15%">Thao tác</th>
+                            <th style="width: 5%; text-align: center">ID</th>
+                            <th style="width: 20%; text-align: center">Tên</th>
+                            <th style="width: 40%; text-align: center">Địa chỉ</th>
+                            <th style="width: 20%; text-align: center">Giá</th>
+                            <th style="width: 15%; text-align: center">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="homestay : ${homestays}" th:if="${homestays != null}">
-                            <td class="p-2" th:text="${homestay.id}"></td>
-                            <td class="p-2" th:text="${homestay.name}"></td>
-                            <td class="p-2" th:text="${homestay.address}"></td>
-                            <td class="p-2" th:text="${homestay.price + '/ngày'}"></td>
+                            <td class="p-2" style="text-align: center" th:text="${homestay.id}"></td>
+                            <td class="p-2" style="text-align: center" th:text="${homestay.name}"></td>
+                            <td class="p-2" style="text-align: center" th:text="${homestay.address + ', ' + homestay.province.name}"></td>
+                            <td class="p-2" style="text-align: center" th:text="${homestay.price + '.000 VND/Ngày'}"></td>
 
-                            <td class = "p-2">
+                            <td class = "p-2" style="text-align: center">
                                 <!-- Sửa -->
                                 <form th:action="@{/admin/homestay-edit/{id}(id=${homestay.id})}" method="GET" style="display:inline;">
                                     <button type="submit" class="btn btn-warning btn-sm">Sửa</button>
                                 </form>
                                 <!-- Xóa -->
                                 <form th:action="@{/admin/homestay-delete/{id}(id=${homestay.id})}" method="POST" style="display:inline;">
-                                    <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Bạn có chắc chắn muốn xóa Homestay này?');">
+                                        Xóa
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -90,7 +185,6 @@
             </div>
         </div>
     </div>
-        
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>

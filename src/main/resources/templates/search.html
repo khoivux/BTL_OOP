@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:form="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en"xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <link rel="stylesheet" th:href="@{/css/search.css}">
-<!--    <link href="../static/css/search.css" rel="stylesheet">-->
+
+
     <script crossorigin="anonymous" src="https://kit.fontawesome.com/032d11eac3.js"></script>
     <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css"
           integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A=="
@@ -17,57 +18,162 @@
     <script crossorigin="anonymous"
             integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <title>Tìm kiếm • HomesTayBac</title>
+    <style>
+        body {
+            margin: 0; /* Xóa khoảng trắng mặc định */
+            padding: 0;
+            font-family: Arial, sans-serif; /* Tùy chọn font */
+        }
+
+        .container {
+            max-width: 1300px; /* Chiều rộng tối đa của nội dung */
+            margin: 0 auto; /* Căn giữa nội dung theo chiều ngang */
+            padding: 20px; /* Thêm khoảng cách bên trong */
+/*            background-color: #f9f9f9; *//* Tùy chọn màu nền */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng */
+        }
+        /* CSS cho Toast */
+        .toast {
+            position: fixed;
+            top: 20px; /* Hiển thị ở trên cùng */
+            left: 50%;
+            transform: translateX(-50%); /* Đẩy sang giữa */
+            padding: 10px;
+            background-color: #ffffff; /* Màu nền trắng cho thông báo */
+            color: #333; /* Màu chữ */
+            border-radius: 5px;
+            opacity: 0; /* Ban đầu ẩn */
+            visibility: hidden; /* Không hiển thị */
+            transition: opacity 0.5s, visibility 0.5s, transform 0.3s ease-in-out; /* Hiệu ứng mờ dần và mở rộng */
+            z-index: 1050; /* Đảm bảo nó ở trên các phần tử khác */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Đổ bóng nhẹ cho toast */
+            border: 1px solid #28a745; /* Viền màu xanh lá cây */
+            transform: translateX(-50%) scale(0.9); /* Bắt đầu nhỏ hơn và sẽ phóng to */
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) scale(1); /* Phóng to */
+        }
+
+        /* Tiêu đề Toast */
+        .toast-title {
+            background-color: #7FC142; /* Nền xanh lá cây cho tiêu đề */
+            color: white; /* Chữ màu trắng */
+            padding: 5px 5px;
+/*            border-radius: 5px 5px 0 0; *//* Cạnh trên tròn */
+            font-weight: bold;
+        }
+
+        .toast-body {
+            padding: 10px;
+        }
+
+        /* CSS cho nút đóng Toast */
+        .toast-close {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: #696969;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .toast-close:hover {
+            color: #dc3545; /* Màu đỏ khi hover */
+        }
+    </style>
 </head>
 <body>
-<header>
+<!-- Toast HTML -->
+<!-- Toast HTML -->
+<div id="toast" class="toast">
+    <div class="toast-title">Thông Báo</div>
+    <div class="toast-body">
+        <p id="toast-message"></p>
+        <button class="toast-close" onclick="closeToast()">×</button>
+    </div>
+</div>
 
+<script>
+    // JavaScript để hiển thị Toast
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toast-message').textContent = message;
+
+        // Thêm lớp 'show' để hiển thị Toast
+        toast.classList.add('show');
+
+        // Ẩn Toast sau 5 giây
+        setTimeout(function() {
+            toast.classList.remove('show');
+        }, 5000); // 5000ms = 5 giây
+    }
+
+    // Đóng Toast khi click vào nút "×"
+    function closeToast() {
+        const toast = document.getElementById('toast');
+        toast.classList.remove('show');
+    }
+</script>
+
+<!-- Thymeleaf Script để hiển thị Toast khi có errorMessage -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var errorMessage = [[${errorMessage}]];
+    if (errorMessage) {
+    showToast(errorMessage);
+    }
+    /*]]>*/
+</script>
+<header>
     <div class="logo">
-        <a href="/"><img alt="" src="../static/img/logo.jpeg"></a> <!--back về home-->
+        <a href="/"><img alt="" th:src="@{/img/logo.jpeg}" ></a> <!--back về home-->
     </div>
     <div class="navlinks">
         <ul id="menulist">
             <li><a class="link-underline link-underline-opacity-0" href="/">Trang chủ</a></li> <!--url đến home-->
             <li><a class="link-underline link-underline-opacity-0" href="#Dịch Vụ">Dịch vụ</a></li>
-            <!--url xuống dịch vụ-->
             <li><a class="link-underline link-underline-opacity-0" href="#homestay">Homestay</a></li>
-            <!--url xuống danh sách homestay-->
             <li><a class="link-underline link-underline-opacity-0" href="#nLiên Hệ">Liên hệ</a></li>
-            <!--url xuống liên hệ-->
             <li><a class="link-underline link-underline-opacity-0" href="#Feedback">Phản hồi</a></li>
-            <!--url đến trang phản hồi-->
             <li id="user-action"></li>
         </ul>
         <span class="fa fa-bars" id="listbars" onclick="menutoggle()"></span>
     </div>
 </header>
 <script>
-    let isLoggedIn = false; // thêm phương thức kiểm tra trạng thái đăng nhập
-    const userName = "Nguyễn Văn A";
+    let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    console.log(isLoggedIn);
+    const updateUserAction = () => {
+        const userName = localStorage.getItem('name');
 
-    function updateUserAction() {
         const userActionDiv = document.getElementById("user-action");
         console.log(userActionDiv);
-        if (isLoggedIn) {
+        if (localStorage.getItem('isLoggedIn') === 'true') {
             userActionDiv.innerHTML =
             `
-            <div show-info onclick="showInfo()" class="navlinks">
+            <div show-info onclick="showInfo()" style="cursor: pointer" class="navlinks">
                 <span class="user" onclick="usertoggle()">Chào, ${userName}</span>
                 <ul show-ul class="d-none" id="userlist">
-                    <li><a href="#">Thông tin tài khoản</a></li>    <!--url trang profile-->
-                    <li><a href="#">Lịch sử đặt phòng</a></li>      <!--url trang history-->
+                    <li><a href="/user/user_profile">Thông tin tài khoản</a></li>    <!--url trang profile-->
+
+                    <li><a href="/booking/history">Lịch sử đặt phòng</a></li>      <!--url trang history-->
+
                     <li><a href="#" onclick="logout()">Đăng xuất</a></li> <!-- thoát trạng thái đăng nhập-->
                 </ul>
             </div>
-            `;                                                      //url trang profile
-            // url trang history
-            // thoát trạng thái đăng nhập
+            `;
         } else {
-            userActionDiv.innerHTML = `<a th:href="@{/login}"><button class="primary-btn">Đăng nhập</button></a>`;
+            userActionDiv.innerHTML = `<a href="/user"><button class="primary-btn">Đăng nhập</button></a>`;
         }
     }
 
     function logout() {
-        isLoggedIn = false;
+        localStorage.setItem('isLoggedIn', false);
         updateUserAction();
     }
     updateUserAction();
@@ -93,98 +199,94 @@
         if(shown){
             showUl.classList.remove("d-block");
             showUl.classList.add("d-none");
-            // const userName = showInfor.querySelector(`.user`);
             shown = false;
         }
         else{
             showUl.classList.remove('d-none');
             showUl.classList.add("d-block");
             const userName = showInfor.querySelector(`.user`);
-            // console.log(userName);
-            // userName.classList.add("d-none");
             shown = true;
         }
 
     }
 </script>
+
 <div class="container">
-    <!-- Bộ lọc -->
-    <form:form action="/search" id="filterForm" method="GET" modelAttribute="selectedBox">
+    <form id="filterForm" action="/search" method="GET">
         <div class="filters">
+            <!-- Tìm kiếm cơ bản -->
             <div class="search-box">
                 <h2>Tìm</h2>
-                <label for="destination">Tên chỗ nghỉ / điểm đến:</label>
+                <label for="address">Tên chỗ nghỉ / điểm đến:</label>
                 <div class="search-input">
-                    <input id="destination" placeholder="Địa điểm" type="text">
+                    <input type="text" id="address" name="address" placeholder="Lào Cai"
+                           th:value="${params['address'] != null ? params['address'] : ''}">
                     <i class="fa fa-search"></i>
                 </div>
                 <label for="checkin-date">Ngày nhận phòng</label>
                 <div class="date-picker">
-                    <input id="checkin-date" type="date">
+                    <input type="date" id="checkin-date"  name="checkinDate"
+                           th:value="${checkInDate != null ? checkInDate : ''}">
                     <i class="fa fa-calendar"></i>
                 </div>
                 <label for="checkout-date">Ngày trả phòng</label>
                 <div class="date-picker">
-                    <input id="checkout-date" type="date">
+                    <input type="date" id="checkout-date"  name="checkoutDate"
+                           th:value="${checkOutDate != null ? checkOutDate : ''}">
                     <i class="fa fa-calendar"></i>
                 </div>
-                <label for="guest-info">Nghỉ 1 đêm</label>
-                <select id="guest-info">
-                    <option>1 người lớn · 0 trẻ em · 1 phòng</option>
-                    <option>2 người lớn · 0 trẻ em · 1 phòng</option>
-                    <!-- Thêm các tuỳ chọn khác nếu cần -->
-                </select>
-                <button class="search-button" type="submit">Tìm</button>
+                <div class="search-input">
+                    <label for="checkout-date">Số lượng người</label>
+                    <input type="text" id="capacity" name="capacity" placeholder="Số lượng người"
+                           th:value="${params['capacity'] != null ? params['capacity'] : ''}">
+                    <i class="fa fa-search"></i>
+                </div>
+                <button class="search-button" type="button" onclick="submitForm()">Tìm</button>
             </div>
 
             <h2>Bộ lọc theo:</h2>
-
-            <!-- Đánh giá -->
-            <div class="filter-group">
-                <h3>Đánh giá</h3>
-                <label><input name="ratings" type="checkbox" value="5"> 5 sao</label><br>
-                <label><input name="ratings" type="checkbox" value="4"> 4 sao</label><br>
-                <label><input name="ratings" type="checkbox" value="3"> 3 sao</label><br>
-                <label><input name="ratings" type="checkbox" value="2"> 2 sao</label><br>
-                <label><input name="ratings" type="checkbox" value="1"> 1 sao</label>
+            <div class="price-range-container">
+                <h3>Khoảng Giá (VNĐ/Ngày)</h3>
+                <input type="text" class="price-input" name="priceFrom" placeholder="Từ .000VNĐ"
+                       th:value="${params['priceFrom'] != null ? params['priceFrom'] : ''}">
+                <span> - </span>
+                <input type="text" class="price-input" name="priceTo" placeholder="Đến .000VNĐ"
+                       th:value="${params['priceTo'] != null ? params['priceTo'] : ''}">
             </div>
 
-            <!-- Giá tiền -->
             <div class="filter-group">
-                <h3>Giá tiền</h3>
-                <label><input path="prices" type="checkbox" value="200"> 200k/1 đêm</label><br>
-                <label><input name="prices" type="checkbox" value="300"> 300k/1 đêm</label><br>
-                <label><input name="prices" type="checkbox" value="400"> 400k/1 đêm</label><br>
-                <label><input name="prices" type="checkbox" value="500"> 500k/1 đêm</label><br>
-                <label><input name="prices" type="checkbox" value="600"> 600k/1 đêm</label>
+                <h3>Tiện nghi</h3>
+                <div th:each="facility : ${facilities}">
+                    <label>
+                        <input name="facilities" type="checkbox"
+                               th:value="${facility.id}"
+                               th:checked="${selectedFacilities.contains(facility.id)}">
+                        <span th:text="${facility.name}">Facility Name</span>
+                    </label><br>
+                </div>
             </div>
-
-            <!-- Hoạt động giải trí -->
-            <div class="filter-group">
-                <h3>Địa điểm</h3>
-                <label><input name="locations" type="checkbox" value="1"> Lào Cai</label><br>
-                <label><input name="locations" type="checkbox" value="2"> Sơn La</label><br>
-                <label><input name="locations" type="checkbox" value="3"> Lai Châu</label><br>
-                <label><input name="locations" type="checkbox" value="4"> Điện Biên Phủ</label><br>
-                <label><input name="locations" type="checkbox" value="5"> Hòa Bình</label>
-            </div>
-
-            <!-- Nút áp dụng bộ lọc -->
-            <button class="filter-button" type="submit">Áp dụng bộ lọc</button>
+            <button class="filter-button" type="button" onclick="submitForm()">Áp dụng bộ lọc</button>
         </div>
-    </form:form>
+    </form>
 
+    <script>
+        function submitForm() {
+            const form = document.getElementById('filterForm');
+            const params = new URLSearchParams(new FormData(form)).toString();
+            window.location.href = `/search?${params}`;
+        }
+    </script>
 
     <!-- Kết quả tìm kiếm -->
     <div class="search-results">
         <!-- Kết quả tìm kiếm sẽ hiển thị ở đây -->
-        <!-- homestays: một list kết quả tìm kiếm đựơc backend trả về -->
 
         <div class="search-price">
             <h3>Sắp xếp:</h3>
-            <select id="price sort" onchange="sortHomestays()">
-                <option th:selected="${current_sort == 'asc'}" value="asc">Giá tăng dần</option>
-                <option th:selected="${current_sort == 'desc'}" value="desc">Giá giảm dần</option>
+            <select id="price-sort" onchange="sortHomestays()">
+                <option></option>
+                <option value="asc" th:selected="${params['sort'] == 'asc'}">Giá tăng dần</option>
+                <option value="desc" th:selected="${params['sort'] == 'desc'}">Giá giảm dần</option>
             </select>
         </div>
 
@@ -192,92 +294,109 @@
         <script>
             function sortHomestays() {
                 let sortOption = document.getElementById("price-sort").value;
-                let currentUrl = window.location.href.split('?')[0];
-                window.location.href = currentUrl + "?sort=" + sortOption;
+                let currentUrl = window.location.href.split('?')[0]; // Lấy phần URL trước dấu hỏi chấm (không bao gồm các tham số)
+                // Lấy tất cả tham số trong URL hiện tại
+                let params = new URLSearchParams(window.location.search);
+                // Cập nhật hoặc thêm tham số 'sort'
+                if (sortOption) {
+                    params.set('sort', sortOption);
+                } else {
+                    params.delete('sort');  // Nếu không chọn giá trị, xóa tham số 'sort'
+                }
+                // Tạo lại URL với các tham số đã cập nhật
+                let newUrl = currentUrl + '?' + params.toString();
+                // Chuyển hướng tới URL mới
+                window.location.href = newUrl;
             }
         </script>
 
         <div id="results">
+            <div>
+                <p class="alert alert-warning" th:if="${homestays == null or #lists.isEmpty(homestays)}">Không tìm thấy kết quả phù hợp</p>
+            </div>
             <!-- Kết quả tìm kiếm sẽ hiển thị ở đây -->
             <div class="row" th:if="${homestays != null}">
                 <div class="item" th:each="homestay : ${homestays}">
                     <div class="img">
-                        <img alt="Homestay 1" src="../static/img/homestay1.jpg">
+                        <img th:src="${homestay.image}" alt="Homestay Image">
                     </div>
                     <div class="info">
                         <h2 class="card-title" th:text="${homestay.name}">Tên Homestay</h2>
                         <div class="star-rating">
                             <!-- Mã hiển thị đánh giá sao nếu có -->
                         </div>
+                        <p th:text="${homestay.address} + ', ' + ${homestay.province.name}"></p>
                         <h3 th:text="'Giá: ' + ${homestay.price} + 'k'">Giá</h3>
-                        <p>
-                            Nằm cách Trạm cáp treo Fansipan 4.5 km, Homestay 1 cung cấp chỗ nghỉ có khu vườn, sân hiên
-                            và dịch vụ phòng. Homestay có WiFi và chỗ đậu xe riêng miễn phí.
-                        </p>
+                        <div>
+                            <span th:each="room, stat : ${homestay.rooms}">
+                                <span class="small-text" th:text="${room.numbers} + ' ' + ${room.type}"></span>
+                                <span th:if="${!stat.last}">•</span>
+                            </span>
+                        </div>
+                        <p th:text="${homestay.description}"></p>
+                        <form method="POST" th:action="@{/homestay/{id}(id=${homestay.id})}">
+                            <div>
+                                <input type="date" style="display:none;" name="checkinDate" th:value="${checkInDate != null ? checkInDate : ''}">
+                                <input type="date" style="display:none;" name="checkoutDate" th:value="${checkOutDate != null ? checkOutDate : ''}">
+                            </div>
+                            <button class="book-button">Đặt phòng</button>
+                        </form>
                     </div>
-                    <form method="GET" th:action="@{/product/{id}(id=${homestay.id})}">
-                        <button class="book-button">Đặt phòng</button>
-                    </form>
                 </div>
             </div>
-            <p class="alert alert-warning" th:if="${homestays == null}">Không tìm thấy kết quả phù hợp</p>
         </div>
     </div>
-    <!--<<<<<<< HEAD
-    =======
+</div>
+
+
+<script>
+    function performSearch() {
+        // Implement search logic here
+        alert("Search functionality is not yet implemented.");
+    }
+</script>
+
+
+<footer>
+    <div class="container grid">
+        <div class="box">
+            <div class="icon">
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-instagram"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+                <a href="#"><i class="fa fa-youtube"></i></a>
+            </div>
+        </div>
+        <div class="box">
+            <h2>GIỚI THIỆU</h2>
+            <a href="#">Trang chủ</a><br>
+            <a href="#">Dịch vụ</a><br>
+            <a href="#">Tin tức</a><br>
+            <a href="#">Liên hệ</a><br>
+        </div>
+        <div class="box">
+            <h2>LIÊN KẾT</h2>
+            <a href="#">Điều khoản sử dụng</a><br>
+            <a href="#">Chính sách bảo mật</a><br>
+            <a href="#">Chính sách hoàn tiền</a><br>
+            <a href="#">FAQs</a>
+        </div>
+        <div class="box">
+            <h2>LIÊN HỆ</h2>
+            <div class="flex">
+                <i class="fa fa-location-dot"></i>
+                <p>30 Tran Phu, Ha Dong, Ha Noi, Viet Nam</p>
+            </div>
+            <div class="flex">
+                <i class="fa fa-phone"></i>
+                <p>0987352163</p>
+            </div>
+            <div class="flex">
+                <i class="fa fa-envelope"></i>
+                <p>nhan54v@gmail.com</p>
+            </div>
         </div>
     </div>
-    >>>>>>> develop -->
-
-    <script>
-        function performSearch() {
-            // Implement search logic here
-            alert("Search functionality is not yet implemented.");
-        }
-    </script>
-
-
-    <footer>
-        <div class="container grid">
-            <div class="box">
-                <img src="../static/img/homestay1.jpg">
-                <div class="icon">
-                    <a href="#"><i class="fa fa-facebook"></i></a>
-                    <a href="#"><i class="fa fa-instagram"></i></a>
-                    <a href="#"><i class="fa fa-twitter"></i></a>
-                    <a href="#"><i class="fa fa-youtube"></i></a>
-                </div>
-            </div>
-            <div class="box">
-                <h2>GIỚI THIỆU</h2>
-                <a href="#">Trang chủ</a><br>
-                <a href="#">Dịch vụ</a><br>
-                <a href="#">Tin tức</a><br>
-                <a href="#">Liên hệ</a><br>
-            </div>
-            <div class="box">
-                <h2>LIÊN KẾT</h2>
-                <a href="#">Điều khoản sử dụng</a><br>
-                <a href="#">Chính sách bảo mật</a><br>
-                <a href="#">Chính sách hoàn tiền</a><br>
-                <a href="#">FAQs</a>
-            </div>
-            <div class="box">
-                <h2>LIÊN HỆ</h2>
-                <div class="flex">
-                    <i class="fa fa-location-dot"></i>
-                    <p>30 Tran Phu, Ha Dong, Ha Noi, Viet Nam</p>
-                </div>
-                <div class="flex">
-                    <i class="fa fa-phone"></i>
-                    <p>0987352163</p>
-                </div>
-                <div class="flex">
-                    <i class="fa fa-envelope"></i>
-                    <p>nhan54v@gmail.com</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+</footer>
 </body>
 </html>
