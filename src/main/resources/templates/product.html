@@ -290,8 +290,8 @@
         </div>
         <div class="col-lg-5 custom-border">
             <h2 class="card-title"><span th:text="${homestay.name}">Tên homestay</span></h2>
-            <p class="text-muted">Địa chỉ: <span th:text="${homestay.address}">Địa chỉ homestay</span></p>
-            <p class="text-muted">Homestay Tây Bắc mang đậm bản sắc văn hóa dân tộc vùng cao...</p>
+            <p class="text-muted">Địa chỉ: <span th:text="${homestay.address} + ', ' + ${homestay.province.name}">Địa chỉ homestay</span></p>
+            <p class="text-muted" th:text="${homestay.description}"></p>
 
             <h4 class="mt-4">Giá</h4>
             <p><span th:text="${homestay.price}">0</span>.000 VND / đêm</p>

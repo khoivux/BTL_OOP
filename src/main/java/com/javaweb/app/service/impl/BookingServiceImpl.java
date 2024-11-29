@@ -59,7 +59,7 @@ public class BookingServiceImpl implements BookingService {
         bookingDTO.setCustomerEmail(MapUtil.getObject(params, "customerEmail", String.class));
         bookingDTO.setCustomerPhone(MapUtil.getObject(params, "customerPhone", String.class));
         bookingDTO.setHomestay(homestayRepository.getById(Objects.requireNonNull(MapUtil.getObject(params, "homestayId", Long.class))));
-        bookingDTO.setStatus("Đã thanh toán");
+        bookingDTO.setStatus("Đã cọc");
         bookingDTO.setCheckInDate(DateUtil.strToDate(MapUtil.getObject(params, "checkInDate", String.class)));
         bookingDTO.setCheckOutDate(DateUtil.strToDate(MapUtil.getObject(params, "checkOutDate", String.class)));
         bookingDTO.setBookingTime(LocalDateTime.now());

@@ -278,7 +278,7 @@
                                     <form method="POST" th:action="@{/homestay/{id}(id=${homestay.id})}">
                                         <button class="product-btn">Đặt phòng</button>
                                     </form>
-                                    <h4 th:text="${homestay.price} + 'VND/ngày'"></h4>
+                                    <h4 th:text="${homestay.price} + '.000VND/ngày'"></h4>
                                 </div>
                             </div>
                         </div>

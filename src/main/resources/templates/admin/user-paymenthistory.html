@@ -60,7 +60,7 @@
                     <td class="p-2" style="text-align:center">
                         <select name="status" class="form-control" th:onchange="updateStatus([[${history.id}]])">
                             <option th:value="'Đã hủy'" th:text="'Đã hủy'" th:selected="${history.status == 'Đã hủy'}">Đã hủy</option>
-                            <option th:value="'Đã cọc'" th:text="'Chờ xác nhận'" th:selected="${history.status == 'Đã cọc'}">Đã cọc</option>
+                            <option th:value="'Đã cọc'" th:text="'Đã cọc'" th:selected="${history.status == 'Đã cọc'}">Đã cọc</option>
                             <option th:value="'Đã thanh toán'" th:text="'Đã thanh toán'" th:selected="${history.status == 'Đã thanh toán'}">Đã thanh toán</option>
                         </select>
                     </td>

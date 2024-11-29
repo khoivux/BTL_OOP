@@ -245,10 +245,10 @@
         <tr th:each="booking : ${bookings}" th:if="${bookings != null}">
             <td class="p-2" style="text-align:center" th:text="${booking.id}"></td>
             <td class="p-2" style="text-align:center" th:text="${booking.homestay.name}"></td>
-            <td class="p-2" style="text-align:center" th:text="${booking.homestay.address}"></td>
+            <td class="p-2" style="text-align:center" th:text="${booking.homestay.address} + ', ' + ${booking.homestay.province.name}"></td>
             <td class="p-2" style="text-align:center"
                 th:text="${#temporals.format(booking.bookingTime, 'dd/MM/yyyy HH:mm:ss')}"></td>
-            <td class="p-2" style="text-align:center" th:text="${booking.total}"></td>
+            <td class="p-2" style="text-align:center" th:text="${booking.total} + '.000'"></td>
             <td class="p-2" style="text-align:center" th:text="${booking.status}"></td>
             <td class="p-2" style="text-align:center">
                 <!-- Nút Chi tiết -->
