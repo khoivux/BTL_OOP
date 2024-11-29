@@ -20,12 +20,6 @@ public class ProvinceServiceImpl implements ProvinceService {
     public ProvinceMapper provinceMapper;
     @Autowired
     public ProvinceRepository provinceRepository;
-
-    @Override
-    public ProvinceDto getById(Long id) {
-        return provinceMapper.mapToProvinceDto(provinceRepository.getById(id));
-    }
-
     @Override
     public List<ProvinceDto> findAll() {
         List<ProvinceEntity> provinceEntities = provinceRepository.findAll();

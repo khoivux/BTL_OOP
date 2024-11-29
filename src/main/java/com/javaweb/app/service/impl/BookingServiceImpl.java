@@ -70,12 +70,6 @@ public class BookingServiceImpl implements BookingService {
 
         return bookingDTO;
     }
-
-    @Override
-    public List<BookingEntity> getBookingsByUserId(Long userId) {
-        return bookingRepository.findByUser_Id(userId);
-    }
-
     public BookingDTO saveBooking(BookingDTO bookingDTO) {
         bookingRepository.save(modelMapper.map(bookingDTO, BookingEntity.class));
         return bookingDTO;
@@ -121,15 +115,6 @@ public class BookingServiceImpl implements BookingService {
                 .map(booking -> bookingMapper.mapToBookingDTO(booking)) // Giả sử bạn có mapper
                 .collect(Collectors.toList());
     }
-
-    @Override
-    public Long getUserIdByBookingId(Long bookingId) {
-        BookingEntity booking = bookingRepository.findById(bookingId).orElse(null);
-        if (booking != null) {
-            return booking.getUser().getUserID();
-        }
-        return null;
-    }
     @Override
     public BookingDTO findById(Long id)
     {
@@ -145,7 +130,6 @@ public class BookingServiceImpl implements BookingService {
             bookingRepository.save(booking);
         }
     }
-
     public void cancelBookingById(Long id) {
         BookingEntity bookingEntity = bookingRepository.getById(id);
         bookingEntity.setStatus("Đã hủy");

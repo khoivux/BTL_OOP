@@ -14,13 +14,10 @@ public interface UserRepository extends JpaRepository<User, Long>{
     // Tìm kiếm người dùng theo ID
     User getById(Long id);
     User getByRole(String role);
-
     // Tìm kiếm người dùng theo tên
     List<User> findByUsernameContaining(String username);
-
     // Tìm kiếm người dùng theo email
     List<User> findByEmailContaining(String email);
-
     // Tìm kiếm người dùng bằng cách kết hợp tất cả các trường
     List<User> findByIdOrUsernameContainingOrEmailContaining(Long id, String username, String email);
 }

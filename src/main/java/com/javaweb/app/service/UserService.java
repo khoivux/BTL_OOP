@@ -72,7 +72,6 @@ public class UserService {
         return userDTOS;
     }
 
-
     // xoa 1 user
     public void deleteUser(Long id) {
         userRepository.deleteById(id);

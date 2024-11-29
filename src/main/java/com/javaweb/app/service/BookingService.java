@@ -17,30 +17,13 @@ import java.util.Map;
 import java.util.List;
 
 public interface BookingService {
-
     List<BookingDTO> findBookingByUserId(Long userId);
-
-    void deleteBookingById(Long id);
-    void cancelBookingById(Long id);
-
+    BookingDTO saveBooking(BookingDTO bookingDTO);
     List<BookingDTO> getPaymentHistory(Long userId);
-
-
-
-    List<BookingDTO> getBookingsByUser_Id(Long userId);
-
-    Long getUserIdByBookingId(Long id);
-
-    void updateBookingStatus(Long bookingId, String status);
-
     BookingDTO findById(Long id);
-
-
-
     BookingDTO createBooking(Map<String, Object> params, Long userId, HttpSession session);
     void validDateBooking(Long homestayId, LocalDate checkInDate, LocalDate checkOutDate);
-    BookingDTO saveBooking(BookingDTO bookingDTO);
-
-
-    List<BookingEntity> getBookingsByUserId(Long userId);
+    void updateBookingStatus(Long bookingId, String status);
+    void deleteBookingById(Long id);
+    void cancelBookingById(Long id);
 }

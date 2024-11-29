@@ -198,10 +198,4 @@ AdminController {
             return ResponseEntity.badRequest().body("Cập nhật trạng thái thất bại!");
         }
     }
-
-//    @PostMapping("/booking/{id}") // Xóa user theo id
-//    public RedirectView deleteUserById(@PathVariable Long id) {
-//        userService.deleteUser(id);
-//        return new RedirectView("/admin/user");
-//    }
 }
