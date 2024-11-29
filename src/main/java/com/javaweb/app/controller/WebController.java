@@ -69,7 +69,7 @@ public class WebController {
         try {
             Boolean checkDate = DateUtil.isValid(checkInDate, checkOutDate);
             homestays = homestayService.findByFilter(params, facilities);
-        } catch (DateNotValidException e) {
+        } catch (RuntimeException e) {
             homestays = homestayService.findAll();  // Nếu có lỗi, lấy tất cả homestay
             model.addObject("errorMessage", e.getMessage());
         }

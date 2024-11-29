@@ -96,13 +96,6 @@ public class HomestayEntity {
         this.price = price;
     }
 
-    public Long getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(Long capacity) {
-        this.capacity = capacity;
-    }
 
     public ProvinceEntity getProvince() {
         return province;
@@ -110,15 +103,6 @@ public class HomestayEntity {
 
     public void setProvince(ProvinceEntity province) {
         this.province = province;
-    }
-
-
-    public List<BookingEntity> getBookingList() {
-        return bookingList;
-    }
-
-    public void setBookingList(List<BookingEntity> bookingList) {
-        this.bookingList = bookingList;
     }
 
 

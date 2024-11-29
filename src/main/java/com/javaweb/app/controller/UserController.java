@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping("/user")
@@ -85,21 +86,19 @@ public class UserController {
     }
 
     @PostMapping("update_profile")
-    public ResponseEntity updateProfile(
+    public RedirectView updateProfile(
             @RequestParam String fullName,
             @RequestParam String email,
             @RequestParam String phoneNumber,
             @RequestParam String address,
             HttpSession session
     ) {
-        try {
+
             User user = (User) session.getAttribute("user");
             userService.updateProfile(user.getId(), fullName, email, phoneNumber, address);
             // update session
             session.setAttribute("user", userService.userRepository.getById(user.getId()));
-            return new ResponseEntity<>("Cập nhật thông tin thành công!", HttpStatus.OK);
-        } catch (RuntimeException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+            return new RedirectView("/user/user_profile");
+
     }
 }
