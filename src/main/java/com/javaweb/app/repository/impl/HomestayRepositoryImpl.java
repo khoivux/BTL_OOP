@@ -102,6 +102,8 @@ public class HomestayRepositoryImpl implements HomestayRepositoryCustom {
                     "    SELECT 1 \n" +
                     "    FROM booking b \n" +
                     "    WHERE b.homestay_id = h.id \n" +
+                    "    AND b.status != 'Đã hủy'" +
+                    "    AND b.status != 'Đã thanh toán'" +
                     "    AND NOT ( \n" +
                     "        '" + checkIn.format(formatter) + "' > b.checkout_date \n" +
                     "        OR '" + checkOut.format(formatter) + "' < b.checkin_date \n" +

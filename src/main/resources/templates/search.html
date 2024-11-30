@@ -326,7 +326,7 @@
                             <!-- Mã hiển thị đánh giá sao nếu có -->
                         </div>
                         <p th:text="${homestay.address} + ', ' + ${homestay.province.name}"></p>
-                        <h3 th:text="'Giá: ' + ${homestay.price} + 'k'">Giá</h3>
+                        <h3 th:text="'Giá: ' + ${homestay.price} + '.000 VNĐ/Ngày'">Giá</h3>
                         <div>
                             <span th:each="room, stat : ${homestay.rooms}">
                                 <span class="small-text" th:text="${room.numbers} + ' ' + ${room.type}"></span>

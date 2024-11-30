@@ -17,6 +17,8 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
         SELECT COUNT(*)
         FROM booking b
         WHERE b.homestay_id = :homestayId
+        AND b.status != 'Đã hủy'
+        AND b.status != 'Đã thanh toán'
         AND NOT (
             :checkInDate > b.checkout_date
             OR :checkOutDate < b.checkin_date
